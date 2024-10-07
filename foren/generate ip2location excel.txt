@@ -1,0 +1,64 @@
+1. kumpulkan list IP yang ingin di query pada file uniq_login
+2. daftarkan IP key ke ip2location.io
+3. query dengan curl
+4. convert json dengan jq
+5. convert ke excel
+--
+rm db.json l.sh ; 
+cat uniq_login | awk '{print $2}' | while read wew ; do echo "curl 'https://api.ip2location.io/?key=E5C&ip=$wew' -o output.json;cat output.json>>db.json"  >> l.sh; done
+bash l.sh
+cat db.json | jq  . > p.json
+-- j.py
+import pandas as pd
+import json
+
+def json_to_excel(json_file, excel_file):
+    """
+    Converts a file with multiple JSON objects into an Excel file.
+
+    Args:
+        json_file (str): The path to the input file containing multiple JSON objects.
+        excel_file (str): The path to the output Excel file.
+    """
+    try:
+        data_list = []
+        current_json = ""
+
+        # Read the JSON data from the file
+        with open(json_file, 'r') as f:
+            for line in f:
+                line = line.strip()
+
+                # Handle multi-line JSON objects
+                if line.startswith("{") and not line.endswith("}"):
+                    current_json = line
+                elif line.endswith("}"):
+                    current_json += line
+                    data_list.append(json.loads(current_json))
+                    current_json = ""
+                else:
+                    current_json += line
+
+        # Convert the list of JSON objects to a DataFrame
+        df = pd.DataFrame(data_list)
+
+        # Write the DataFrame to an Excel file
+        df.to_excel(excel_file, index=False)
+        print(f"[INFO] JSON data successfully converted to {excel_file}")
+
+    except json.JSONDecodeError as e:
+        print(f"[ERROR] Failed to parse JSON: {e}")
+    except Exception as e:
+        print(f"[ERROR] An error occurred: {e}")
+
+if __name__ == "__main__":
+    # Path to the input file containing JSON objects
+    json_file = 'p.json'  # Replace with your JSON file path
+
+    # Path to the output Excel file
+    excel_file = 'output.xlsx'  # Replace with your desired output Excel file path
+
+    # Convert JSON to Excel
+    json_to_excel(json_file, excel_file)
+--
+python3 jpy
