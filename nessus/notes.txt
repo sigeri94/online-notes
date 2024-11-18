@@ -8,3 +8,6 @@ source myenv/bin/activate
 
 # Instal pustaka di dalam virtual environment
 pip install <package-name>
+
+
+python3 final_doc.py ./pel.nessus 'SQL Dump' 'Git Repository' 'phpinfo.php' 'web.config' 'SSL Certificate Expiry' 'SWEET32' 'RC4' 'Distrusted' 'BEAST' 'POODLE' 'FREAK' 'Community' 'rlogin' 'Redis Server Unprotected' 'AMQP' 'Unencrypted Telnet Server' 'SMB Signing not required' 'SMB NULL Session Authentication' 'MS09-050' 'NLA' 'Browsable' 'phpMyAdmin' 'Patch Report' 'Terrapin' 'Poisoning'
