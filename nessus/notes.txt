@@ -1,0 +1,10 @@
+python -m venv myenv
+
+# Aktifkan virtual environment
+# Windows
+myenv\Scripts\activate
+# Mac/Linux
+source myenv/bin/activate
+
+# Instal pustaka di dalam virtual environment
+pip install <package-name>
