@@ -1,0 +1,2 @@
+$sudo docker run --rm -it -v $PWD:/tmp drwetter/testssl.sh --quiet -e -p -U -oH /tmp/wew2.html  api-eservice.indonesiaport.co.id
+nmap --script ssl-enum-ciphers -oX nmap.xml target.com
