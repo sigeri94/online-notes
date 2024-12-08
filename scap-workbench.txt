@@ -1,0 +1,16 @@
+scap on ubuntu-mate 22
+  sudo apt install git cmake g++ qtbase5-dev qttools5-dev-tools libopenscap-dev libqt5widgets5 libqt5core5a libqt5gui5
+  sudo apt install qttools5-dev qttools5-dev-tools libqt5xmlpatterns5-dev
+  sudo apt install pkg-config
+  sudo apt install build-essential cmake libtool autoconf automake
+
+wget https://github.com/OpenSCAP/scap-workbench/releases/download/1.2.1/scap-workbench-1.2.1.tar.bz2
+tar scap-workbench-1.2.1.tar.bz2
+cd scap-workbench-1.2.1
+wget https://raw.githubusercontent.com/sigeri94/online-notes/refs/heads/master/mate22.patch
+patch -p1 < mate22.patch
+mkdir build
+cd build
+cmake ..
+make
+
