@@ -34,3 +34,8 @@ cd build
 cmake ..
 make
 
+
+wget https://github.com/ComplianceAsCode/content/releases/download/v0.1.75/scap-security-guide-0.1.75.tar.bz2
+sudo apt install libxml2-utils
+sudo apt install xsltproc
+pip3 install  -r requirement.txt
