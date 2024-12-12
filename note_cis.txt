@@ -17,9 +17,9 @@ sudo yum install openscap-scanner -y
 
 /var	 	5 GB 
 /var/tmp	1 GB
-
 /var/log 	5 GB
 /var/log/audit	1 GB
-
 /home		2 GB
 /tmp		1 GB
+
+(secedit /export /areas SECURITYPOLICY /cfg $env:temp\SecPolicy.inf > $null; Select-String -Path "$env:temp\SecPolicy.inf" -Pattern "LockoutDuration" | ForEach-Object { ($_ -split "=")[1].Trim() }) -ne $null ? "LockoutDuration is set to: $((secedit /export /areas SECURITYPOLICY /cfg $env:temp\SecPolicy.inf > $null; Select-String -Path '$env:temp\SecPolicy.inf' -Pattern 'LockoutDuration' | ForEach-Object { ($_ -split '=')[1].Trim() })) minutes" : "LockoutDuration is not set."
