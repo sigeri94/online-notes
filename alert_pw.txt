@@ -71,3 +71,31 @@ Note:
 - Ensure the script has execute permissions (Set-ExecutionPolicy -ExecutionPolicy RemoteSigned).
 - This script monitors Security event log ID 1149, which corresponds to Remote Desktop login events.
 - Adjust the script according to your environment and security requirements.
+
+
+
+
+For Remote Desktop login events, the correct Event ID is:
+
+Windows Server 2008/2012/2016/2019/2022
+1. *Event ID 1149*: Remote Desktop Connection Broker (RD Connection Broker) logs this event when a user connects or disconnects.
+2. *Event ID 21*: Terminal Services (TS) logs this event when a user logs on or logs off.
+
+Windows 10/11
+1. *Event ID 21*: Windows Security Log records this event for Remote Desktop connections.
+
+Recommendations
+1. Use Event ID *21* for Windows 10/11.
+2. Use Event ID *1149* for Windows Server with RD Connection Broker.
+
+PowerShell Script Update
+Replace `$eventId = 1149` with `$eventId = 21` for Windows 10/11:
+
+```
+$params = @{
+  FilterHashtable = @{
+    LogName = "Security"
+    ID = 21
+  }
+}
+```
