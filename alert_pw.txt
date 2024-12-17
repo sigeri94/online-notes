@@ -1,0 +1,73 @@
+Here's a step-by-step guide to setting up a PowerShell script to send a Telegram alert when someone logs in through Remote Desktop:
+
+Prerequisites
+1. Telegram account
+2. Telegram Bot Father (to create a bot)
+3. PowerShell 3 or later
+4. Windows 10/Server
+
+Step 1: Create a Telegram Bot
+1. Open Telegram and search for "BotFather".
+2. Start a conversation with BotFather.
+3. Send "/newbot" to create a new bot.
+4. Follow instructions to create a bot name and username.
+5. Note the API token provided.
+
+Step 2: Create a Telegram Chat ID
+1. Send a message to your bot.
+2. Access (link unavailable)<API_TOKEN>/getUpdates (replace <API_TOKEN> with your bot's API token).
+3. Find the "chat": {"id": XXXXXXXX} section. Note the chat ID.
+
+Step 3: PowerShell Script
+Create a file named "rd_alert.ps1" with the following content:
+
+Telegram API settings
+$apiToken = "YOUR_API_TOKEN"
+$chatId = "YOUR_CHAT_ID"
+
+Remote Desktop login event ID
+$eventId = 1149
+
+Get-WinEvent parameters
+$params = @{
+  FilterHashtable = @{
+    LogName = "Security"
+    ID = $eventId
+  }
+}
+
+Send Telegram alert
+function Send-TelegramAlert {
+  param ($message)
+  $uri = "(link unavailable)"
+  Invoke-WebRequest -Uri $uri -Method Post
+}
+
+Monitor Remote Desktop logins
+Get-WinEvent @params | ForEach-Object {
+  $username = $_.Properties[1].Value
+  $message = "Remote Desktop login detected: $username"
+  Send-TelegramAlert -message $message
+}
+Step 4: Configure PowerShell Script
+1. Replace "YOUR_API_TOKEN" with your Telegram bot's API token.
+2. Replace "YOUR_CHAT_ID" with your Telegram chat ID.
+3. Save the script.
+
+Step 5: Schedule the Script
+1. Open Task Scheduler.
+2. Create a new task.
+3. Set the trigger: "On event" (Source: Security, Event ID: 1149).
+4. Set the action: Start a program (powershell.exe).
+5. Add argument: "-File C:\Path\To\rd_alert.ps1" (replace with your script path).
+6. Save the task.
+
+Testing
+1. Log in to your Windows machine via Remote Desktop.
+2. Verify that a Telegram alert is received.
+
+Note:
+
+- Ensure the script has execute permissions (Set-ExecutionPolicy -ExecutionPolicy RemoteSigned).
+- This script monitors Security event log ID 1149, which corresponds to Remote Desktop login events.
+- Adjust the script according to your environment and security requirements.
