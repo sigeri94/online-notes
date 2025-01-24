@@ -1,0 +1,30 @@
+usermod -G wheel batman
+subscription-manager register --auto-attach
+sudo yum update
+sudo dnf -y install python3-pip dnf-utils device-mapper-persistent-data lvm2 git gcc rust cargo openssl-devel python3-devel make npm nodejs git
+sudo dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+sudo dnf module disable container-tools -y
+sudo dnf install -y docker-ce docker-ce-cli containerd.io --allowerasing
+sudo systemctl enable --now docker
+
+sudo usermod -aG docker batman
+sudo pip3 install setuptools-rust
+sudo pip3 install wheel
+sudo pip3 install cffi
+sudo pip3 install docker-compose
+
+sed 's/targeted/disabled/g' /etc/selinux/config
+reboot
+
+wget https://github.com/ansible/awx/archive/refs/tags/17.1.0.tar.gz
+tar xvf 17.1.0.tar.gz
+cd awx-17.1.0/installer
+nano inventory
+  enable admin_password
+ansible-playbook -i inventory install.yml
+
+
+sudo pip3 install ansible==2.4.2
+VERSION=v2.32.4
+sudo curl -L https://github.com/docker/compose/releases/download/$VERSION/docker-compose-$(uname -s)-$(uname -m) -o /usr/bin/docker-compose
+sudo chmod +x /usr/bin/docker-compose
