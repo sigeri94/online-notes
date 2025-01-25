@@ -16,6 +16,7 @@ sudo pip3 install docker-compose
 sed 's/targeted/disabled/g' /etc/selinux/config
 reboot
 
+mkdir -p /var/lib/awx/projects/playbooks
 wget https://github.com/ansible/awx/archive/refs/tags/17.1.0.tar.gz
 tar xvf 17.1.0.tar.gz
 cd awx-17.1.0/installer
