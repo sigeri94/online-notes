@@ -30,3 +30,81 @@ sudo pip3 install ansible==2.4.2
 VERSION=v2.32.4
 sudo curl -L https://github.com/docker/compose/releases/download/$VERSION/docker-compose-$(uname -s)-$(uname -m) -o /usr/bin/docker-compose
 sudo chmod +x /usr/bin/docker-compose
+
+[----
+[ansible@rhel8 proj_name]$ cat inv.yml
+all:
+  hosts:
+    192.168.88.57:
+      ansible_user: ansible
+      ansible_ssh_pass: xxx
+      ansible_become_pass: xxx
+      ansible_python_interpreter: /usr/bin/python3
+    192.168.88.82:
+      ansible_user: ansible
+      ansible_ssh_pass: xxx
+      ansible_become_pass: xxx
+      ansible_python_interpreter: /usr/bin/python3
+    192.168.88.143:
+      ansible_user: ansible
+      ansible_ssh_pass: xxx
+      ansible_become_pass: xxx
+      ansible_python_interpreter: /usr/bin/python2
+
+[ansible@rhel8 proj_name]$ cat cat_os_release2.yml
+---
+- name: Read /etc/os-release and send to Telegram
+  hosts: all
+  become: yes
+  gather_facts: no
+
+  vars:
+    telegram_bot_token: "{{ telegram_bot_token }}"
+    telegram_chat_id: "{{ telegram_chat_id }}"
+
+  tasks:
+    - name: Read the contents of /etc/os-release
+      command: cat /etc/hostname
+      register: os_release
+      changed_when: false
+
+    - name: Send /etc/os-release content to Telegram
+      uri:
+        url: "https://api.telegram.org/bot{{ telegram_bot_token }}/sendMessage"
+        method: POST
+        body: "{{ {'chat_id': telegram_chat_id, 'text': os_release.stdout} | to_json }}"
+        headers:
+          Content-Type: "application/json"
+        status_code: 200
+      when: os_release.stdout is defined
+
+[ansible@rhel8 proj_name]$ ansible-playbook -i inv.yml cat_os_release.yml -e "telegram_bot_token=xxx:yyy telegram_chat_id=zzz"
+
+[--- in AWX
+upload playbook
+  upload to /var/lib/awx/projects/proj_name/cat_os_release.yml
+  
+create inventory
+  linux servers
+  
+create host
+  insert ip address
+  select inventory linux servers
+  make vars ansible_python_interpreter: /usr/bin/python3
+
+create credentials
+  type machine
+  type username and password
+  set name cred_name
+  
+create template
+  add job template
+  select projects proj_name
+  select playbooks cat_os_release.yml
+  select inventory linux servers
+  select credentials cred_name
+  make vars 
+  telegram_bot_token: xxx:yyy 
+  telegram_chat_id: zzz
+  
+lunch job
