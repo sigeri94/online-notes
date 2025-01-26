@@ -90,8 +90,7 @@ create inventory
 create host
   insert ip address
   select inventory linux servers
-  make vars ansible_python_interpreter: /usr/bin/python3
-
+  
 create credentials
   type machine
   type username and password
@@ -108,3 +107,44 @@ create template
   telegram_chat_id: zzz
   
 lunch job
+
+because awx gather_facts : no and need ansible_python_interpreter then edit playbook like this 
+[-------------
+---
+- name: Read /etc/os-release and send to Telegram
+  hosts: all
+  become: yes
+  gather_facts: no
+
+  vars:
+    telegram_bot_token: "{{ telegram_bot_token }}"
+    telegram_chat_id: "{{ telegram_chat_id }}"
+
+  tasks:
+    - name: Gather Python-related facts
+      ansible.builtin.setup:
+        filter: "ansible_python*"
+
+    - name: Determine Python interpreter based on version
+      set_fact:
+        ansible_python_interpreter: >
+          {% if ansible_python_version.startswith('3') %}
+          /usr/bin/python3
+          {% else %}
+          /usr/bin/python2
+          {% endif %}
+
+    - name: Read the contents of /etc/os-release
+      command: cat /etc/hostname
+      register: os_release
+      changed_when: false
+
+    - name: Send /etc/os-release content to Telegram
+      uri:
+        url: "https://api.telegram.org/bot{{ telegram_bot_token }}/sendMessage"
+        method: POST
+        body: "{{ {'chat_id': telegram_chat_id, 'text': os_release.stdout} | to_json }}"
+        headers:
+          Content-Type: "application/json"
+        status_code: 200
+      when: os_release.stdout is defined
