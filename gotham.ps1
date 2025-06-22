@@ -85,12 +85,60 @@ $acl.AddAccessRule($rule)
 $entry.ObjectSecurity = $acl
 $entry.CommitChanges()
 
+
 #----- Grant DCSync Rights to gordon on Domain Object
 $domainDN = (Get-ADDomain).DistinguishedName
 dsacls $domainDN /G "gordon:CA;Replicating Directory Changes" /I:S
 dsacls $domainDN /G "gordon:CA;Replicating Directory Changes All" /I:S
 
+#----- KCD
+Import-Module ActiveDirectory
 
+$sourceComputer = "arkham"
+$targetComputer = "dc09"
+
+$source = Get-ADComputer -Identity $sourceComputer
+$target = Get-ADComputer -Identity $targetComputer
+
+Set-ADComputer -Identity $sourceComputer -PrincipalsAllowedToDelegateToAccount $target.DistinguishedName
+
+$services = @("HTTP", "CIFS")
+
+foreach ($service in $services) {
+    Set-ADComputer -Identity $sourceComputer -Add @{
+        "msDS-AllowedToDelegateTo" = "TERMSRV/$targetComputer"
+    }
+    Write-Host "Constrained Delegation granted for service $service"
+}
+
+#----- RBCD
+Import-Module ActiveDirectory
+
+$sourceComputer = "arkham"
+$targetComputer = "dc09"
+
+$source = Get-ADComputer -Identity $sourceComputer
+$target = Get-ADComputer -Identity $targetComputer
+
+$sourceSID = (Get-ADComputer $sourceComputer).SID
+$sourcePrincipal = New-Object System.Security.Principal.SecurityIdentifier($sourceSID)
+
+$targetPath = "LDAP://" + $target.DistinguishedName
+$targetEntry = [ADSI]$targetPath
+
+$adRights = [System.DirectoryServices.ActiveDirectoryRights]::GenericAll
+$type = [System.Security.AccessControl.AccessControlType]::Allow
+$objectType = [Guid]"00000000-0000-0000-0000-000000000000"
+$inheritType = [System.DirectoryServices.ActiveDirectorySecurityInheritance]::None
+
+$ace = New-Object System.DirectoryServices.ActiveDirectoryAccessRule `
+    ($sourcePrincipal, $adRights, $type, $objectType, $inheritType)
+
+$security = $targetEntry.ObjectSecurity
+$security.AddAccessRule($ace)
+
+$targetEntry.ObjectSecurity = $security
+$targetEntry.CommitChanges()
 # === Cross-Domain Trust Abuse: Allow gotham\attacker$ to impersonate on arkham\target$ ===
 # Run this on arkham.local domain as Domain Admin
 $sourceUser = "attacker$"           # from gotham.local
