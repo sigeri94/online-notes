@@ -44,8 +44,19 @@ foreach ($user in $users) {
     Add-ADGroupMember -Identity $user.Group -Members $user.Name
 }
 
-net localgroup Administrators gotham\alfred /delete
-net localgroup Administrators gotham\bruce /add
+#----- on arkham
+net localgroup Administrators gotham\hugo /delete
+#----- ridller can reset hugo password
+$attacker = Get-ADUser -Identity "riddler"
+$sid = New-Object System.Security.Principal.SecurityIdentifier($attacker.SID)
+$target = Get-ADUser -Identity "hugo"
+$targetPath = "LDAP://" + $target.DistinguishedName
+$entry = [ADSI]$targetPath
+$acl = $entry.ObjectSecurity
+$rule = New-Object System.DirectoryServices.ActiveDirectoryAccessRule ($sid, "GenericWrite", "Allow")
+$acl.AddAccessRule($rule)
+$entry.ObjectSecurity = $acl
+$entry.CommitChanges()
 
 #----- Kerberoast
 Set-ADUser -Identity "penguin" -ServicePrincipalNames @{Add="CIFS/penguin.gotham.local"}
