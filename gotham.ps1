@@ -1,13 +1,13 @@
 #===== initial akses
 alfred (bf heapspray weakpass)
-penguin (kerberoast) CIFS -- read public, bloodhound-python
+penguin (kerberoast) CIFS -- read public
 bane (aseproasting - crack weakpass)
 riddler (desc)
 #----- privesc with pass
-gordon (kdbx on folder public) --> dcsync
+gordon (kdbx on folder administrator) --> dcsync
 bruce (ansible enc folder public)  --> lucius (Unconstrained Delegation)
-harley (ssh passprase) --> DA
-
+harley (ssh passprase on folder patient on hugo) --> DA
+hugo (kdbx on share folder using alfred) -->winrm (local admin on arkam) --> BH
 #----- turn off password complexity
 
 Import-Module ActiveDirectory
