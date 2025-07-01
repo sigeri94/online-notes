@@ -1,6 +1,3 @@
-└─$ nxc ldap 192.168.56.10 --users
-LDAP        192.168.56.10   389    KINGSLANDING     [*] Windows 10 / Server 2019 Build 17763 (name:KINGSLANDING) (domain:sevenkingdoms.local) (signing:None) (channel binding:Never)
-LDAP        192.168.56.10   389    KINGSLANDING     [-] Error in searchRequest -> operationsError: 000004DC: LdapErr: DSID-0C090A5C, comment: In order to perform this operation a successful bind must be completed on the connection., data 0, v4563
 
 └─$ nxc smb 192.168.56.11 --users-export user_11.txt
 SMB         192.168.56.11   445    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 x64 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:True) (SMBv1:False)
