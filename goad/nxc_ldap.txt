@@ -104,19 +104,6 @@ LDAP        192.168.56.11   389    WINTERFELL       sansa.stark  Person      Unc
 LDAP        192.168.56.11   389    WINTERFELL       jon.snow     Person      Constrained w/ Protocol Transition CIFS/winterfell, CIFS/winterfell.north.sevenkingdoms.local
 LDAP        192.168.56.11   389    WINTERFELL       CASTELBLACK$ Computer    Constrained                        HTTP/winterfell, HTTP/winterfell.north.sevenkingdoms.local
 
-#----- nxc ldap 192.168.88.142  -u alfred -p 'P@ssw0rd' --find-delegation
-LDAP        192.168.88.142  389    DC09             [*] Windows 10 / Server 2019 Build 17763 (name:DC09) (domain:gotham.local)
-LDAP        192.168.88.142  389    DC09             [+] gotham.local\alfred:P@ssw0rd
-LDAP        192.168.88.142  389    DC09             AccountName AccountType DelegationType             DelegationRightsTo
-LDAP        192.168.88.142  389    DC09             ----------- ----------- -------------------------- ------------------
-LDAP        192.168.88.142  389    DC09             lucius      Person      Unconstrained              N/A
-LDAP        192.168.88.142  389    DC09             DC09$       Computer    Resource-Based Constrained ARKHAM$
-LDAP        192.168.88.142  389    DC09             ARKHAM$     Computer    Constrained                TERMSRV/dc09
-
-----
-because arkham id RBCD to DC09 impacket-secrectdump from arkham will be allowed
-----
-
 └─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' --dns-server 192.168.56.11 --bloodhound -c All
 LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
 LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
