@@ -1,0 +1,193 @@
+└─$ nxc ldap 192.168.56.10 --users
+LDAP        192.168.56.10   389    KINGSLANDING     [*] Windows 10 / Server 2019 Build 17763 (name:KINGSLANDING) (domain:sevenkingdoms.local) (signing:None) (channel binding:Never)
+LDAP        192.168.56.10   389    KINGSLANDING     [-] Error in searchRequest -> operationsError: 000004DC: LdapErr: DSID-0C090A5C, comment: In order to perform this operation a successful bind must be completed on the connection., data 0, v4563
+
+└─$ nxc smb 192.168.56.11 --users-export user_11.txt
+SMB         192.168.56.11   445    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 x64 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:True) (SMBv1:False)
+SMB         192.168.56.11   445    WINTERFELL       -Username-                    -Last PW Set-       -BadPW- -Description-
+SMB         192.168.56.11   445    WINTERFELL       Guest                         <never>             0       Built-in account for guest access to the computer/domain
+SMB         192.168.56.11   445    WINTERFELL       arya.stark                    2024-01-13 12:44:17 0       Arya Stark
+SMB         192.168.56.11   445    WINTERFELL       sansa.stark                   2024-01-13 12:44:35 0       Sansa Stark
+SMB         192.168.56.11   445    WINTERFELL       brandon.stark                 2024-01-13 12:44:39 0       Brandon Stark
+SMB         192.168.56.11   445    WINTERFELL       rickon.stark                  2024-01-13 12:44:43 0       Rickon Stark
+SMB         192.168.56.11   445    WINTERFELL       hodor                         2024-01-13 12:44:47 0       Brainless Giant
+SMB         192.168.56.11   445    WINTERFELL       jon.snow                      2024-01-13 12:44:51 0       Jon Snow
+SMB         192.168.56.11   445    WINTERFELL       samwell.tarly                 2024-01-13 12:44:55 0       Samwell Tarly (Password : Heartsbane)
+SMB         192.168.56.11   445    WINTERFELL       jeor.mormont                  2024-01-13 12:44:59 0       Jeor Mormont
+SMB         192.168.56.11   445    WINTERFELL       sql_svc                       2024-01-13 12:45:03 0       sql service
+SMB         192.168.56.11   445    WINTERFELL       [*] Enumerated 10 local users: NORTH
+SMB         192.168.56.11   445    WINTERFELL       [*] Writing 10 local users to user_11.txt
+
+└─$ cat user_11.txt
+Guest
+arya.stark
+sansa.stark
+brandon.stark
+rickon.stark
+hodor
+jon.snow
+samwell.tarly
+jeor.mormont
+sql_svc
+
+└─$ nxc smb 192.168.56.11  -u hodor -p 'hodor' --rid-brute 10000 --log rid-brute.txt
+SMB         192.168.56.11   445    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 x64 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:True) (SMBv1:False)
+SMB         192.168.56.11   445    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+SMB         192.168.56.11   445    WINTERFELL       500: NORTH\Administrator (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       501: NORTH\Guest (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       502: NORTH\krbtgt (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       512: NORTH\Domain Admins (SidTypeGroup)
+SMB         192.168.56.11   445    WINTERFELL       513: NORTH\Domain Users (SidTypeGroup)
+SMB         192.168.56.11   445    WINTERFELL       514: NORTH\Domain Guests (SidTypeGroup)
+SMB         192.168.56.11   445    WINTERFELL       515: NORTH\Domain Computers (SidTypeGroup)
+SMB         192.168.56.11   445    WINTERFELL       516: NORTH\Domain Controllers (SidTypeGroup)
+SMB         192.168.56.11   445    WINTERFELL       517: NORTH\Cert Publishers (SidTypeAlias)
+SMB         192.168.56.11   445    WINTERFELL       520: NORTH\Group Policy Creator Owners (SidTypeGroup)
+SMB         192.168.56.11   445    WINTERFELL       521: NORTH\Read-only Domain Controllers (SidTypeGroup)
+SMB         192.168.56.11   445    WINTERFELL       522: NORTH\Cloneable Domain Controllers (SidTypeGroup)
+SMB         192.168.56.11   445    WINTERFELL       525: NORTH\Protected Users (SidTypeGroup)
+SMB         192.168.56.11   445    WINTERFELL       526: NORTH\Key Admins (SidTypeGroup)
+SMB         192.168.56.11   445    WINTERFELL       553: NORTH\RAS and IAS Servers (SidTypeAlias)
+SMB         192.168.56.11   445    WINTERFELL       571: NORTH\Allowed RODC Password Replication Group (SidTypeAlias)
+SMB         192.168.56.11   445    WINTERFELL       572: NORTH\Denied RODC Password Replication Group (SidTypeAlias)
+SMB         192.168.56.11   445    WINTERFELL       1000: NORTH\vagrant (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       1001: NORTH\WINTERFELL$ (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       1102: NORTH\DnsAdmins (SidTypeAlias)
+SMB         192.168.56.11   445    WINTERFELL       1103: NORTH\DnsUpdateProxy (SidTypeGroup)
+SMB         192.168.56.11   445    WINTERFELL       1104: NORTH\SEVENKINGDOMS$ (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       1105: NORTH\CASTELBLACK$ (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       1106: NORTH\Stark (SidTypeGroup)
+SMB         192.168.56.11   445    WINTERFELL       1107: NORTH\Night Watch (SidTypeGroup)
+SMB         192.168.56.11   445    WINTERFELL       1108: NORTH\Mormont (SidTypeGroup)
+SMB         192.168.56.11   445    WINTERFELL       1109: NORTH\AcrossTheSea (SidTypeAlias)
+SMB         192.168.56.11   445    WINTERFELL       1110: NORTH\arya.stark (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       1111: NORTH\eddard.stark (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       1112: NORTH\catelyn.stark (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       1113: NORTH\robb.stark (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       1114: NORTH\sansa.stark (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       1115: NORTH\brandon.stark (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       1116: NORTH\rickon.stark (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       1117: NORTH\hodor (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       1118: NORTH\jon.snow (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       1119: NORTH\samwell.tarly (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       1120: NORTH\jeor.mormont (SidTypeUser)
+SMB         192.168.56.11   445    WINTERFELL       1121: NORTH\sql_svc (SidTypeUser)
+
+## ----- generate hosts and krb5 ----- ##
+└─$ nxc smb 192.168.56.11 --generate-hosts hosts
+SMB         192.168.56.11   445    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 x64 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:True) (SMBv1:False)
+
+└─$ nxc smb 192.168.56.10 --generate-hosts hosts
+SMB         192.168.56.10   445    KINGSLANDING     [*] Windows 10 / Server 2019 Build 17763 x64 (name:KINGSLANDING) (domain:sevenkingdoms.local) (signing:True) (SMBv1:False)
+
+└─$ cat hosts
+192.168.56.11     WINTERFELL.north.sevenkingdoms.local north.sevenkingdoms.local WINTERFELL
+192.168.56.10     KINGSLANDING.sevenkingdoms.local sevenkingdoms.local KINGSLANDING
+
+└─$ nxc smb 192.168.56.11 --generate-krb5 krb5.conf
+SMB         192.168.56.11   445    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 x64 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:True) (SMBv1:False)
+
+└─$ cat krb5.conf
+
+[libdefaults]
+    dns_lookup_kdc = false
+    dns_lookup_realm = false
+    default_realm = NORTH.SEVENKINGDOMS.LOCAL
+
+[realms]
+    NORTH.SEVENKINGDOMS.LOCAL = {
+        kdc = winterfell.north.sevenkingdoms.local
+        admin_server = winterfell.north.sevenkingdoms.local
+        default_domain = north.sevenkingdoms.local
+    }
+
+[domain_realm]
+    .north.sevenkingdoms.local = NORTH.SEVENKINGDOMS.LOCAL
+    north.sevenkingdoms.local = NORTH.SEVENKINGDOMS.LOCAL
+
+└─$ nxc smb 192.168.56.10 --generate-krb5 krb5.conf
+SMB         192.168.56.10   445    KINGSLANDING     [*] Windows 10 / Server 2019 Build 17763 x64 (name:KINGSLANDING) (domain:sevenkingdoms.local) (signing:True) (SMBv1:False)
+
+└─$ cat krb5.conf
+
+[libdefaults]
+    dns_lookup_kdc = false
+    dns_lookup_realm = false
+    default_realm = SEVENKINGDOMS.LOCAL
+
+[realms]
+    SEVENKINGDOMS.LOCAL = {
+        kdc = kingslanding.sevenkingdoms.local
+        admin_server = kingslanding.sevenkingdoms.local
+        default_domain = sevenkingdoms.local
+    }
+
+[domain_realm]
+    .sevenkingdoms.local = SEVENKINGDOMS.LOCAL
+    sevenkingdoms.local = SEVENKINGDOMS.LOCAL
+
+## ----- ----- ##
+
+
+## ----- RECON ----- ##
+sudo netdiscover -r 10.136.69.0/24 | awk '{print $1}'
+nxc smb ./hosts.txt -u '' -p '' --shares
+nxc smb ./hosts.txt -u 'guest' -p '' - shares
+nxc smb ./hosts.txt -u 'anonymous' -p '' - shares
+
+NASIP=10.136.69.10
+nxc smb ${NASIP} -u 'guest' -p '' -M spider_plus -o DOWNLOAD_FLAG=True
+
+nxc smb ./hosts.txt -u 'guest' -p '' --users
+nxc smb ./hosts.txt -u '' -p '' --users
+
+TARGET_USERNAME=#[fill in the username you discovered in the previous lesson]
+TARGET_PASSWORD=#[fill in the password you discovered in the previous lesson]
+
+nxc smb ./hosts.txt -u "${TARGET_USERNAME}" -p "${TARGET_PASSWORD}"
+## ----- ----- ##
+
+## ----- VULN ----- ##
+└─$ nxc smb 192.168.56.11  -u hodor -p 'hodor' -M coerce_plus
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+SMB         192.168.56.11   445    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 x64 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:True) (SMBv1:False)
+SMB         192.168.56.11   445    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+COERCE_PLUS 192.168.56.11   445    WINTERFELL       VULNERABLE, DFSCoerce
+COERCE_PLUS 192.168.56.11   445    WINTERFELL       VULNERABLE, PetitPotam
+COERCE_PLUS 192.168.56.11   445    WINTERFELL       VULNERABLE, PrinterBug
+COERCE_PLUS 192.168.56.11   445    WINTERFELL       VULNERABLE, PrinterBug
+COERCE_PLUS 192.168.56.11   445    WINTERFELL       VULNERABLE, MSEven
+## ----- ----- ##
+
+└─$ nxc smb 192.168.56.11  -u hodor -p 'hodor' -M enum_av
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+SMB         192.168.56.11   445    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 x64 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:True) (SMBv1:False)
+SMB         192.168.56.11   445    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+ENUM_AV     192.168.56.11   445    WINTERFELL       Found Windows Defender INSTALLED
+
+└─$ nxc smb 192.168.56.11  -u hodor -p 'hodor' -M nopac
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+SMB         192.168.56.11   445    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 x64 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:True) (SMBv1:False)
+SMB         192.168.56.11   445    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+NOPAC       192.168.56.11   445    WINTERFELL       TGT with PAC size 1582
+NOPAC       192.168.56.11   445    WINTERFELL       TGT without PAC size 793
+NOPAC       192.168.56.11   445    WINTERFELL
+NOPAC       192.168.56.11   445    WINTERFELL       VULNERABLE
+NOPAC       192.168.56.11   445    WINTERFELL       Next step: https://github.com/Ridter/noPac
+
+└─$ nxc smb 192.168.56.11  -u hodor -p 'hodor' -M printnightmare
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+SMB         192.168.56.11   445    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 x64 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:True) (SMBv1:False)
+SMB         192.168.56.11   445    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+PRINTNIG... 192.168.56.11   445    WINTERFELL       Vulnerable, next step https://github.com/ly4k/PrintNightmare
+
+#----- nxc smb 192.168.56.11  -u hodor -p 'hodor' -M spooler
+/home/kali/.local/pipx/venvs/netexec/lib/python3.11/site-packages/masky/lib/smb.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+SMB         192.168.56.11   445    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 x64 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:True) (SMBv1:False)
+SMB         192.168.56.11   445    WINTERFELL       [+] north.sevenkingdoms.local\hodor:hodor
+SPOOLER     192.168.56.11   445    WINTERFELL       Spooler service enabled
