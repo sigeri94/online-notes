@@ -143,6 +143,9 @@ LDAP        172.16.10.100   389    DC09             lucius      Person      Unco
 LDAP        172.16.10.100   389    DC09             DC09$       Computer    Resource-Based Constrained ARKHAM$
 LDAP        172.16.10.100   389    DC09             ARKHAM$     Computer    Constrained                TERMSRV/dc09
 
+----
+because arkham id RBCD to DC09 impacket-secrectdump from arkham will be allowed
+----
 
 └─$ proxychains nxc ldap 172.16.10.100 -u hugo -p 'Str4ngeMind!' -d gotham.local --password-not-required
 [proxychains] config file found: /etc/proxychains4.conf
