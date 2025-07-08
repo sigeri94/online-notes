@@ -41,6 +41,7 @@ $users = @(
     @{Name="penguin"; Group="Rogues"; Password="Penguin2024!"},
     @{Name="hugo"; Group="Arkham"; Password="Str4ngeMind!"}
 )
+#-- add riddler on remote management user
 
 foreach ($user in $users) {
     $securePass = ConvertTo-SecureString $user.Password -AsPlainText -Force
@@ -51,7 +52,7 @@ foreach ($user in $users) {
 }
 
 #----- on arkham
-net localgroup Administrators gotham\hugo /delete
+net localgroup Administrators gotham\hugo /add
 #----- ridller can reset hugo password
 $attacker = Get-ADUser -Identity "riddler"
 $sid = New-Object System.Security.Principal.SecurityIdentifier($attacker.SID)
@@ -65,7 +66,9 @@ $entry.ObjectSecurity = $acl
 $entry.CommitChanges()
 
 #----- Kerberoast
-Set-ADUser -Identity "penguin" -ServicePrincipalNames @{Add="CIFS/penguin.gotham.local"}
+Set-ADUser -Identity "penguin" -ServicePrincipalNames @{Add="CIFS/client01.gotham.local"}
+#-- add penguin as localadmin on client01
+net localgroup Administrators gotham\penguin /add
 #----- AS-REP Roasting
 $user = Get-ADUser bane -Properties userAccountControl
 $uac = $user.userAccountControl
