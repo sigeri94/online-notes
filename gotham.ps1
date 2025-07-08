@@ -9,7 +9,13 @@ bruce (ansible enc folder public)  --> lucius (Unconstrained Delegation)
 harley (ssh passprase on folder patient on hugo) --> DA
 hugo (kdbx on share folder using alfred) -->winrm (local admin on arkam) --> BH
 #----- turn off password complexity
+#----- enable psremoting
+Enable-PSRemoting -Force
+Set-Item WSMan:\localhost\Service\Auth\Basic -Value $true
+Set-Item WSMan:\localhost\Service\AllowUnencrypted -Value $true
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value '*'
 
+#-----
 Import-Module ActiveDirectory
 
 $domain = "gotham.local"
