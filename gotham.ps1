@@ -134,33 +134,4 @@ foreach ($service in $services) {
 #----- RBCD
 Import-Module ActiveDirectory
 
-$sourceComputer = "arkham"
-$targetComputer = "dc09"
-
-$source = Get-ADComputer -Identity $sourceComputer
-$target = Get-ADComputer -Identity $targetComputer
-
-$sourceSID = (Get-ADComputer $sourceComputer).SID
-$sourcePrincipal = New-Object System.Security.Principal.SecurityIdentifier($sourceSID)
-
-$targetPath = "LDAP://" + $target.DistinguishedName
-$targetEntry = [ADSI]$targetPath
-
-$adRights = [System.DirectoryServices.ActiveDirectoryRights]::GenericAll
-$type = [System.Security.AccessControl.AccessControlType]::Allow
-$objectType = [Guid]"00000000-0000-0000-0000-000000000000"
-$inheritType = [System.DirectoryServices.ActiveDirectorySecurityInheritance]::None
-
-$ace = New-Object System.DirectoryServices.ActiveDirectoryAccessRule `
-    ($sourcePrincipal, $adRights, $type, $objectType, $inheritType)
-
-$security = $targetEntry.ObjectSecurity
-$security.AddAccessRule($ace)
-
-$targetEntry.ObjectSecurity = $security
-$targetEntry.CommitChanges()
-# === Cross-Domain Trust Abuse: Allow gotham\attacker$ to impersonate on arkham\target$ ===
-# Run this on arkham.local domain as Domain Admin
-$sourceUser = "attacker$"           # from gotham.local
-$sourceDomain = "gotham"
-$targetMachine = "target$"          # in arkham.local
+Set-ADComputer arkham$ -PrincipalsAllowedToDelegateToAccount file05$
