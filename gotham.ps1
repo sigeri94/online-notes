@@ -111,6 +111,15 @@ $domainDN = (Get-ADDomain).DistinguishedName
 dsacls $domainDN /G "gordon:CA;Replicating Directory Changes" /I:S
 dsacls $domainDN /G "gordon:CA;Replicating Directory Changes All" /I:S
 
+#---
+Set-ADAccountControl -Identity "lucius" -TrustedForDelegation $true
+#-- can extract ticket admin if login on host using mimikatz
+#---- ST
+Set-ADComputer web01$ -Add @{"userAccountControl"= "TRUSTED_TO_AUTH_FOR_DELEGATION"}
+Set-ADComputer web01$ -ServicePrincipalNames @{Add="HOST/web01.gotham.local"}
+
+Set-ADComputer web01$ -Add @{'msDS-AllowedToDelegateTo'=@('cifs/file01.gotham.local','cifs/FILE01')}
+
 #----- KCD
 Import-Module ActiveDirectory
 
