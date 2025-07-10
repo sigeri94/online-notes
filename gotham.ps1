@@ -1,13 +1,14 @@
 #===== initial akses
-alfred (bf heapspray weakpass)
+web01 - alfred (bf heapspray weakpass)
 penguin (kerberoast) CIFS -- read public
 bane (aseproasting - crack weakpass)
 riddler (desc)
+file01 - lucius
 #----- privesc with pass
 gordon (kdbx on folder administrator) --> dcsync
 bruce (ansible enc folder public)  --> lucius (Unconstrained Delegation)
 harley (ssh passprase on folder patient on hugo) --> DA
-hugo (kdbx on share folder using alfred) -->winrm (local admin on arkam) --> BH
+arkham - hugo (kdbx on share folder using alfred) -->winrm (local admin on arkam) --> BH
 #----- turn off password complexity
 #----- enable psremoting
 Enable-PSRemoting -Force
