@@ -16,10 +16,10 @@ msDS-AllowedToDelegateTo: web01$
 sAMAccountName: FILE01$
 
 
-| sAMAccountName | Delegates To (SPNs or Principals) | Type (Likely) |
-| WEB01$ | cifs/FILE01cifs/file01.gotham.local | Constrained Delegation (Kerberos S4U) |
-| JMP01$ | cifs/FILE01cifs/file01.gotham.local | Constrained Delegation (Kerberos S4U) |
-| FILE01$ | web01$ (a computer account) | RBCD (Resource-Based Constrained Delegation) |
+| sAMAccountName | Delegates To (SPNs or Principals)   | Type (Likely)                         |
+| WEB01$         | cifs/FILE01cifs/file01.gotham.local | Constrained Delegation (Kerberos S4U) |
+| JMP01$         | cifs/FILE01cifs/file01.gotham.local | Constrained Delegation (Kerberos S4U) |
+| FILE01$        | web01$ (a computer account)         | RBCD (Resource-Based Constrained Delegation) |
 
 
 bloodyAD --host 192.168.88.122 -d gotham.local -u alfred -p 'P@ssw0rd' get search \
@@ -47,7 +47,7 @@ sAMAccountName: WEB01$
 
 
 | Impersonator | Target | Delegation Type |
-| WEB01$ | ARKHAM$ | RBCD |
+| WEB01$      | ARKHAM$ | RBCD            |
 
 
 └─$ bloodyAD --host 192.168.88.122 -d gotham.local -u alfred -p 'P@ssw0rd' get search \
@@ -79,19 +79,19 @@ sAMAccountName: FILE01$
 userAccountControl: WORKSTATION_TRUST_ACCOUNT
 
 
-| Account | UAC Flags | Delegation Type | Delegates To |
-| Administrator | NORMAL_ACCOUNT; DONT_EXPIRE_PASSWORD; TRUSTED_FOR_DELEGATION | 🟥 Unconstrained Delegation | Any service, any user |
-| DC07$ | SERVER_TRUST_ACCOUNT; TRUSTED_FOR_DELEGATION | 🟥 Unconstrained Delegation (DC default) | Any service, any user |
-| WEB01$ | WORKSTATION_TRUST_ACCOUNT; TRUSTED_TO_AUTH_FOR_DELEGATION | 🟧 Constrained Delegation + Protocol Transition (S4U2Self + S4U2Proxy) | cifs/FILE01, cifs/file01.gotham.local |
-| JMP01$ | WORKSTATION_TRUST_ACCOUNT | 🟨 Constrained Delegation (S4U2Proxy only) | cifs/FILE01, cifs/file01.gotham.local |
-| FILE01$ | WORKSTATION_TRUST_ACCOUNT | 🟦 Resource-Based Constrained Delegation (RBCD) | Trusts web01$ to impersonate users to it |
+| Account       | UAC Flags                                                    | Delegation Type                                                        | Delegates To |
+| Administrator | NORMAL_ACCOUNT; DONT_EXPIRE_PASSWORD; TRUSTED_FOR_DELEGATION | 🟥 Unconstrained Delegation                                            | Any service, any user |
+| DC07$         | SERVER_TRUST_ACCOUNT; TRUSTED_FOR_DELEGATION                 | 🟥 Unconstrained Delegation (DC default)                               | Any service, any user |
+| WEB01$        | WORKSTATION_TRUST_ACCOUNT; TRUSTED_TO_AUTH_FOR_DELEGATION    | 🟧 Constrained Delegation + Protocol Transition (S4U2Self + S4U2Proxy) | cifs/FILE01, cifs/file01.gotham.local |
+| JMP01$        | WORKSTATION_TRUST_ACCOUNT                                    | 🟨 Constrained Delegation (S4U2Proxy only)                             | cifs/FILE01, cifs/file01.gotham.local |
+| FILE01$       | WORKSTATION_TRUST_ACCOUNT                                    | 🟦 Resource-Based Constrained Delegation (RBCD)                        | Trusts web01$ to impersonate users to it |
 
 
 
-| Emoji | Type | Attack Scenario |
-| 🟥 | Unconstrained Delegation | If attacker gets TGT on these machines, they can impersonate any user to any service (Golden Ticket or TGT replay). |
+| Em | Type                               | Attack Scenario |
+| 🟥 | Unconstrained Delegation          | If attacker gets TGT on these machines, they can impersonate any user to any service (Golden Ticket or TGT replay). |
 | 🟧 | Constrained + Protocol Transition | Can impersonate users without knowing their creds via S4U2Self → S4U2Proxy. Great for Rubeus s4u. |
-| 🟨 | Constrained Delegation | Can impersonate only already-authenticated users to specific SPNs. |
-| 🟦 | RBCD | If attacker controls WEB01$, they can impersonate anyone to FILE01$. |
+| 🟨 | Constrained Delegation            | Can impersonate only already-authenticated users to specific SPNs. |
+| 🟦 | RBCD                              | If attacker controls WEB01$, they can impersonate anyone to FILE01$. |
 
 
