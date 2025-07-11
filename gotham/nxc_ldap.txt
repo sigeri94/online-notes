@@ -156,3 +156,30 @@ LDAP        172.16.10.100   389    DC09             [+] gotham.local\hugo:Str4ng
 LDAP        172.16.10.100   389    DC09             User: Guest Status: disabled
 
 #-----
+ nxc ldap 192.168.88.122 -u alfred -p 'P@ssw0rd' --query "(sAMAccountName=*$)" "msDS-AllowedToDelegateTo"
+
+LDAP        192.168.88.122  389    DC07             [*] Windows 10 / Server 2019 Build 17763 (name:DC07) (domain:gotham.local)
+LDAP        192.168.88.122  389    DC07             [+] gotham.local\alfred:P@ssw0rd
+LDAP        192.168.88.122  389    DC07             [+] Response for object: CN=DC07,OU=Domain Controllers,DC=gotham,DC=local
+LDAP        192.168.88.122  389    DC07             [+] Response for object: CN=WEB01,CN=Computers,DC=gotham,DC=local
+LDAP        192.168.88.122  389    DC07             msDS-AllowedToDelegateTo cifs/FILE01
+LDAP        192.168.88.122  389    DC07                                  cifs/file01.gotham.local
+LDAP        192.168.88.122  389    DC07             [+] Response for object: CN=JMP01,CN=Computers,DC=gotham,DC=local
+LDAP        192.168.88.122  389    DC07             msDS-AllowedToDelegateTo cifs/FILE01
+LDAP        192.168.88.122  389    DC07                                  cifs/file01.gotham.local
+LDAP        192.168.88.122  389    DC07             [+] Response for object: CN=ARKHAM,CN=Computers,DC=gotham,DC=local
+LDAP        192.168.88.122  389    DC07             [+] Response for object: CN=FILE01,CN=Computers,DC=gotham,DC=local
+LDAP        192.168.88.122  389    DC07             msDS-AllowedToDelegateTo web01$
+
+nxc ldap 192.168.88.122 -u alfred -p 'P@ssw0rd' --query "(sAMAccountName=*$)" "msDS-AllowedToActOnBehalfOfOtherIdentity"
+
+LDAP        192.168.88.122  389    DC07             [*] Windows 10 / Server 2019 Build 17763 (name:DC07) (domain:gotham.local)
+LDAP        192.168.88.122  389    DC07             [+] gotham.local\alfred:P@ssw0rd
+LDAP        192.168.88.122  389    DC07             [+] Response for object: CN=DC07,OU=Domain Controllers,DC=gotham,DC=local
+LDAP        192.168.88.122  389    DC07             [+] Response for object: CN=WEB01,CN=Computers,DC=gotham,DC=local
+LDAP        192.168.88.122  389    DC07             [+] Response for object: CN=JMP01,CN=Computers,DC=gotham,DC=local
+LDAP        192.168.88.122  389    DC07             [+] Response for object: CN=ARKHAM,CN=Computers,DC=gotham,DC=local
+LDAP        192.168.88.122  389    DC07             msDS-AllowedToActOnBehalfOfOtherIdentity b'\x01\x00\x04\x80\x14\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00$\x00\x00\x00\x01\x02\x00\x00\x00\x00\x00\x05 \x00\x00\x00 \x02\x00\x00\x04\x00,\x00\x01\x00\x00\x00\x00\x00$\x00\xff\x01\x0f\x00\x01\x05\x00\x00\x00\x00\x00\x05\x15\x00\x00\x00\xbe\xec#;\x8a\xbe\xba\xcf\xcb\x0c\x85\t]\x04\x00\x00'
+LDAP        192.168.88.122  389    DC07             [+] Response for object: CN=FILE01,CN=Computers,DC=gotham,DC=local
+
+
