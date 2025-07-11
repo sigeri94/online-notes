@@ -1,19 +1,19 @@
- bloodyAD --host 192.168.88.122 -d gotham.local -u alfred -p 'P@ssw0rd' get search \
+bloodyAD --host 192.168.88.122 -d gotham.local -u alfred -p 'P@ssw0rd' get search \
   --filter "(msDS-AllowedToDelegateTo=*)" \
   --attr "sAMAccountName,msDS-AllowedToDelegateTo"
 
 
-distinguishedName: CN=WEB01,CN=Computers,DC=gotham,DC=local
-msDS-AllowedToDelegateTo: cifs/FILE01; cifs/file01.gotham.local
-sAMAccountName: WEB01$
-
-distinguishedName: CN=JMP01,CN=Computers,DC=gotham,DC=local
-msDS-AllowedToDelegateTo: cifs/FILE01; cifs/file01.gotham.local
-sAMAccountName: JMP01$
-
-distinguishedName: CN=FILE01,CN=Computers,DC=gotham,DC=local
-msDS-AllowedToDelegateTo: web01$
-sAMAccountName: FILE01$
+  distinguishedName: CN=WEB01,CN=Computers,DC=gotham,DC=local
+  msDS-AllowedToDelegateTo: cifs/FILE01; cifs/file01.gotham.local
+  sAMAccountName: WEB01$
+  
+  distinguishedName: CN=JMP01,CN=Computers,DC=gotham,DC=local
+  msDS-AllowedToDelegateTo: cifs/FILE01; cifs/file01.gotham.local
+  sAMAccountName: JMP01$
+  
+  distinguishedName: CN=FILE01,CN=Computers,DC=gotham,DC=local
+  msDS-AllowedToDelegateTo: web01$
+  sAMAccountName: FILE01$
 
 
 | sAMAccountName | Delegates To (SPNs or Principals)   | Type (Likely)                         |
@@ -27,13 +27,9 @@ bloodyAD --host 192.168.88.122 -d gotham.local -u alfred -p 'P@ssw0rd' get searc
   --attr "sAMAccountName,msDS-AllowedToActOnBehalfOfOtherIdentity"
 
 
-distinguishedName: CN=ARKHAM,CN=Computers,DC=gotham,DC=local
-msDS-AllowedToActOnBehalfOfOtherIdentity: O:S-1-5-32-544D:(A;;0xf01ff;;;S-1-5-21-992210110-3485122186-159714507-1117)
-sAMAccountName: ARKHAM$
-
-
-| sAMAccountName (Target) | Trusted SID (Impersonator) | Type | SID Meaning |
-| ARKHAM$ | S-1-5-21-992210110-3485122186-159714507-1117 | RBCD (Inbound Trust) | Likely a computer account (e.g. WEB01$) |
+  distinguishedName: CN=ARKHAM,CN=Computers,DC=gotham,DC=local
+  msDS-AllowedToActOnBehalfOfOtherIdentity: O:S-1-5-32-544D:(A;;0xf01ff;;;S-1-5-21-992210110-3485122186-159714507-1117)
+  sAMAccountName: ARKHAM$
 
 
 bloodyAD --host 192.168.88.122 -d gotham.local -u alfred -p 'P@ssw0rd' get search \
@@ -41,43 +37,39 @@ bloodyAD --host 192.168.88.122 -d gotham.local -u alfred -p 'P@ssw0rd' get searc
   --attr "sAMAccountName,distinguishedName"
 
 
-distinguishedName: CN=WEB01,CN=Computers,DC=gotham,DC=local
-sAMAccountName: WEB01$
-
-
+  distinguishedName: CN=WEB01,CN=Computers,DC=gotham,DC=local
+  sAMAccountName: WEB01$
 
 | Impersonator | Target | Delegation Type |
 | WEB01$      | ARKHAM$ | RBCD            |
 
 
-└─$ bloodyAD --host 192.168.88.122 -d gotham.local -u alfred -p 'P@ssw0rd' get search \
+bloodyAD --host 192.168.88.122 -d gotham.local -u alfred -p 'P@ssw0rd' get search \
   --filter "(|(&(userAccountControl:1.2.840.113556.1.4.803:=524288))(&(userAccountControl:1.2.840.113556.1.4.803:=16777216))(msDS-AllowedToDelegateTo=*))" \
   --attr "sAMAccountName,userAccountControl,msDS-AllowedToDelegateTo"
 
-
-distinguishedName: CN=Administrator,CN=Users,DC=gotham,DC=local
-sAMAccountName: Administrator
-userAccountControl: NORMAL_ACCOUNT; DONT_EXPIRE_PASSWORD; TRUSTED_FOR_DELEGATION
-
-distinguishedName: CN=DC07,OU=Domain Controllers,DC=gotham,DC=local
-sAMAccountName: DC07$
-userAccountControl: SERVER_TRUST_ACCOUNT; TRUSTED_FOR_DELEGATION
-
-distinguishedName: CN=WEB01,CN=Computers,DC=gotham,DC=local
-msDS-AllowedToDelegateTo: cifs/FILE01; cifs/file01.gotham.local
-sAMAccountName: WEB01$
-userAccountControl: WORKSTATION_TRUST_ACCOUNT; TRUSTED_TO_AUTH_FOR_DELEGATION
-
-distinguishedName: CN=JMP01,CN=Computers,DC=gotham,DC=local
-msDS-AllowedToDelegateTo: cifs/FILE01; cifs/file01.gotham.local
-sAMAccountName: JMP01$
-userAccountControl: WORKSTATION_TRUST_ACCOUNT
-
-distinguishedName: CN=FILE01,CN=Computers,DC=gotham,DC=local
-msDS-AllowedToDelegateTo: web01$
-sAMAccountName: FILE01$
-userAccountControl: WORKSTATION_TRUST_ACCOUNT
-
+  distinguishedName: CN=Administrator,CN=Users,DC=gotham,DC=local
+  sAMAccountName: Administrator
+  userAccountControl: NORMAL_ACCOUNT; DONT_EXPIRE_PASSWORD; TRUSTED_FOR_DELEGATION
+  
+  distinguishedName: CN=DC07,OU=Domain Controllers,DC=gotham,DC=local
+  sAMAccountName: DC07$
+  userAccountControl: SERVER_TRUST_ACCOUNT; TRUSTED_FOR_DELEGATION
+  
+  distinguishedName: CN=WEB01,CN=Computers,DC=gotham,DC=local
+  msDS-AllowedToDelegateTo: cifs/FILE01; cifs/file01.gotham.local
+  sAMAccountName: WEB01$
+  userAccountControl: WORKSTATION_TRUST_ACCOUNT; TRUSTED_TO_AUTH_FOR_DELEGATION
+  
+  distinguishedName: CN=JMP01,CN=Computers,DC=gotham,DC=local
+  msDS-AllowedToDelegateTo: cifs/FILE01; cifs/file01.gotham.local
+  sAMAccountName: JMP01$
+  userAccountControl: WORKSTATION_TRUST_ACCOUNT
+  
+  distinguishedName: CN=FILE01,CN=Computers,DC=gotham,DC=local
+  msDS-AllowedToDelegateTo: web01$
+  sAMAccountName: FILE01$
+  userAccountControl: WORKSTATION_TRUST_ACCOUNT
 
 | Account       | UAC Flags                                                    | Delegation Type                                                        | Delegates To |
 | Administrator | NORMAL_ACCOUNT; DONT_EXPIRE_PASSWORD; TRUSTED_FOR_DELEGATION | 🟥 Unconstrained Delegation                                            | Any service, any user |
@@ -86,12 +78,8 @@ userAccountControl: WORKSTATION_TRUST_ACCOUNT
 | JMP01$        | WORKSTATION_TRUST_ACCOUNT                                    | 🟨 Constrained Delegation (S4U2Proxy only)                             | cifs/FILE01, cifs/file01.gotham.local |
 | FILE01$       | WORKSTATION_TRUST_ACCOUNT                                    | 🟦 Resource-Based Constrained Delegation (RBCD)                        | Trusts web01$ to impersonate users to it |
 
-
-
-| Em | Type                               | Attack Scenario |
+| Em | Type                              | Attack Scenario |
 | 🟥 | Unconstrained Delegation          | If attacker gets TGT on these machines, they can impersonate any user to any service (Golden Ticket or TGT replay). |
 | 🟧 | Constrained + Protocol Transition | Can impersonate users without knowing their creds via S4U2Self → S4U2Proxy. Great for Rubeus s4u. |
 | 🟨 | Constrained Delegation            | Can impersonate only already-authenticated users to specific SPNs. |
 | 🟦 | RBCD                              | If attacker controls WEB01$, they can impersonate anyone to FILE01$. |
-
-
