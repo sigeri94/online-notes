@@ -3,7 +3,17 @@ ft() {
   faketime "$(ntpdate -q 10.10.11.75 | grep -oP '\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}')" "$@"
 }
 
-ft impacket-getTGT rustykey.htb/'rr.parker':'8#t5HE8L!W3A'
+└─$ ft impacket-getTGT rustykey.htb/'rr.parker':'8#t5HE8L!W3A'
 
 Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
 [*] Saving ticket in rr.parker.ccache
+
+└─$ export KRB5CCNAME=/home/batman/htb/rustykey/rr.parker.ccache
+
+└─$ klist
+Ticket cache: FILE:/home/batman/htb/rustykey/rr.parker.ccache
+Default principal: rr.parker@RUSTYKEY.HTB
+
+Valid starting       Expires              Service principal
+07/17/2025 09:24:26  07/17/2025 19:24:26  krbtgt/RUSTYKEY.HTB@RUSTYKEY.HTB
+        renew until 07/18/2025 09:24:26
