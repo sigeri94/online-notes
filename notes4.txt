@@ -1,7 +1,0 @@
-sudo apt install openscap-scanner
-
-wget https://github.com/ComplianceAsCode/content/releases/download/v0.1.69/scap-security-guide-0.1.69.zip
-
-oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_stig --report report.html ssg-ubuntu2004-ds-1.2.xml
-
-oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_cis_level1_server --report ~/report.html ssg-ubuntu2004-ds-1.2.xml
