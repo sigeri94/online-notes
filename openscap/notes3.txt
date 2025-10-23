@@ -1,0 +1,253 @@
+#!/bin/bash
+
+# Output file
+output_file="file_info_dump.xml"
+
+# Files to dump
+files_to_dump=("/etc/passwd" "/etc/group" "/etc/ssh/sshd_config")
+
+# Get system information
+timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+hostname=$(hostname)
+ip_addresses=$(hostname -I | xargs)
+current_user=$(whoami)
+sudo_status="No"
+if [ "$EUID" -eq 0 ]; then
+    sudo_status="Yes"
+fi
+
+# Start XML
+cat <<EOF > "$output_file"
+<?xml version="1.0" encoding="UTF-8"?>
+<dump>
+    <header>
+        <timestamp>$timestamp</timestamp>
+        <system>
+            <hostname>$hostname</hostname>
+            <ip_addresses>$ip_addresses</ip_addresses>
+            <user>$current_user</user>
+            <sudo>$sudo_status</sudo>
+        </system>
+    </header>
+    <files>
+EOF
+
+# Dump file information
+for file in "${files_to_dump[@]}"; do
+    if [ -f "$file" ]; then
+        base64_content=$(base64 "$file")
+        md5_hash=$(md5sum "$file" | awk '{print $1}')
+        sha1_hash=$(sha1sum "$file" | awk '{print $1}')
+        permissions=$(stat -c "%a" "$file")
+        owner=$(stat -c "%U:%G" "$file")
+
+        cat <<EOF >> "$output_file"
+        <file path="$file">
+            <permissions>$permissions</permissions>
+            <owner>$owner</owner>
+            <md5>$md5_hash</md5>
+            <sha1>$sha1_hash</sha1>
+            <content encoding="base64">
+$base64_content
+            </content>
+        </file>
+EOF
+    else
+        cat <<EOF >> "$output_file"
+        <file path="$file">
+            <error>File not found</error>
+        </file>
+EOF
+    fi
+done
+
+# Close XML
+cat <<EOF >> "$output_file"
+    </files>
+</dump>
+EOF
+
+echo "Dump file created: $output_file"
+
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<controls>
+  <control>
+    <id>mbss-rhel7-001</id>
+    <description>Ensure /etc/passwd permissions are configured correctly</description>
+    <file>/etc/passwd</file>
+    <expected_permission>644</expected_permission>
+    <mandatory>true</mandatory>
+  </control>
+  <control>
+    <id>mbss-rhel7-002</id>
+    <description>Ensure no empty password fields in /etc/passwd</description>
+    <file>/etc/passwd</file>
+    <rule>no_empty_password</rule>
+    <mandatory>true</mandatory>
+  </control>
+  <control>
+    <id>mbss-rhel7-003</id>
+    <description>Ensure PermitRootLogin is set to no in /etc/ssh/sshd_config</description>
+    <file>/etc/ssh/sshd_config</file>
+    <rule>PermitRootLogin no</rule>
+    <mandatory>true</mandatory>
+  </control>
+</controls>
+---
+#!/bin/bash
+
+# Input files
+control_file="compliance_controls.xml"
+dump_file="file_info_dump.xml"
+output_html="compliance_report.html"
+output_csv="compliance_report.csv"
+
+# Parse system information from the dump file
+timestamp=$(grep -oP '(?<=<timestamp>).*?(?=</timestamp>)' "$dump_file")
+hostname=$(grep -oP '(?<=<hostname>).*?(?=</hostname>)' "$dump_file")
+ip_addresses=$(grep -oP '(?<=<ip_addresses>).*?(?=</ip_addresses>)' "$dump_file")
+current_user=$(grep -oP '(?<=<user>).*?(?=</user>)' "$dump_file")
+sudo_status=$(grep -oP '(?<=<sudo>).*?(?=</sudo>)' "$dump_file")
+
+# Generate HTML header
+cat <<EOF > "$output_html"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compliance Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #f4f4f4; }
+        .compliant { color: green; }
+        .non-compliant { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Compliance Report</h1>
+    <h2>System Information</h2>
+    <ul>
+        <li><strong>Timestamp:</strong> $timestamp</li>
+        <li><strong>Hostname:</strong> $hostname</li>
+        <li><strong>IP Addresses:</strong> $ip_addresses</li>
+        <li><strong>User:</strong> $current_user</li>
+        <li><strong>Sudo:</strong> $sudo_status</li>
+    </ul>
+    <table>
+        <tr>
+            <th>Control ID</th>
+            <th>Description</th>
+            <th>File</th>
+            <th>Status</th>
+            <th>Details</th>
+        </tr>
+EOF
+
+# Generate CSV header
+echo "Control ID,Description,File,Status,Details,Mandatory" > "$output_csv"
+
+# Helper function to decode base64 content
+decode_base64() {
+    echo "$1" | base64 --decode
+}
+
+# Helper function to get specific file information
+get_file_info() {
+    local file_path="$1"
+    local key="$2"
+    grep -A 6 "<file path=\"$file_path\">" "$dump_file" | grep -oP "(?<=<$key>).*?(?=</$key>)"
+}
+
+# Parse controls and perform compliance checks
+while IFS= read -r control; do
+    if [[ $control == *"<control>"* ]]; then
+        # Reset variables for each control
+        control_id=""
+        description=""
+        file=""
+        expected_permission=""
+        rule=""
+        mandatory=""
+    elif [[ $control == *"<id>"* ]]; then
+        control_id=$(echo "$control" | sed -n "s:.*<id>\(.*\)</id>.*:\1:p")
+    elif [[ $control == *"<description>"* ]]; then
+        description=$(echo "$control" | sed -n "s:.*<description>\(.*\)</description>.*:\1:p")
+    elif [[ $control == *"<file>"* ]]; then
+        file=$(echo "$control" | sed -n "s:.*<file>\(.*\)</file>.*:\1:p")
+    elif [[ $control == *"<expected_permission>"* ]]; then
+        expected_permission=$(echo "$control" | sed -n "s:.*<expected_permission>\(.*\)</expected_permission>.*:\1:p")
+    elif [[ $control == *"<rule>"* ]]; then
+        rule=$(echo "$control" | sed -n "s:.*<rule>\(.*\)</rule>.*:\1:p")
+    elif [[ $control == *"<mandatory>"* ]]; then
+        mandatory=$(echo "$control" | sed -n "s:.*<mandatory>\(.*\)</mandatory>.*:\1:p")
+    elif [[ $control == *"</control>"* ]]; then
+        # Extract file info from the dump
+        actual_permissions=$(get_file_info "$file" "permissions")
+        actual_owner=$(get_file_info "$file" "owner")
+        actual_md5=$(get_file_info "$file" "md5")
+        actual_sha1=$(get_file_info "$file" "sha1")
+        base64_content=$(grep -A 1 "<file path=\"$file\">" "$dump_file" | grep -oP "(?<=<content encoding=\"base64\">).*?(?=</content>)")
+        decoded_content=$(decode_base64 "$base64_content")
+
+        # Perform compliance check
+        compliance_status="Compliant"
+        details=""
+
+        # Check permissions
+        if [[ -n "$expected_permission" && "$actual_permissions" != "$expected_permission" ]]; then
+            compliance_status="Non-Compliant"
+            details+="Expected permissions $expected_permission, found $actual_permissions. "
+        fi
+
+        # Check specific rules
+        if [[ -n "$rule" ]]; then
+            case "$rule" in
+                "no_empty_password")
+                    if echo "$decoded_content" | awk -F: '$2 == "" {print $0}' | grep -q '.'; then
+                        compliance_status="Non-Compliant"
+                        details+="Found empty password fields. "
+                    fi
+                    ;;
+                "PermitRootLogin no")
+                    if ! echo "$decoded_content" | grep -qE "^PermitRootLogin no\b"; then
+                        compliance_status="Non-Compliant"
+                        details+="PermitRootLogin is not set to no. "
+                    fi
+                    ;;
+                *)
+                    details+="Unknown rule: $rule. "
+                    ;;
+            esac
+        fi
+
+        # Generate HTML row
+        status_class="compliant"
+        if [[ "$compliance_status" == "Non-Compliant" ]]; then
+            status_class="non-compliant"
+        fi
+
+        echo "        <tr>" >> "$output_html"
+        echo "            <td>$control_id</td>" >> "$output_html"
+        echo "            <td>$description</td>" >> "$output_html"
+        echo "            <td>$file</td>" >> "$output_html"
+        echo "            <td class=\"$status_class\">$compliance_status</td>" >> "$output_html"
+        echo "            <td>$details</td>" >> "$output_html"
+        echo "        </tr>" >> "$output_html"
+
+        # Generate CSV row
+        echo "\"$control_id\",\"$description\",\"$file\",\"$compliance_status\",\"$details\",\"$mandatory\"" >> "$output_csv"
+    fi
+done < "$control_file"
+
+# Generate HTML footer
+cat <<EOF >> "$output_html"
+    </table>
+</body>
+</html>
+EOF
+
+echo "Compliance report generated in $output_html and $output_csv."
