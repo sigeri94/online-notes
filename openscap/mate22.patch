@@ -1,0 +1,70 @@
+Binary files scap-workbench-1.2.1/scap-workbench_1.1.5-1_amd64.deb and /home/sxi/scap-workbench-1.2.1/scap-workbench_1.1.5-1_amd64.deb differ
+diff -urN scap-workbench-1.2.1/src/MainWindow.cpp /home/sxi/scap-workbench-1.2.1/src/MainWindow.cpp
+--- scap-workbench-1.2.1/src/MainWindow.cpp	2020-01-15 20:49:27.000000000 +0700
++++ /home/sxi/scap-workbench-1.2.1/src/MainWindow.cpp	2024-12-08 09:14:55.611558250 +0700
+@@ -409,7 +409,7 @@
+ 
+         // Refill mFSWatch after opening file
+         mFSWatch->removePaths(mFSWatch->files());
+-        for (const QString path : mScanningSession->getOriginalClosure())
++        for (const QString& path : mScanningSession->getOriginalClosure())
+         {
+             mFSWatch->addPath(path);
+         }
+diff -urN scap-workbench-1.2.1/src/OscapCapabilities.cpp /home/sxi/scap-workbench-1.2.1/src/OscapCapabilities.cpp
+--- scap-workbench-1.2.1/src/OscapCapabilities.cpp	2020-01-15 15:12:53.000000000 +0700
++++ /home/sxi/scap-workbench-1.2.1/src/OscapCapabilities.cpp	2024-12-08 09:18:17.281748247 +0700
+@@ -86,7 +86,7 @@
+     if (lines.size() < 1)
+         return; // TODO: Throw exception?
+ 
+-    const QStringList firstLine = lines[0].split(' ', QString::SkipEmptyParts);
++    const QStringList firstLine = lines[0].split(' ', Qt::SkipEmptyParts);
+     const QString& versionCandidate = firstLine.last();
+ 
+     if (!versionCandidate.contains(QRegExp("^([0-9]+\\.){2,}[0-9]+$")))
+diff -urN scap-workbench-1.2.1/src/RPMOpenHelper.cpp /home/sxi/scap-workbench-1.2.1/src/RPMOpenHelper.cpp
+--- scap-workbench-1.2.1/src/RPMOpenHelper.cpp	2020-01-15 15:12:53.000000000 +0700
++++ /home/sxi/scap-workbench-1.2.1/src/RPMOpenHelper.cpp	2024-12-08 09:19:25.600096104 +0700
+@@ -54,7 +54,7 @@
+         static QRegExp tailoringRE("^\\.\\/usr\\/share\\/xml\\/scap\\/[^\\/]+\\/tailoring-xccdf\\.xml+$");
+         static QRegExp inputRE("^\\.\\/usr\\/share\\/xml\\/scap\\/[^\\/]+\\/[^\\/]+\\-(xccdf|ds)\\.xml+$");
+ 
+-        QStringList lines = proc.getStdErrContents().split('\n', QString::SkipEmptyParts);
++        QStringList lines = proc.getStdErrContents().split('\n', Qt::SkipEmptyParts);
+         for (QStringList::const_iterator it = lines.constBegin(); it != lines.constEnd(); ++it)
+         {
+             const QString& line = *it;
+diff -urN scap-workbench-1.2.1/src/SaveAsRPMDialog.cpp /home/sxi/scap-workbench-1.2.1/src/SaveAsRPMDialog.cpp
+--- scap-workbench-1.2.1/src/SaveAsRPMDialog.cpp	2020-01-15 15:12:53.000000000 +0700
++++ /home/sxi/scap-workbench-1.2.1/src/SaveAsRPMDialog.cpp	2024-12-08 09:21:01.565043506 +0700
+@@ -86,7 +86,7 @@
+     closure.remove(mScanningSession->getOpenedFilePath());
+     QList<QString> closureOrdered;
+     closureOrdered.append(mScanningSession->getOpenedFilePath());
+-    closureOrdered.append(closure.toList());
++    closureOrdered.append(closure.values());
+ 
+     const QDir cwd = ScanningSession::getCommonAncestorDirectory(closure);
+ 
+diff -urN scap-workbench-1.2.1/src/TailoringWindow.cpp /home/sxi/scap-workbench-1.2.1/src/TailoringWindow.cpp
+--- scap-workbench-1.2.1/src/TailoringWindow.cpp	2020-01-15 20:49:27.000000000 +0700
++++ /home/sxi/scap-workbench-1.2.1/src/TailoringWindow.cpp	2024-12-08 09:23:38.492416908 +0700
+@@ -645,7 +645,7 @@
+ void TailoringWindow::deserializeCollapsedItems()
+ {
+     const QStringList list = mQSettings->value(getQSettingsKey()).toStringList();
+-    mCollapsedItemIds = QSet<QString>::fromList(list);
++    mCollapsedItemIds = QSet<QString>(list.begin(), list.end());
+ }
+ 
+ void TailoringWindow::serializeCollapsedItems()
+@@ -657,7 +657,7 @@
+     }
+     else
+     {
+-        mQSettings->setValue(getQSettingsKey(), QVariant(mCollapsedItemIds.toList()));
++        mQSettings->setValue(getQSettingsKey(), QVariant(mCollapsedItemIds.values()));
+         mQSettings->setValue(getQSettingsKey() + "_lastUsed", QVariant(QDateTime::currentDateTime()));
+     }
+ }
