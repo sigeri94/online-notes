@@ -1,0 +1,56 @@
+forensic - bd.txt
+
+wc themes-data.php 
+      1      25 1979497 themes-data.php
+
+---] cari berdasarkan line panjang nya lebih dari 1450 karakter
+find . -type f -name "*.php" -exec grep -H '.\{1450\}' {} \; | cut -d":" -f1
+./themes-data.php 
+./maintenance/css/bootstrap.css.map.php 
+./maintenance/js/jquery_costume.php 
+./default/assets/css/icomoon/fonts/icommon-tools.php 
+./default/assets/css login/elisyam.css.php 
+./default/assets/css/skins/skin-tools.php
+
+
+--- ]cari berdasarkan jumlah kata
+find . -type f -name "*.php" -exec wc {} \; | egrep '1979497|1990207'
+      1      25 1979497 ./themes/themes-data.php
+      1      25 1990207 ./themes/maintenance/css/bootstrap.css.map.php
+      1      25 1990207 ./themes/maintenance/js/jquery_costume.php
+      2      25 1979497 ./themes/default/assets/css/icomoon/fonts/icommon-tools.php
+      1      25 1990207 ./themes/default/assets/css/login/elisyam.css.php
+      2      25 1979497 ./themes/default/assets/css/skins/skin-tools.php
+      
+--- ] cari berdasarkan besar bytes
+find . -type f -name "*.php" -exec du {} \; | sort -n -r | head -n20
+1944	./themes/maintenance/js/jquery_costume.php
+1944	./themes/maintenance/css/bootstrap.css.map.php
+1944	./themes/default/assets/css/login/elisyam.css.php
+1936	./themes/themes-data.php
+1936	./themes/default/assets/css/skins/skin-tools.php
+1936	./themes/default/assets/css/icomoon/fonts/icommon-tools.php
+1548	./_public/libraries/tcpdfx/fonts/cid0kr.php
+1548	./_public/libraries/tcpdfx/fonts/cid0jp.php
+1548	./_public/libraries/tcpdfx/fonts/cid0ct.php
+1548	./_public/libraries/tcpdfx/fonts/cid0cs.php
+1548	./_public/libraries/tcpdf/fonts/cid0kr.php
+1548	./_public/libraries/tcpdf/fonts/cid0jp.php
+1548	./_public/libraries/tcpdf/fonts/cid0ct.php
+1548	./_public/libraries/tcpdf/fonts/cid0cs.php
+1268	./_public/libraries/mpdf60/mpdf.php
+880	./_public/libraries/tcpdfx/tcpdf.php
+880	./_public/libraries/tcpdf/tcpdf.php
+472	./adminer/adminer.php
+468	./adminer/index.php
+376	./_public/libraries/tcpdfx/fonts/uni2cid_ag15.php
+
+---] cari berdasarkan md5sum
+find . -type f -name "*.php" -exec md5sum {} \; | egrep '248dab1978ca67ec9417651f1be2e3a8|a9bbdde7c631ad6cf0c3df6609518d9c|eed7188565b487cfe1a7b89872076e9f'
+248dab1978ca67ec9417651f1be2e3a8  ./themes/themes-data.php
+eed7188565b487cfe1a7b89872076e9f  ./themes/maintenance/css/bootstrap.css.map.php
+eed7188565b487cfe1a7b89872076e9f  ./themes/maintenance/js/jquery_costume.php
+a9bbdde7c631ad6cf0c3df6609518d9c  ./themes/default/assets/css/icomoon/fonts/icommon-tools.php
+eed7188565b487cfe1a7b89872076e9f  ./themes/default/assets/css/login/elisyam.css.php
+a9bbdde7c631ad6cf0c3df6609518d9c  ./themes/default/assets/css/skins/skin-tools.php
+
