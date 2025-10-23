@@ -1,0 +1,44 @@
+scap on ubuntu-mate 22
+  sudo apt install git cmake g++ qtbase5-dev qttools5-dev-tools libopenscap-dev libqt5widgets5 libqt5core5a libqt5gui5
+  sudo apt install qttools5-dev qttools5-dev-tools libqt5xmlpatterns5-dev
+  sudo apt install pkg-config
+  sudo apt install build-essential cmake libtool autoconf automake
+
+sudo apt install -y \
+    build-essential \
+    cmake \
+    pkg-config \
+    libxml2-dev \
+    libxslt1-dev \
+    libpcre2-dev \
+    libssl-dev \
+    libxmlsec1-dev \
+    libjson-c-dev \
+    libboost-dev \
+    libgpgme-dev \
+    libglib2.0-dev \
+    libssl-dev \
+    libcurl4-openssl-dev \
+libbz2-dev
+
+
+
+
+wget https://github.com/OpenSCAP/scap-workbench/releases/download/1.2.1/scap-workbench-1.2.1.tar.bz2
+tar scap-workbench-1.2.1.tar.bz2
+cd scap-workbench-1.2.1
+wget https://raw.githubusercontent.com/sigeri94/online-notes/refs/heads/master/mate22.patch
+patch -p1 < mate22.patch
+mkdir build
+cd build
+cmake ..
+make
+
+
+wget https://github.com/ComplianceAsCode/content/releases/download/v0.1.75/scap-security-guide-0.1.75.tar.bz2
+sudo apt install libxml2-utils
+sudo apt install xsltproc
+pip3 install  -r requirement.txt
+
+oscap info /usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml
+oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_ospp --results-arf arf.xml --report report.html --oval-results /usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml
