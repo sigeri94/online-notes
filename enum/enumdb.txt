@@ -1,0 +1,125 @@
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        if (args.Length < 7)
+        {
+            Console.WriteLine("Usage:");
+            Console.WriteLine("  enum.exe <ip> <port> <username> <password> <ssl:on|off> --database <db> [--tables <filter>]");
+            return;
+        }
+
+        string ip = args[0];
+        string port = args[1];
+        string username = args[2];
+        string password = args[3];
+        bool useSSL = args[4].ToLower() == "on";
+
+        string dbName = "";
+        string tableFilter = "";
+
+        // Parse custom parameters
+        for (int i = 5; i < args.Length; i++)
+        {
+            if (args[i] == "--database" && i + 1 < args.Length)
+                dbName = args[i + 1];
+
+            if (args[i] == "--tables" && i + 1 < args.Length)
+                tableFilter = args[i + 1];
+        }
+
+        if (string.IsNullOrEmpty(dbName))
+        {
+            Console.WriteLine("[-] Missing --database parameter");
+            return;
+        }
+
+        string sslPart = useSSL
+            ? "Encrypt=True;TrustServerCertificate=True;"
+            : "Encrypt=False;";
+
+        string connStr =
+            $"Server={ip},{port};Database={dbName};User Id={username};Password={password};{sslPart}";
+
+        try
+        {
+            Console.WriteLine($"[*] Connecting to {ip}:{port} SSL={useSSL}...");
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+                Console.WriteLine("[+] Connected!");
+                Console.WriteLine($"[*] Using database: {dbName}");
+
+                if (!string.IsNullOrEmpty(tableFilter))
+                {
+                    Console.WriteLine($"[*] Searching tables like '%{tableFilter}%' ...");
+
+                    // STEP 1: Collect matching tables first
+                    List<(string Schema, string Table)> tables = new List<(string, string)>();
+
+                    string tableQuery =
+                        "SELECT TABLE_SCHEMA, TABLE_NAME " +
+                        "FROM INFORMATION_SCHEMA.TABLES " +
+                        "WHERE TABLE_NAME LIKE @filter " +
+                        "ORDER BY TABLE_SCHEMA, TABLE_NAME";
+
+                    using (SqlCommand cmd = new SqlCommand(tableQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@filter", "%" + tableFilter + "%");
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                string schema = reader.GetString(0);
+                                string table = reader.GetString(1);
+                                tables.Add((schema, table));
+                            }
+                        }
+                    }
+
+                    // STEP 2: Now enumerate columns for each table
+                    foreach (var t in tables)
+                    {
+                        Console.WriteLine($"\n=== {t.Schema}.{t.Table} ===");
+                        PrintColumns(conn, t.Schema, t.Table);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("[-] Connection failed: " + ex.Message);
+        }
+    }
+
+    static void PrintColumns(SqlConnection conn, string schema, string table)
+    {
+        string colQuery =
+            "SELECT COLUMN_NAME, DATA_TYPE " +
+            "FROM INFORMATION_SCHEMA.COLUMNS " +
+            "WHERE TABLE_SCHEMA = @schema AND TABLE_NAME = @table " +
+            "ORDER BY ORDINAL_POSITION";
+
+        using (SqlCommand cmd = new SqlCommand(colQuery, conn))
+        {
+            cmd.Parameters.AddWithValue("@schema", schema);
+            cmd.Parameters.AddWithValue("@table", table);
+
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    string col = reader.GetString(0);
+                    string type = reader.GetString(1);
+
+                    Console.WriteLine($" - {col} ({type})");
+                }
+            }
+        }
+    }
+}
