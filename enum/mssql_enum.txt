@@ -1,0 +1,112 @@
+using System;
+using System.Data.SqlClient;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        if (args.Length < 5)
+        {
+            Console.WriteLine("Usage: enum.exe <ip> <port> <ssl: yes/no> <username> <password>");
+            return;
+        }
+
+        string ip = args[0];
+        string port = args[1];
+        string ssl = args[2].ToLower();
+        string username = args[3];
+        string password = args[4];
+
+        string sslOptions = ssl == "yes"
+            ? "Encrypt=True;TrustServerCertificate=True;"
+            : "Encrypt=False;";
+
+        // Build connection string
+        string connStr =
+            $"Server={ip},{port};" +
+            "Database=master;" +
+            $"User Id={username};" +
+            $"Password={password};" +
+            sslOptions;
+
+        Console.WriteLine("[*] Connecting to " + ip + ":" + port);
+        Console.WriteLine("[*] SSL: " + ssl);
+        Console.WriteLine("[*] User: " + username);
+
+        try
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+                Console.WriteLine("\n[+] Connected successfully!\n");
+
+                // DATABASE ENUM
+                Console.WriteLine("=== DATABASE LIST ===");
+                using (SqlCommand cmd = new SqlCommand(
+                    "SELECT name FROM sys.databases ORDER BY name;", conn))
+                using (SqlDataReader r = cmd.ExecuteReader())
+                {
+                    while (r.Read())
+                        Console.WriteLine("- " + r.GetString(0));
+                }
+                Console.WriteLine("======================\n");
+
+                // SQL LOGINS
+                Console.WriteLine("=== SQL LOGINS ===");
+                using (SqlCommand cmd = new SqlCommand(
+                    "SELECT name, type_desc, is_disabled FROM sys.sql_logins ORDER BY name;", conn))
+                using (SqlDataReader r = cmd.ExecuteReader())
+                {
+                    while (r.Read())
+                        Console.WriteLine($"- {r.GetString(0)} | {r.GetString(1)} | Disabled: {r.GetBoolean(2)}");
+                }
+                Console.WriteLine("=====================\n");
+
+                // SERVER PRINCIPALS
+                Console.WriteLine("=== SERVER PRINCIPALS ===");
+                using (SqlCommand cmd = new SqlCommand(
+                    "SELECT name, type_desc FROM sys.server_principals " +
+                    "WHERE type_desc IN ('SQL_LOGIN', 'WINDOWS_LOGIN', 'WINDOWS_GROUP') " +
+                    "ORDER BY name;", conn))
+                using (SqlDataReader r = cmd.ExecuteReader())
+                {
+                    while (r.Read())
+                        Console.WriteLine($"- {r.GetString(0)} | {r.GetString(1)}");
+                }
+                Console.WriteLine("===========================\n");
+
+                // SYSADMIN ENUM
+                Console.WriteLine("=== SYSADMIN ROLE MEMBERS ===");
+
+                string qSysadmin = @"
+                    SELECT sp.name
+                    FROM sys.server_role_members rm
+                    JOIN sys.server_principals sp ON rm.member_principal_id = sp.principal_id
+                    WHERE rm.role_principal_id = SUSER_ID('sysadmin')
+                    ORDER BY sp.name;
+                ";
+
+                using (SqlCommand cmd = new SqlCommand(qSysadmin, conn))
+                using (SqlDataReader r = cmd.ExecuteReader())
+                {
+                    bool found = false;
+
+                    while (r.Read())
+                    {
+                        found = true;
+                        Console.WriteLine("- " + r.GetString(0));
+                    }
+
+                    if (!found)
+                        Console.WriteLine("(No sysadmin users found)");
+                }
+                Console.WriteLine("============================\n");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("[-] Connection failed:");
+            Console.WriteLine(ex);
+        }
+    }
+}
