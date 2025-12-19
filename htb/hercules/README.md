@@ -1,4 +1,3 @@
-````md
 # ASP.NET Forms Authentication Cookie Forgery Analysis
 
 ## RAW `web.config`
@@ -21,7 +20,7 @@
 </system.web>
 ````
 
----
+
 
 ## Configuration Analysis
 
@@ -41,7 +40,7 @@
 
 ✅ **This configuration enables offline Forms Authentication ticket generation.**
 
----
+
 
 ## Attack Analysis
 
@@ -55,7 +54,7 @@ Because the `web.config` exposes a **static `machineKey`** with known cryptograp
 
 **Impact: Authentication Bypass / Privilege Escalation**
 
----
+
 
 ## Exploitation Steps
 
@@ -86,7 +85,7 @@ dotnet run
 D05A3523E1356B34DC5974936C3F5208F5E8E114BCA54CC6928750857BC3D0D9EAEF5172C60EEC77F71AD103B82311D808ED3B2ECD1A6C2587ED65D22A40D230D547F7D30F69D47DF9587DDEEF4F4605F7A8F04AD432C9C5921292CF31FF572D90741B7D4616D5ED1B9446C1C72159712F23FF7A020BFF8BE1B4F01CA8EC5A23A8262F91234E08F0565723F51258D3CBB738772CF9BF327D16994D173AC9BC84BF347958D4F0DE27D470F0F70257D9B0A2EA832CFA1908EF16FE18D4CA724E21
 ```
 
----
+
 
 ## Exploit Code (`Program.cs`)
 
@@ -132,7 +131,7 @@ class Program
 }
 ```
 
----
+
 
 ## Recommended Fix
 
@@ -151,7 +150,7 @@ class Program
 * Perform server-side authorization checks on every request
 * Do not trust roles or privileges embedded in auth tickets
 
----
+
 
 ## Severity
 
@@ -159,5 +158,5 @@ class Program
 
 Equivalent to full account takeover if admin authorization is ticket-based.
 
-```
+
 
