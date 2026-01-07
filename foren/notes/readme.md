@@ -81,3 +81,18 @@ ForEach-Object {
 } >> luddy_deepblue.txt
 ```
 
+## Zircolite
+
+### Description
+
+Zircolite is used to analyze Windows Event Logs (EVTX) using Sigma rules and generate CSV timelines or JSON/HTML outputs for further investigation.
+
+### Usage
+
+```powershell
+zircolite.exe \
+  --evtx ..\WS\kesha_luddy \
+  --rules rules_windows_generic_full.json \
+  --template templates/exportForZircoGui.tmpl \
+  --templateOutput data.js
+```
