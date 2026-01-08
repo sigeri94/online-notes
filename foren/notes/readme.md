@@ -2,12 +2,14 @@
 
 This README documents the setup of Python and the usage of several forensic analysis tools against Windows event logs.
 
-## Prerequisites
+## Evtx filter EventID 
 
-* Windows system
-* PowerShell
-* Internet access to download required tools
+```powershell
+Get-WinEvent -Path Application.evtx | Where-Object { $_.Id -in 1030 } | Select-Object `TimeCreated,Id,Message
+Get-WinEvent -Path Application.evtx | Where-Object { $_.Id -in 1040,1033 } | Select-Object `TimeCreated,Id,Message | Export-Csv application.csv -NoTypeInformation
 
+logparser "SELECT TimeGenerated, EventID, Message FROM 'Application.evtx'  WHERE EventID = 1040 OR EventID = 1033" -i:EVT -o:CSV > app.csv
+```
 ## Python Installation (PowerShell)
 
 Download and silently install Python 3.13.9 for the current user, with Python added to `PATH`.
