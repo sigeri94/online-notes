@@ -36,3 +36,15 @@ Get-WinEvent -Path '.\System.evtx' | Select-Object TimeCreated, Id, ProviderName
 
 Get-WinEvent -Path '.\Application.evtx' | Select-Object TimeCreated, Id, ProviderName,Message| Sort-Object TimeCreated |Export-Csv -Path ".\app.csv" -NoTypeInformation
 ```
+
+## logon
+
+```powershell
+Get-WinEvent -FilterHashtable @{ Path='.\Security.evtx'; Id=4624 } |
+Where-Object { $_.Properties[8].Value -in 2,3 } |
+Select TimeCreated,
+@{Name='LogonType';Expression={$_.Properties[8].Value}},
+@{Name='Account';Expression={$_.Properties[5].Value}},
+@{Name='SourceIP';Expression={$_.Properties[18].Value}}
+
+```
