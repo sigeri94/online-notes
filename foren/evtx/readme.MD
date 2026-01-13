@@ -37,7 +37,42 @@ Get-WinEvent -Path '.\System.evtx' | Select-Object TimeCreated, Id, ProviderName
 Get-WinEvent -Path '.\Application.evtx' | Select-Object TimeCreated, Id, ProviderName,Message| Sort-Object TimeCreated |Export-Csv -Path ".\app.csv" -NoTypeInformation
 ```
 
-## logon
+## 1. Analisa Login Berhasil (Event ID 4624)
+
+### Tujuan
+Mengidentifikasi pola login pada sistem dan memastikan dominasi login
+service/batch dibanding login interaktif.
+
+### Statistik Logon Type
+```powershell
+Get-WinEvent -FilterHashtable @{ Path='.\Security.evtx'; Id=4624 } |
+Group-Object { $_.Properties[8].Value } |
+Select Count, Name
+````
+
+### Interpretasi Logon Type
+
+| Logon Type | Arti                        |
+| ---------- | --------------------------- |
+| 2          | Interactive (Console / RDP) |
+| 3          | Network                     |
+| 4          | Batch (Scheduled Task)      |
+| 5          | Service                     |
+| 7          | Unlock workstation          |
+
+📌 **Logon Type 2 & 3 dianggap sensitif pada server**
+
+---
+
+## 2. Detail Logon Type 2 & 3 (IMPORTANT)
+
+### Tujuan
+
+Mengidentifikasi:
+
+* User yang login interaktif
+* Sumber koneksi jaringan
+* Aktivitas admin manual
 
 ```powershell
 Get-WinEvent -FilterHashtable @{ Path='.\Security.evtx'; Id=4624 } |
@@ -46,5 +81,81 @@ Select TimeCreated,
 @{Name='LogonType';Expression={$_.Properties[8].Value}},
 @{Name='Account';Expression={$_.Properties[5].Value}},
 @{Name='SourceIP';Expression={$_.Properties[18].Value}}
-
 ```
+
+📌 Event di luar jam kerja perlu perhatian khusus.
+
+---
+
+## 3. Analisa Login Gagal (Event ID 4625)
+
+### Tujuan
+
+Mendeteksi:
+
+* Brute force attempt
+* Credential misconfiguration
+* Account abuse
+
+### Statistik berdasarkan Source IP
+
+```powershell
+Get-WinEvent -FilterHashtable @{ Path='.\Security.evtx'; Id=4625 } |
+Group-Object { $_.Properties[19].Value } |
+Sort Count -Descending |
+Select Count, Name
+```
+
+📌 Source IP dengan volume tinggi perlu diinvestigasi.
+
+---
+
+## 4. Explicit Credential Usage (Event ID 4648)
+
+### Tujuan
+
+Mengidentifikasi penggunaan credential eksplisit (`runas`, service account,
+automation).
+
+⚠️ Event dari `svchost.exe` umumnya **normal**
+⚠️ Fokus pada proses non-system
+
+```powershell
+Get-WinEvent -FilterHashtable @{ Path='.\Security.evtx'; Id=4648 } |
+Where-Object { $_.Properties[11].Value -notmatch "svchost.exe" } |
+Select TimeCreated,
+@{Name='TargetAccount';Expression={$_.Properties[5].Value}},
+@{Name='CallingProcess';Expression={$_.Properties[11].Value}}
+```
+
+🔴 Proses seperti `powershell.exe`, `cmd.exe`, `wscript.exe` perlu investigasi.
+
+---
+
+## 5. Code Integrity Violation (Event ID 5038)
+
+### Tujuan
+
+Mendeteksi:
+
+* Driver tidak sah
+* Binary unsigned
+* Potensi kernel-level compromise
+
+### Exclusion
+
+Event dari **EDR/AV legitimate (SentinelOne)** dikecualikan.
+
+```powershell
+Get-WinEvent -FilterHashtable @{ Path='.\Security.evtx'; Id=5038 } |
+Where-Object {
+    $_.Properties[0].Value -notmatch "SentinelOne"
+} |
+Select TimeCreated,
+@{Name='File';Expression={$_.Properties[0].Value}},
+@{Name='Process';Expression={$_.Properties[1].Value}}
+```
+
+📌 Event 5038 non-EDR adalah **HIGH PRIORITY FINDING**.
+
+---
