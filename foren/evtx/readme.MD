@@ -31,3 +31,8 @@ Sort-Object TimeCreated |
 Export-Csv -Path ".\shell.csv" -NoTypeInformation
 ```
 ---
+```powershell
+Get-WinEvent -Path '.\System.evtx' | Select-Object TimeCreated, Id, ProviderName,Message| Sort-Object TimeCreated |Export-Csv -Path ".\system.csv" -NoTypeInformation
+
+Get-WinEvent -Path '.\Application.evtx' | Select-Object TimeCreated, Id, ProviderName,Message| Sort-Object TimeCreated |Export-Csv -Path ".\app.csv" -NoTypeInformation
+```
