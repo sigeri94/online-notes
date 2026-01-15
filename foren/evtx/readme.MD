@@ -25,16 +25,14 @@ Export-Csv oracle_events.csv -NoTypeInformation -Encoding UTF8
 ## 3. Ekstraksi Shell Core Operational Log
 
 ```powershell
-Get-WinEvent -Path '.\Microsoft-Windows-Shell-Core%4Operational.evtx' |
-Select-Object TimeCreated, Id, Message |
-Sort-Object TimeCreated |
-Export-Csv -Path ".\shell.csv" -NoTypeInformation
+$source="artefak\winevt\Logs"
+Get-WinEvent -Path "$source\Microsoft-Windows-Shell-Core%4Operational.evtx" | Select-Object TimeCreated, Id, Message | Sort-Object TimeCreated | Export-Csv -Path ".\shell.csv" -NoTypeInformation
 ```
 ---
 ```powershell
-Get-WinEvent -Path '.\System.evtx' | Select-Object TimeCreated, Id, ProviderName,Message| Sort-Object TimeCreated |Export-Csv -Path ".\system.csv" -NoTypeInformation
-
-Get-WinEvent -Path '.\Application.evtx' | Select-Object TimeCreated, Id, ProviderName,Message| Sort-Object TimeCreated |Export-Csv -Path ".\app.csv" -NoTypeInformation
+$source="artefak\winevt\Logs"
+Get-WinEvent -Path "$source\System.evtx" | Select-Object TimeCreated, Id, ProviderName,Message| Sort-Object TimeCreated |Export-Csv -Path ".\system.csv" -NoTypeInformation
+Get-WinEvent -Path ".\Application.evtx" | Select-Object TimeCreated, Id, ProviderName,Message| Sort-Object TimeCreated |Export-Csv -Path ".\app.csv" -NoTypeInformation
 ```
 
 ## 1. Analisa Login Berhasil (Event ID 4624)
@@ -45,7 +43,8 @@ service/batch dibanding login interaktif.
 
 ### Statistik Logon Type
 ```powershell
-Get-WinEvent -FilterHashtable @{ Path='.\Security.evtx'; Id=4624 } |
+$source="artefak\winevt\Logs"
+Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=4624 } |
 Group-Object { $_.Properties[8].Value } |
 Select Count, Name
 ````
@@ -75,12 +74,8 @@ Mengidentifikasi:
 * Aktivitas admin manual
 
 ```powershell
-Get-WinEvent -FilterHashtable @{ Path='.\Security.evtx'; Id=4624 } |
-Where-Object { $_.Properties[8].Value -in 2,3 } |
-Select TimeCreated,
-@{Name='LogonType';Expression={$_.Properties[8].Value}},
-@{Name='Account';Expression={$_.Properties[5].Value}},
-@{Name='SourceIP';Expression={$_.Properties[18].Value}}
+$source="artefak\winevt\Logs"
+Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=4624 } | Where-Object { $_.Properties[8].Value -in 2,3 } | Select TimeCreated, @{Name='LogonType';Expression={$_.Properties[8].Value}}, @{Name='Account';Expression={$_.Properties[5].Value}}, @{Name='SourceIP';Expression={$_.Properties[18].Value}}
 ```
 
 📌 Event di luar jam kerja perlu perhatian khusus.
@@ -100,10 +95,8 @@ Mendeteksi:
 ### Statistik berdasarkan Source IP
 
 ```powershell
-Get-WinEvent -FilterHashtable @{ Path='.\Security.evtx'; Id=4625 } |
-Group-Object { $_.Properties[19].Value } |
-Sort Count -Descending |
-Select Count, Name
+$source="artefak\winevt\Logs"
+Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=4625 } | Group-Object { $_.Properties[19].Value } | Sort Count -Descending | Select Count, Name
 ```
 
 📌 Source IP dengan volume tinggi perlu diinvestigasi.
@@ -121,17 +114,13 @@ automation).
 ⚠️ Fokus pada proses non-system
 
 ```powershell
-Get-WinEvent -FilterHashtable @{ Path='.\Security.evtx'; Id=4648 } |
-Where-Object { $_.Properties[11].Value -notmatch "svchost.exe" } |
-Select TimeCreated,
-@{Name='TargetAccount';Expression={$_.Properties[5].Value}},
-@{Name='CallingProcess';Expression={$_.Properties[11].Value}}
+$source="artefak\winevt\Logs"
+Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=4648 } | Where-Object { $_.Properties[11].Value -notmatch "svchost.exe" } | Select TimeCreated, @{Name='TargetAccount';Expression={$_.Properties[5].Value}}, @{Name='CallingProcess';Expression={$_.Properties[11].Value}}
 ```
 
 🔴 Proses seperti `powershell.exe`, `cmd.exe`, `wscript.exe` perlu investigasi.
 
 ---
-
 ## 5. Code Integrity Violation (Event ID 5038)
 
 ### Tujuan
@@ -147,15 +136,9 @@ Mendeteksi:
 Event dari **EDR/AV legitimate (SentinelOne)** dikecualikan.
 
 ```powershell
-Get-WinEvent -FilterHashtable @{ Path='.\Security.evtx'; Id=5038 } |
-Where-Object {
+$source="artefak\winevt\Logs"
+Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=5038 } | Where-Object {
     $_.Properties[0].Value -notmatch "SentinelOne"
-} |
-Select TimeCreated,
-@{Name='File';Expression={$_.Properties[0].Value}},
-@{Name='Process';Expression={$_.Properties[1].Value}}
+} | Select TimeCreated, @{Name='File';Expression={$_.Properties[0].Value}}, @{Name='Process';Expression={$_.Properties[1].Value}}
 ```
-
-📌 Event 5038 non-EDR adalah **HIGH PRIORITY FINDING**.
-
 ---
