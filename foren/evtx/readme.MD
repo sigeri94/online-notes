@@ -20,6 +20,21 @@ Select-Object TimeCreated, Id, ProviderName,
 Export-Csv oracle_events.csv -NoTypeInformation -Encoding UTF8
 ```
 
+```powershell
+Get-WinEvent -Path .\Application.evtx |
+Where-Object { $_.ProviderName -like "*VNC*" } |
+Select-Object `
+    TimeCreated,
+    LevelDisplayName,
+    ProviderName,
+    LogName,
+    @{Name="VNC_Data";Expression={
+        ($_.Properties | ForEach-Object { $_.Value }) -join " | "
+    }} |
+Export-Excel -Path .\VNC_Connections.xlsx -AutoSize
+
+```
+
 ---
 
 ## 3. Ekstraksi Shell Core Operational Log
