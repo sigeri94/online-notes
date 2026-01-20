@@ -13,7 +13,7 @@ Oracle di Windows **tidak menulis data ke field `Message`**, melainkan ke
 `EventData`. Oleh karena itu, data Oracle diambil dari `Properties[0].Value`.
 
 ```powershell
-Get-WinEvent -Path '.\Application.evtx' |
+Get-WinEvent -Path "$source\Application.evtx" |
 Where-Object { $_.ProviderName -like "Oracle*" } |
 Select-Object TimeCreated, Id, ProviderName,
     @{Name="OracleData";Expression={$_.Properties[0].Value}} |
@@ -21,7 +21,7 @@ Export-Csv oracle_events.csv -NoTypeInformation -Encoding UTF8
 ```
 
 ```powershell
-Get-WinEvent -Path .\Application.evtx |
+Get-WinEvent -Path "$source\Application.evtx" |
 Where-Object { $_.ProviderName -like "*VNC*" } |
 Select-Object `
     TimeCreated,
