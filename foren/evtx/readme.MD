@@ -48,6 +48,8 @@ Get-WinEvent -Path "$source\Microsoft-Windows-Shell-Core%4Operational.evtx" | Se
 $source="artefak\winevt\Logs"
 Get-WinEvent -Path "$source\System.evtx" | Select-Object TimeCreated, Id, ProviderName,Message| Sort-Object TimeCreated |Export-Csv -Path ".\system.csv" -NoTypeInformation
 Get-WinEvent -Path "$source\Application.evtx" | Select-Object TimeCreated, Id, ProviderName,Message| Sort-Object TimeCreated |Export-Csv -Path ".\app.csv" -NoTypeInformation
+$ids = @(1033,1040,1042); Get-WinEvent -Path "$source\Application.evtx" | Where-Object { $ids -contains $_.Id } | Select TimeCreated, Id, ProviderName, Message | Sort TimeCreated
+
 ```
 
 ## 1. Analisa Login Berhasil (Event ID 4624)
