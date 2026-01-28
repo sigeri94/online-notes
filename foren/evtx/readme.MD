@@ -1,3 +1,8 @@
+#copy sysvol 
+```powershell
+robocopy "K:\Windows\SYSVOL\domain\Policies" "C:\foren\sysvol" /E /COPYALL /R:0 /W:0 /XJ
+```
+
 # Windows Event Log Extraction – Oracle & Shell Core
 
 ## 1. Persiapan Execution Policy
