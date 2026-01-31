@@ -1,0 +1,3083 @@
+=====================================================
+<br>
+DATABASE &amp; INSTANCE IDENTIFICATION
+<br>
+=====================================================
+<br>
+<p>
+<table border='1' width='90%' align='center' summary='Script output'>
+<tr>
+<th scope="col">
+DB_NAME
+</th>
+<th scope="col">
+DBID
+</th>
+<th scope="col">
+INSTANCE_NAME
+</th>
+<th scope="col">
+HOST_NAME
+</th>
+<th scope="col">
+STARTUP_T
+</th>
+</tr>
+<tr>
+<td>
+ORCL
+</td>
+<td align="right">
+1751589779
+</td>
+<td>
+orcl
+</td>
+<td>
+GOTHAM
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+</table>
+<p>
+=====================================================
+<br>
+LOGIN / LOGOUT / FAILED LOGIN
+<br>
+=====================================================
+<br>
+<p>
+<table border='1' width='90%' align='center' summary='Script output'>
+<tr>
+<th scope="col">
+EVENT_TIMESTAMP
+</th>
+<th scope="col">
+DBUSERNAME
+</th>
+<th scope="col">
+OS_USERNAME
+</th>
+<th scope="col">
+USERHOST
+</th>
+<th scope="col">
+CLIENT_PROGRAM_NAME
+</th>
+<th scope="col">
+CLIENT_IDENTIFIER
+</th>
+<th scope="col">
+AUTHENTICATION_TYPE
+</th>
+<th scope="col">
+ACTION_NAME
+</th>
+<th scope="col">
+RETURN_CODE
+</th>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.17.39.791000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+GOTHAM\Administrator
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+navicat.exe
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+(TYPE=(DATABASE));(CLIENT ADDRESS=((ADDRESS=(PROTOCOL=tcp)(HOST=127.0.0.1)(PORT=50574))));
+</td>
+<td>
+LOGON
+</td>
+<td align="right">
+     28009
+</td>
+</tr>
+</table>
+<p>
+=====================================================
+<br>
+FAILED LOGIN ATTEMPTS
+<br>
+=====================================================
+<br>
+<p>
+<table border='1' width='90%' align='center' summary='Script output'>
+<tr>
+<th scope="col">
+EVENT_TIMESTAMP
+</th>
+<th scope="col">
+DBUSERNAME
+</th>
+<th scope="col">
+OS_USERNAME
+</th>
+<th scope="col">
+USERHOST
+</th>
+<th scope="col">
+CLIENT_PROGRAM_NAME
+</th>
+<th scope="col">
+RETURN_CODE
+</th>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.17.39.791000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+GOTHAM\Administrator
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+navicat.exe
+</td>
+<td align="right">
+     28009
+</td>
+</tr>
+</table>
+<p>
+=====================================================
+<br>
+LOGIN SUMMARY PER USER &amp; HOST
+<br>
+=====================================================
+<br>
+<p>
+<table border='1' width='90%' align='center' summary='Script output'>
+<tr>
+<th scope="col">
+DBUSERNAME
+</th>
+<th scope="col">
+USERHOST
+</th>
+<th scope="col">
+TOTAL_LOGIN
+</th>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         1
+</td>
+</tr>
+</table>
+<p>
+=====================================================
+<br>
+PRIVILEGE ESCALATION &amp; ACCOUNT CHANGES
+<br>
+=====================================================
+<br>
+<p>
+<table border='1' width='90%' align='center' summary='Script output'>
+<tr>
+<th scope="col">
+EVENT_TIMESTAMP
+</th>
+<th scope="col">
+DBUSERNAME
+</th>
+<th scope="col">
+ACTION_NAME
+</th>
+<th scope="col">
+OBJECT_SCHEMA
+</th>
+<th scope="col">
+OBJECT_NAME
+</th>
+<th scope="col">
+USERHOST
+</th>
+<th scope="col">
+RETURN_CODE
+</th>
+<th scope="col">
+SQL_TEXT
+</th>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.404000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+SYSDG
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;SYSDG&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.404000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+ORDSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;ORDSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.388000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+ORACLE_OCM
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;ORACLE_OCM&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.388000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+WMSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;WMSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.388000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+XDB
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;XDB&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.373000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+SYSKM
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;SYSKM&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.373000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+SYS$UMF
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;SYS$UMF&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.373000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+OUTLN
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;OUTLN&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.373000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+ORDDATA
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;ORDDATA&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.357000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+ORDPLUGINS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;ORDPLUGINS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.357000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+OLAPSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;OLAPSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.357000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+MDSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;MDSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.357000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+LBACSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;LBACSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.341000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+SI_INFORMTN_SCHEMA
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;SI_INFORMTN_SCHEMA&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.341000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;GSMADMIN_INTERNAL&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.341000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+AUDSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;AUDSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.326000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+GSMROOTUSER
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;GSMROOTUSER&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.326000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+DVF
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;DVF&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.326000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+DVSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;DVSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.326000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+OJVMSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;OJVMSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.310000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+GGSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;GGSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.310000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+SYSRAC
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;SYSRAC&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.310000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+GSMUSER
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;GSMUSER&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.294000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+MDDATA
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;MDDATA&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.294000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+REMOTE_SCHEDULER_AGENT
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;REMOTE_SCHEDULER_AGENT&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.294000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+SYSBACKUP
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;SYSBACKUP&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.294000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+DBSFWUSER
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;DBSFWUSER&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.279000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+DBSNMP
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;DBSNMP&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.279000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+GSMCATUSER
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;GSMCATUSER&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.279000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+APPQOSSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;APPQOSSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 10.57.34.934000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+SYSTEM
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user system account unlock identified by *
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 10.57.34.824000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+SYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user sys account unlock identified by *
+</td>
+</tr>
+</table>
+<p>
+=====================================================
+<br>
+DDL DESTRUCTIVE ACTIVITY
+<br>
+=====================================================
+<br>
+<p>
+<table border='1' width='90%' align='center' summary='Script output'>
+<tr>
+<th scope="col">
+EVENT_TIMESTAMP
+</th>
+<th scope="col">
+DBUSERNAME
+</th>
+<th scope="col">
+ACTION_NAME
+</th>
+<th scope="col">
+OBJECT_SCHEMA
+</th>
+<th scope="col">
+OBJECT_NAME
+</th>
+<th scope="col">
+USERHOST
+</th>
+<th scope="col">
+CLIENT_PROGRAM_NAME
+</th>
+<th scope="col">
+RETURN_CODE
+</th>
+<th scope="col">
+SQL_TEXT
+</th>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.404000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+SYSDG
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;SYSDG&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.404000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+ORDSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;ORDSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.388000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+ORACLE_OCM
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;ORACLE_OCM&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.388000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+WMSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;WMSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.388000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+XDB
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;XDB&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.373000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+SYSKM
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;SYSKM&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.373000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+SYS$UMF
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;SYS$UMF&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.373000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+OUTLN
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;OUTLN&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.373000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+ORDDATA
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;ORDDATA&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.357000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+ORDPLUGINS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;ORDPLUGINS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.357000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+OLAPSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;OLAPSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.357000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+MDSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;MDSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.357000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+LBACSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;LBACSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.341000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+SI_INFORMTN_SCHEMA
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;SI_INFORMTN_SCHEMA&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.341000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;GSMADMIN_INTERNAL&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.341000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+AUDSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;AUDSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.326000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+GSMROOTUSER
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;GSMROOTUSER&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.326000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+DVF
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;DVF&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.326000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+DVSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;DVSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.326000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+OJVMSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;OJVMSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.310000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+GGSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;GGSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.310000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+SYSRAC
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;SYSRAC&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.310000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+GSMUSER
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;GSMUSER&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.294000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+MDDATA
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;MDDATA&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.294000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+REMOTE_SCHEDULER_AGENT
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;REMOTE_SCHEDULER_AGENT&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.294000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+SYSBACKUP
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;SYSBACKUP&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.294000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+DBSFWUSER
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;DBSFWUSER&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.279000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+DBSNMP
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;DBSNMP&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.279000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+GSMCATUSER
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;GSMCATUSER&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.03.25.279000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+APPQOSSYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user &quot;APPQOSSYS&quot; account lock
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 10.57.34.934000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+SYSTEM
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user system account unlock identified by *
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 10.57.34.824000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+ALTER USER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+SYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td align="right">
+         0
+</td>
+<td>
+alter user sys account unlock identified by *
+</td>
+</tr>
+</table>
+<p>
+<p>
+<table border='1' width='90%' align='center' summary='Script output'>
+<tr>
+<th scope="col">
+EVENT_TIMESTAMP
+</th>
+<th scope="col">
+DBUSERNAME
+</th>
+<th scope="col">
+ACTION_NAME
+</th>
+<th scope="col">
+OBJECT_SCHEMA
+</th>
+<th scope="col">
+OBJECT_NAME
+</th>
+<th scope="col">
+USERHOST
+</th>
+<th scope="col">
+SQL_TEXT
+</th>
+</tr>
+<tr>
+<td>
+29-JAN-26 11.02.41.716000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+DROP DATABASE LINK
+</td>
+<td>
+SYS
+</td>
+<td>
+DBMS_CLRDBLINK
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+DROP PUBLIC DATABASE LINK DBMS_CLRDBLINK
+</td>
+</tr>
+<tr>
+<td>
+29-JAN-26 10.57.50.887000 AM
+</td>
+<td>
+SYS
+</td>
+<td>
+DROP DIRECTORY
+</td>
+<td>
+SYS
+</td>
+<td>
+OPATCH_TEMP_DIR
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+DROP DIRECTORY OPATCH_TEMP_DIR
+</td>
+</tr>
+</table>
+<p>
+=====================================================
+<br>
+EXPORT / DATA EXFILTRATION
+<br>
+=====================================================
+<br>
+=====================================================
+<br>
+SENSITIVE DATA ACCESS (IF AUDITED)
+<br>
+=====================================================
+<br>
+=====================================================
+<br>
+CURRENT PRIVILEGED USERS
+<br>
+=====================================================
+<br>
+<p>
+<table border='1' width='90%' align='center' summary='Script output'>
+<tr>
+<th scope="col">
+GRANTEE
+</th>
+<th scope="col">
+GRANTED_ROLE
+</th>
+<th scope="col">
+ADM
+</th>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DBA
+</td>
+<td>
+YES
+</td>
+</tr>
+<tr>
+<td>
+SYSTEM
+</td>
+<td>
+DBA
+</td>
+<td>
+NO
+</td>
+</tr>
+</table>
+<p>
+<p>
+<table border='1' width='90%' align='center' summary='Script output'>
+<tr>
+<th scope="col">
+GRANTEE
+</th>
+<th scope="col">
+PRIVILEGE
+</th>
+</tr>
+<tr>
+<td>
+DATAPUMP_IMP_FULL_DATABASE
+</td>
+<td>
+GRANT ANY PRIVILEGE
+</td>
+</tr>
+<tr>
+<td>
+DBA
+</td>
+<td>
+ALTER SYSTEM
+</td>
+</tr>
+<tr>
+<td>
+DBA
+</td>
+<td>
+DROP ANY TABLE
+</td>
+</tr>
+<tr>
+<td>
+DBA
+</td>
+<td>
+CREATE ANY TABLE
+</td>
+</tr>
+<tr>
+<td>
+DBA
+</td>
+<td>
+GRANT ANY PRIVILEGE
+</td>
+</tr>
+<tr>
+<td>
+DV_REALM_OWNER
+</td>
+<td>
+CREATE ANY TABLE
+</td>
+</tr>
+<tr>
+<td>
+DV_REALM_OWNER
+</td>
+<td>
+DROP ANY TABLE
+</td>
+</tr>
+<tr>
+<td>
+EM_EXPRESS_ALL
+</td>
+<td>
+ALTER SYSTEM
+</td>
+</tr>
+<tr>
+<td>
+EM_EXPRESS_ALL
+</td>
+<td>
+GRANT ANY PRIVILEGE
+</td>
+</tr>
+<tr>
+<td>
+GGSYS
+</td>
+<td>
+CREATE ANY TABLE
+</td>
+</tr>
+<tr>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+ALTER SYSTEM
+</td>
+</tr>
+<tr>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+GRANT ANY PRIVILEGE
+</td>
+</tr>
+<tr>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+CREATE ANY TABLE
+</td>
+</tr>
+<tr>
+<td>
+GSMADMIN_ROLE
+</td>
+<td>
+ALTER SYSTEM
+</td>
+</tr>
+<tr>
+<td>
+GSMUSER_ROLE
+</td>
+<td>
+ALTER SYSTEM
+</td>
+</tr>
+<tr>
+<td>
+IMP_FULL_DATABASE
+</td>
+<td>
+DROP ANY TABLE
+</td>
+</tr>
+<tr>
+<td>
+IMP_FULL_DATABASE
+</td>
+<td>
+GRANT ANY PRIVILEGE
+</td>
+</tr>
+<tr>
+<td>
+IMP_FULL_DATABASE
+</td>
+<td>
+CREATE ANY TABLE
+</td>
+</tr>
+<tr>
+<td>
+OLAP_DBA
+</td>
+<td>
+DROP ANY TABLE
+</td>
+</tr>
+<tr>
+<td>
+OLAP_DBA
+</td>
+<td>
+CREATE ANY TABLE
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+GRANT ANY PRIVILEGE
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+CREATE ANY TABLE
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+ALTER SYSTEM
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DROP ANY TABLE
+</td>
+</tr>
+<tr>
+<td>
+SYSBACKUP
+</td>
+<td>
+ALTER SYSTEM
+</td>
+</tr>
+<tr>
+<td>
+SYSBACKUP
+</td>
+<td>
+CREATE ANY TABLE
+</td>
+</tr>
+<tr>
+<td>
+SYSDG
+</td>
+<td>
+ALTER SYSTEM
+</td>
+</tr>
+<tr>
+<td>
+SYSRAC
+</td>
+<td>
+ALTER SYSTEM
+</td>
+</tr>
+<tr>
+<td>
+WMSYS
+</td>
+<td>
+CREATE ANY TABLE
+</td>
+</tr>
+<tr>
+<td>
+WMSYS
+</td>
+<td>
+DROP ANY TABLE
+</td>
+</tr>
+</table>
+<p>
+=====================================================
+<br>
+ACTIVE SESSIONS (VOLATILE - SUPPORTING EVIDENCE)
+<br>
+=====================================================
+<br>
+<p>
+<table border='1' width='90%' align='center' summary='Script output'>
+<tr>
+<th scope="col">
+SID
+</th>
+<th scope="col">
+SERIAL#
+</th>
+<th scope="col">
+USERNAME
+</th>
+<th scope="col">
+MACHINE
+</th>
+<th scope="col">
+PROGRAM
+</th>
+<th scope="col">
+LOGON_TIM
+</th>
+<th scope="col">
+SQL_TEXT
+</th>
+</tr>
+<tr>
+<td align="right">
+       390
+</td>
+<td align="right">
+     13274
+</td>
+<td>
+SYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+sqlplus.exe
+</td>
+<td>
+29-JAN-26
+</td>
+<td>
+SELECT   s.sid,   s.serial#,   s.username,   s.machine,   s.program,   s.logon_time,   q.sql_text FROM v$session s LEFT JOIN v$sql q ON s.sql_id = q.sql_id WHERE s.username IS NOT NULL ORDER BY s.logo
+n_time
+</td>
+</tr>
+<tr>
+<td align="right">
+       149
+</td>
+<td align="right">
+     28270
+</td>
+<td>
+SYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+navicat.exe
+</td>
+<td>
+29-JAN-26
+</td>
+<td>
+CALL DBMS_OUTPUT.DISABLE()
+</td>
+</tr>
+<tr>
+<td align="right">
+        21
+</td>
+<td align="right">
+     53870
+</td>
+<td>
+SYS
+</td>
+<td>
+WORKGROUP\GOTHAM
+</td>
+<td>
+navicat.exe
+</td>
+<td>
+29-JAN-26
+</td>
+<td>
+CALL DBMS_OUTPUT.DISABLE()
+</td>
+</tr>
+</table>
+<p>
+=====================================================
+<br>
+RECENT DANGEROUS SQL (VOLATILE)
+<br>
+=====================================================
+<br>
+<p>
+<table border='1' width='90%' align='center' summary='Script output'>
+<tr>
+<th scope="col">
+PARSING_SCHEMA_NAME
+</th>
+<th scope="col">
+SQL_TEXT
+</th>
+<th scope="col">
+LAST_ACTI
+</th>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+SELECT grantee, privilege FROM dba_sys_privs WHERE privilege IN (   'ALTER SYSTEM',   'CREATE ANY TABLE',   'DROP ANY TABLE',   'GRANT ANY PRIVILEGE' ) ORDER BY grantee
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+SELECT   event_timestamp,   dbusername,   action_name,   object_schema,   object_name,   userhost,   sql_text FROM unified_audit_trail WHERE action_name LIKE 'DROP%'    OR action_name LIKE 'TRUNCATE%'
+    OR action_name LIKE 'ALTER TABLE' ORDER BY event_timestamp DESC
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+SELECT   parsing_schema_name,   sql_text,   last_active_time FROM v$sql WHERE sql_text LIKE '%DROP%'    OR sql_text LIKE '%DELETE%'    OR sql_text LIKE '%TRUNCATE%' ORDER BY last_active_time DESC
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+SELECT   event_timestamp,   dbusername,   action_name,   object_schema,   object_name,   userhost,   client_program_name,   return_code,   sql_text FROM unified_audit_trail WHERE action_name IN (   'G
+RANT ROLE',   'GRANT PRIVILEGE',   'ALTER USER',   'CREATE USER',   'DROP USER',   'ALTER SYSTEM' ) ORDER BY event_timestamp DESC
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+SELECT   event_timestamp,   dbusername,   action_name,   object_schema,   object_name,   userhost,   return_code,   sql_text FROM unified_audit_trail WHERE action_name IN (   'GRANT ROLE',   'GRANT PR
+IVILEGE',   'ALTER USER',   'CREATE USER',   'DROP USER',   'ALTER SYSTEM' ) ORDER BY event_timestamp DESC
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+SELECT   event_timestamp,   dbusername,   action_name,   object_schema,   object_name,   userhost,   sql_text FROM unified_audit_trail WHERE action_name LIKE 'DROP%'    OR action_name LIKE 'TRUNCATE%'
+    OR action_name LIKE 'ALTER TABLE' ORDER BY event_timestamp DESC
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+SELECT   event_timestamp,   dbusername,   action_name,   object_schema,   object_name,   userhost,   client_program_name,   return_code,   sql_text FROM unified_audit_trail WHERE action_name IN (   'G
+RANT ROLE',   'GRANT PRIVILEGE',   'ALTER USER',   'CREATE USER',   'DROP USER',   'ALTER SYSTEM' ) ORDER BY event_timestamp DESC
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+SELECT grantee, privilege FROM dba_sys_privs WHERE privilege IN (   'ALTER SYSTEM',   'CREATE ANY TABLE',   'DROP ANY TABLE',   'GRANT ANY PRIVILEGE' ) ORDER BY grantee
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+SELECT grantee, privilege FROM dba_sys_privs WHERE privilege IN (   'CREATE ANY TABLE',   'DROP ANY TABLE',   'ALTER SYSTEM' )
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+SELECT   dbusername,   action_name,   object_schema,   object_name,   event_timestamp,   userhost,   return_code FROM unified_audit_trail WHERE action_name IN (   'DROP TABLE',   'ALTER TABLE',   'DRO
+P USER',   'CREATE USER',   'ALTER USER' ) ORDER BY event_timestamp DESC
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+SELECT   username,   obj_name,   action_name,   timestamp FROM dba_audit_trail WHERE action_name IN ('DROP TABLE','ALTER TABLE','DROP USER') ORDER BY timestamp DESC
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+AUDSYS
+</td>
+<td>
+SELECT T.TABLE_NAME, T.OWNER, T.TABLESPACE_NAME, T.CLUSTER_NAME, T.IOT_NAME, T.PCT_FREE, T.PCT_USED, T.INI_TRANS, T.MAX_TRANS, T.INITIAL_EXTENT, T.NEXT_EXTENT, T.MIN_EXTENTS, T.MAX_EXTENTS, T.PCT_INCR
+EASE, T.FREELISTS, T.FREELIST_GROUPS, T.LOGGING, T.BACKED_UP, T.NUM_ROWS, T.BLOCKS, T.EMPTY_BLOCKS, T.AVG_SPACE, T.CHAIN_CNT, T.AVG_ROW_LEN, T.AVG_SPACE_FREELIST_BLOCKS, T.NUM_FREELIST_BLOCKS, T.DEGRE
+E, T.INSTANCES, T.CACHE, T.TABLE_LOCK, T.SAMPLE_SIZE, T.LAST_ANALYZED, T.PARTITIONED, T.IOT_TYPE, T.TEMPORARY, T.SECONDARY, T.NESTED, T.BUFFER_POOL, T.MONITORING, T.CLUSTER_OWNER, TC.COMMENTS, T.OBJEC
+T_ID_TYPE, T.TABLE_TYPE_OWNER, T.TABLE_TYPE, T.GLOBAL_STATS, T.USER_STATS, T.DURATION, T.SKIP_CORRUPT, T.ROW_MOVEMENT, ET.TABLE_NAME EXT_TABLE_NAME, T.DEPENDENCIES, T.COMPRESSION, T.DROPPED, T.STATUS
+DROP_STATUS, T.COMPRESS_FOR, O.STATUS, O.GENERATED FROM SYS.ALL_ALL_TABLES T, SYS.ALL_EXTERNAL_TABLES ET, SYS.ALL_OBJECTS O, SYS.ALL_TAB_COMMENTS TC WHERE TC.OWNER(+) = T.OWNER AND TC.TABLE_NAME(+) =
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+SELECT DELETEXML(:B1 , '/report/report_repository_summary').GETCLOBVAL() FROM DUAL
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM SYS.WRI$_ADV_ADDM_TODO T WHERE T.DBID = :B3 AND T.INSTANCE_NUMBER = :B2 AND T.END_SNAP_ID = :B1 RETURNING COUNT(*) INTO :O0
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+SELECT * FROM (SELECT /*+ ordered full(t) use_hash(t)                OPT_PARAM('_parallel_syspls_obey_force' 'false') */ 'TABLE' OBJTYPE, U.NAME OWNNAME, O.NAME OBJNAME, NULL PARTNAME, NULL SUBPARTNAM
+E, BITAND(T.TRIGFLAG, 67108864 + 134217728) LOCK_FLAGS, O.OBJ# OBJ_NUM, NULL FXT_TYP, DBMS_STATS_INTERNAL.IS_STALE(T.OBJ#, NULL, NULL, M.INSERTS+M.UPDATES+M.DELETES, T.ROWCNT, M.FLAGS) REASON, ((M.INS
+ERTS + M.UPDATES + M.DELETES) / DECODE(T.ROWCNT, 0, 1, NVL(T.ROWCNT, 1))) STALENESS FROM SYS.MON_MODS_V M, SYS.TAB$ T, SYS.OBJ$ O, SYS.USER$ U WHERE (BITAND(DBMS_STATS_INTERNAL.DECODE_GRANULARITY(T.OB
+J#, :B5 ), :B4 ) &lt;&gt; 0) AND ((:B3 IS NULL) OR (U.NAME = :B3 )) AND ((:B2 IS NOT NULL) OR (U.NAME != 'SYS')) AND M.OBJ# = T.OBJ# AND BITAND(T.PROPERTY,512) != 512 AND BITAND(T.PROPERTY,4294967296) != 42
+94967296 AND BITAND(T.FLAGS,536870912) != 536870912 AND BITAND(T.FLAGS,2097152) != 2097152 AND BITAND(O.FLAGS, 128) != 128 AND NOT (BITAND(O.FLAGS, 16) = 16 AND (O.NAME LIKE 'DR$%' OR O.NAME LIKE 'DR#
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM sys.sumpartlog$ sp   WHERE sp.bo# = :1
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM sys.sumdelta$ sd   WHERE sd.tableobj# = :1
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+MDSYS
+</td>
+<td>
+DECLARE   stmt    VARCHAR2(256);   package_not_found exception;   pragma exception_init(package_not_found, -04043);   is_active number; BEGIN    -- Make sure &quot;Spatial Data and Graph&quot; is installed/acti
+ve    stmt := 'select mdsys.sdo_util.SpatialActive from dual';    begin      execute immediate stmt into is_active;      exception        when package_not_found then          is_active := 0;        wh
+en others then          is_active := 0;          SYS.DBMS_SYSTEM.KSDWRT(SYS.DBMS_SYSTEM.TRACE_FILE,                                   'EXCEPTION[sdonetmd.sql(' || $$PLSQL_LINE || ')1]: ' || SQLERRM);
+   end;    if ( is_active = 0 ) then      return;    end if;     IF  sys.dbms_standard.dictionary_obj_type = 'USER'  THEN     stmt := 'DELETE FROM SDO_NETWORK_METADATA_TABLE WHERE SDO_OWNER = sdo_util
+.get_quoted_name(:name)';     EXECUTE IMMEDIATE stmt using sys.dbms_standard.dictionary_obj_name;      stmt := 'DELETE FROM SDO_NETWORK_CONSTRAINTS WHERE SDO_OWNER = sdo_util.get_quoted_name(:name)';
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+BEGIN   IF (ORA_DICT_OBJ_TYPE = 'USER') THEN     DELETE FROM SYSTEM.SQLPLUS_PRODUCT_PROFILE     WHERE USERID = ORA_DICT_OBJ_NAME;   END IF;   EXCEPTION WHEN OTHERS THEN   IF (SQLCODE = -4043) OR (SQLC
+ODE = -1031) THEN      NULL;   ELSE      RAISE;   END IF; END;
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+select /* QOSH:DROP_STAT_HIST_PARTS */ partition_name, high_value from (select partition_name, high_value, rownum rn       from (select PARTITION_NAME, HIGH_VALUE             from dba_tab_partitions
+           where table_name = :1               and table_owner = 'SYS'               and partition_name &lt;&gt; 'P_PERMANENT'       order by partition_position asc)) v where rn &lt; :2
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM sys.snap_loadertime$ sd  WHERE sd.tableobj# = :1
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE /*+ dynamic_sampling(ST 4) dynamic_sampling_est_cdn(ST) */ FROM SYS.STATS_TARGET$ ST WHERE NOT EXISTS (SELECT /*+ unnest */ * FROM SYS.OBJ$ O WHERE O.OBJ# = ST.OBJ#)
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+/* SQL Analyze(1) */ select /*+  full(t)    no_parallel(t) no_parallel_index(t) dbms_stats cursor_sharing_exact use_weak_name_resl dynamic_sampling(0) no_monitoring xmlindex_sel_idx_tbl opt_param('opt
+imizer_inmemory_aware' 'false') no_substrb_pad  */to_char(count(&quot;ADDR&quot;)),substrb(dump(min(&quot;ADDR&quot;),16,0,64),1,240),substrb(dump(max(&quot;ADDR&quot;),16,0,64),1,240),to_char(count(&quot;INDX&quot;)),substrb(dump(min(&quot;INDX
+&quot;),16,0,64),1,240),substrb(dump(max(&quot;INDX&quot;),16,0,64),1,240),to_char(count(&quot;INST_ID&quot;)),substrb(dump(min(&quot;INST_ID&quot;),16,0,64),1,240),substrb(dump(max(&quot;INST_ID&quot;),16,0,64),1,240),to_char(count(&quot;CON_ID&quot;)),s
+ubstrb(dump(min(&quot;CON_ID&quot;),16,0,64),1,240),substrb(dump(max(&quot;CON_ID&quot;),16,0,64),1,240),to_char(count(&quot;QUEUE_ID&quot;)),substrb(dump(min(&quot;QUEUE_ID&quot;),16,0,64),1,240),substrb(dump(max(&quot;QUEUE_ID&quot;),16,0,64),1,240
+),to_char(count(&quot;QUEUE_RECOVERED&quot;)),substrb(dump(min(&quot;QUEUE_RECOVERED&quot;),16,0,64),1,240),substrb(dump(max(&quot;QUEUE_RECOVERED&quot;),16,0,64),1,240),to_char(count(&quot;LARGE_TXN_DISK_DELETES&quot;)),substrb(dump(min(&quot;L
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM WRH$_CELL_IOREASON_NAME WHERE dbid = :dbid  AND (REASON_ID) IN (SELECT REASON_ID FROM X$KXDCM_IOREASON_NAME NT)
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM WRH$_STAT_NAME WHERE dbid = :dbid  AND (STAT_ID) IN (SELECT STAT_ID FROM (SELECT STAT_ID, NAME STAT_NAME FROM V$STATNAME    UNION SELECT STAT_ID, STAT_NAME FROM V$SYS_TIME_MODEL   ) NT)
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM WRH$_PLAN_OPERATION_NAME WHERE dbid = :dbid  AND (OPERATION_ID) IN (SELECT XPLTON_ID FROM X$XPLTON NT)
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM WRH$_CELL_METRIC_DESC WHERE dbid = :dbid  AND (METRIC_ID) IN (SELECT METRIC_ID FROM V$CELL_METRIC_DESC NT)
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM WRH$_IOSTAT_FILETYPE_NAME WHERE dbid = :dbid  AND (FILETYPE_ID) IN (SELECT FILETYPE_ID FROM V$IOSTAT_FILE NT)
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM WRH$_EVENT_NAME WHERE dbid = :dbid  AND (EVENT_ID) IN (SELECT EVENT_ID FROM V$EVENT_NAME NT)
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM WRH$_LATCH_NAME WHERE dbid = :dbid  AND (LATCH_HASH) IN (SELECT HASH FROM V$LATCHNAME NT)
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM WRH$_OSSTAT_NAME WHERE dbid = :dbid  AND (STAT_ID) IN (SELECT OSSTAT_ID FROM V$OSSTAT NT)
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM WRH$_PARAMETER_NAME WHERE dbid = :dbid  AND (PARAMETER_HASH) IN (SELECT KSPPIHASH FROM X$KSPPI NT)
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM WRH$_SQLCOMMAND_NAME WHERE dbid = :dbid  AND (COMMAND_TYPE) IN (SELECT COMMAND_TYPE FROM V$SQLCOMMAND NT)
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM WRH$_TOPLEVELCALL_NAME WHERE dbid = :dbid  AND (TOP_LEVEL_CALL#) IN (SELECT TOP_LEVEL_CALL# FROM V$TOPLEVELCALL NT)
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM WRH$_METRIC_NAME WHERE dbid = :dbid  AND (GROUP_ID, METRIC_ID) IN (SELECT GROUP_ID, METRIC_ID FROM V$METRICNAME NT)
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM WRH$_IOSTAT_FUNCTION_NAME WHERE dbid = :dbid  AND (FUNCTION_ID) IN (SELECT FUNCTION_ID FROM V$IOSTAT_FUNCTION NT)
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM WRH$_PLAN_OPTION_NAME WHERE dbid = :dbid  AND (OPTION_ID) IN (SELECT XPLTOO_ID FROM X$XPLTOO NT)
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+SELECT /*+ OPT_PARAM('_parallel_syspls_obey_force' 'false') */ COUNT(*) FROM MON_MODS_ALL$ M, (SELECT ROWCNT, OBJ# BO# FROM TAB$ WHERE OBJ# = :B1 UNION ALL SELECT ROWCNT, BO# BO# FROM TABPART$ WHERE O
+BJ# = :B1 UNION ALL SELECT ROWCNT, BO# BO# FROM TABCOMPART$ WHERE OBJ# = :B1 UNION ALL SELECT T.ROWCNT, TCP.BO# BO# FROM TABSUBPART$ T, TABCOMPART$ TCP WHERE T.OBJ# = :B1 AND T.POBJ# = TCP.OBJ#) V WHE
+RE M.OBJ# = :B1 AND (BITAND(M.FLAGS,:B3 ) = :B3 OR M.INSERTS+M.UPDATES+M.DELETES &gt; :B2 /100 * NVL(V.ROWCNT, 0) OR M.DROP_SEGMENTS &gt; 0 )
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+/* SQL Analyze(1) */ select /*+  full(t)    no_parallel(t) no_parallel_index(t) dbms_stats cursor_sharing_exact use_weak_name_resl dynamic_sampling(0) no_monitoring xmlindex_sel_idx_tbl opt_param('opt
+imizer_inmemory_aware' 'false') no_substrb_pad  */to_char(count(&quot;OBJ#&quot;)),substrb(dump(min(&quot;OBJ#&quot;),16,0,64),1,240),substrb(dump(max(&quot;OBJ#&quot;),16,0,64),1,240),to_char(count(&quot;FA#&quot;)),substrb(dump(min(&quot;FA#&quot;)
+,16,0,64),1,240),substrb(dump(max(&quot;FA#&quot;),16,0,64),1,240),to_char(count(&quot;DROPSCN&quot;)),substrb(dump(min(&quot;DROPSCN&quot;),16,0,64),1,240),substrb(dump(max(&quot;DROPSCN&quot;),16,0,64),1,240),to_char(count(&quot;OBJNAME&quot;)),sub
+strb(dump(min(&quot;OBJNAME&quot;),16,0,64),1,240),substrb(dump(max(&quot;OBJNAME&quot;),16,0,64),1,240),to_char(count(&quot;OWNERNAME&quot;)),substrb(dump(min(&quot;OWNERNAME&quot;),16,0,64),1,240),substrb(dump(max(&quot;OWNERNAME&quot;),16,0,64),1,
+240),to_char(count(&quot;FLAGS&quot;)),substrb(dump(min(&quot;FLAGS&quot;),16,0,64),1,240),substrb(dump(max(&quot;FLAGS&quot;),16,0,64),1,240),to_char(count(&quot;SPARE&quot;)),substrb(dump(min(&quot;SPARE&quot;),16,0,64),1,240),substrb(dump(max(&quot;SPA
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+select substrb(dump(val,16,0,64),1,240) ep, cnt from (select /*+ no_expand_table(t) index_rs(t)   no_parallel(t) no_parallel_index(t) dbms_stats cursor_sharing_exact use_weak_name_resl dynamic_samplin
+g(0) no_monitoring xmlindex_sel_idx_tbl opt_param('optimizer_inmemory_aware' 'false') no_substrb_pad  */&quot;DROP_SEGMENTS&quot; val,count(*) cnt  from &quot;SYS&quot;.&quot;MON_MODS_ALL$&quot; t  where &quot;DROP_SEGMENTS&quot; is not nul
+l  group by &quot;DROP_SEGMENTS&quot;) order by val
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+/* SQL Analyze(1) */ select /*+  full(t)    no_parallel(t) no_parallel_index(t) dbms_stats cursor_sharing_exact use_weak_name_resl dynamic_sampling(0) no_monitoring xmlindex_sel_idx_tbl opt_param('opt
+imizer_inmemory_aware' 'false') no_substrb_pad  */to_char(count(&quot;OBJ#&quot;)),substrb(dump(min(&quot;OBJ#&quot;),16,0,64),1,240),substrb(dump(max(&quot;OBJ#&quot;),16,0,64),1,240),to_char(count(&quot;INSERTS&quot;)),substrb(dump(min(&quot;I
+NSERTS&quot;),16,0,64),1,240),substrb(dump(max(&quot;INSERTS&quot;),16,0,64),1,240),to_char(count(&quot;UPDATES&quot;)),substrb(dump(min(&quot;UPDATES&quot;),16,0,64),1,240),substrb(dump(max(&quot;UPDATES&quot;),16,0,64),1,240),to_char(count(&quot;DE
+LETES&quot;)),substrb(dump(min(&quot;DELETES&quot;),16,0,64),1,240),substrb(dump(max(&quot;DELETES&quot;),16,0,64),1,240),to_char(count(&quot;FLAGS&quot;)),substrb(dump(min(&quot;FLAGS&quot;),16,0,64),1,240),substrb(dump(max(&quot;FLAGS&quot;),16,0,64),1,
+240),to_char(count(&quot;TIMESTAMP&quot;)),substrb(dump(min(&quot;TIMESTAMP&quot;),16,0,64),1,240),substrb(dump(max(&quot;TIMESTAMP&quot;),16,0,64),1,240),count(rowidtochar(rowid)) from &quot;SYS&quot;.&quot;OPTSTAT_SNAPSHOT$&quot; t  /* TOPN,NIL,NIL
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+/* SQL Analyze(1) */ select /*+  full(t)    no_parallel(t) no_parallel_index(t) dbms_stats cursor_sharing_exact use_weak_name_resl dynamic_sampling(0) no_monitoring xmlindex_sel_idx_tbl opt_param('opt
+imizer_inmemory_aware' 'false') no_substrb_pad  */to_char(count(&quot;OBJ#&quot;)),substrb(dump(min(&quot;OBJ#&quot;),16,0,64),1,240),substrb(dump(max(&quot;OBJ#&quot;),16,0,64),1,240),to_char(count(&quot;INSERTS&quot;)),substrb(dump(min(&quot;I
+NSERTS&quot;),16,0,64),1,240),substrb(dump(max(&quot;INSERTS&quot;),16,0,64),1,240),to_char(count(&quot;UPDATES&quot;)),substrb(dump(min(&quot;UPDATES&quot;),16,0,64),1,240),substrb(dump(max(&quot;UPDATES&quot;),16,0,64),1,240),to_char(count(&quot;DE
+LETES&quot;)),substrb(dump(min(&quot;DELETES&quot;),16,0,64),1,240),substrb(dump(max(&quot;DELETES&quot;),16,0,64),1,240),to_char(count(&quot;TIMESTAMP&quot;)),substrb(dump(min(&quot;TIMESTAMP&quot;),16,0,64),1,240),substrb(dump(max(&quot;TIMESTAMP&quot;)
+,16,0,64),1,240),to_char(count(&quot;FLAGS&quot;)),substrb(dump(min(&quot;FLAGS&quot;),16,0,64),1,240),substrb(dump(max(&quot;FLAGS&quot;),16,0,64),1,240),to_char(count(&quot;DROP_SEGMENTS&quot;)),substrb(dump(min(&quot;DROP_SEGMENTS&quot;),16,0,64),
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM sys.snap_refop$  WHERE operation# = 21 AND(sowner, vname) in  (SELECT u.name, o.name   FROM sys.snap_reftime$ r, sys.obj$ o, sys.user$ u   WHERE r.vname=o.name AND r.sowner=u.name AND o.ow
+ner#= u.user# AND        o.type#=42 AND r.masobj# = :1)
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+select /* QOSH:DROP_STAT_HIST_PARTS */ partition_name, high_value from (select partition_name, high_value, rownum rn       from (select PARTITION_NAME, HIGH_VALUE             from dba_tab_partitions
+           where table_name = :1               and table_owner = 'SYS'               and partition_name &lt;&gt; 'P_PERMANENT'       order by partition_position asc)) v where rn &lt; :2
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM SYS.LTXID_TRANS LT WHERE LT.DB_ID != :1
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+<tr>
+<td>
+SYS
+</td>
+<td>
+DELETE FROM SYS.LTXID_TRANS LT WHERE LT.INST_ID = :1   AND LT.DB_ID = :2   AND NOT EXISTS (  SELECT 1    FROM SYS.X$KJAC_ID I   WHERE LT.INST_ID      = I.KJAC_INSTID     AND LT.DB_ID        = I.KJAC_D
+BID     AND LT.SERVICE_ID   = I.KJAC_SVCID     AND LT.SESSION_GUID = I.KJAC_SGUID)   AND EXISTS (  SELECT 1    FROM SERVICE$ S   WHERE LT.SERVICE_ID = S.SERVICE_ID     AND SYS_EXTRACT_UTC(LT.START_DAT
+E) &lt; SYS_EXTRACT_UTC(SYSTIMESTAMP) -                          NUMTODSINTERVAL(S.RETENTION_TIMEOUT, 'SECOND'))
+</td>
+<td>
+29-JAN-26
+</td>
+</tr>
+</table>
+<p>

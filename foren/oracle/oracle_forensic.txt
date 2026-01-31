@@ -1,0 +1,234 @@
+-- =========================================================
+-- ORACLE FORENSIC AUDIT SCRIPT
+-- Purpose : Incident Response / Digital Forensics
+-- Author  : Forensic Investigator
+-- Scope   : Login, Privilege Abuse, DDL, Export, Data Access
+-- =========================================================
+
+
+SET DEFINE OFF
+SET VERIFY OFF
+
+SET PAGES 50000
+SET LINES 200
+SET LONG 100000
+SET TRIMSPOOL ON
+SET FEEDBACK OFF
+SET MARKUP HTML ON
+
+SPOOL oracle_forensic_audit.html
+
+SPOOL oracle_forensic_audit.html
+
+PROMPT =====================================================
+PROMPT DATABASE & INSTANCE IDENTIFICATION
+PROMPT =====================================================
+
+SELECT
+  d.name           AS db_name,
+  d.dbid,
+  i.instance_name,
+  i.host_name,
+  i.startup_time
+FROM v$database d, v$instance i;
+
+PROMPT =====================================================
+PROMPT LOGIN / LOGOUT / FAILED LOGIN
+PROMPT =====================================================
+
+SELECT
+  event_timestamp,
+  dbusername,
+  os_username,
+  userhost,
+  client_program_name,
+  client_identifier,
+  authentication_type,
+  action_name,
+  return_code
+FROM unified_audit_trail
+WHERE action_name IN ('LOGON','LOGOFF')
+ORDER BY event_timestamp DESC;
+
+PROMPT =====================================================
+PROMPT FAILED LOGIN ATTEMPTS
+PROMPT =====================================================
+
+SELECT
+  event_timestamp,
+  dbusername,
+  os_username,
+  userhost,
+  client_program_name,
+  return_code
+FROM unified_audit_trail
+WHERE action_name = 'LOGON'
+  AND return_code <> 0
+ORDER BY event_timestamp DESC;
+
+PROMPT =====================================================
+PROMPT LOGIN SUMMARY PER USER & HOST
+PROMPT =====================================================
+
+SELECT
+  dbusername,
+  userhost,
+  COUNT(*) AS total_login
+FROM unified_audit_trail
+WHERE action_name = 'LOGON'
+GROUP BY dbusername, userhost
+ORDER BY total_login DESC;
+
+PROMPT =====================================================
+PROMPT PRIVILEGE ESCALATION & ACCOUNT CHANGES
+PROMPT =====================================================
+
+SELECT
+  event_timestamp,
+  dbusername,
+  action_name,
+  object_schema,
+  object_name,
+  userhost,
+  return_code,
+  sql_text
+FROM unified_audit_trail
+WHERE action_name IN (
+  'GRANT ROLE',
+  'GRANT PRIVILEGE',
+  'ALTER USER',
+  'CREATE USER',
+  'DROP USER',
+  'ALTER SYSTEM'
+)
+ORDER BY event_timestamp DESC;
+
+PROMPT =====================================================
+PROMPT DDL DESTRUCTIVE ACTIVITY
+PROMPT =====================================================
+SELECT
+  event_timestamp,
+  dbusername,
+  action_name,
+  object_schema,
+  object_name,
+  userhost,
+  client_program_name,
+  return_code,
+  sql_text
+FROM unified_audit_trail
+WHERE action_name IN (
+  'GRANT ROLE',
+  'GRANT PRIVILEGE',
+  'ALTER USER',
+  'CREATE USER',
+  'DROP USER',
+  'ALTER SYSTEM'
+)
+ORDER BY event_timestamp DESC;
+
+SELECT
+  event_timestamp,
+  dbusername,
+  action_name,
+  object_schema,
+  object_name,
+  userhost,
+  sql_text
+FROM unified_audit_trail
+WHERE action_name LIKE 'DROP%'
+   OR action_name LIKE 'TRUNCATE%'
+   OR action_name LIKE 'ALTER TABLE'
+ORDER BY event_timestamp DESC;
+
+PROMPT =====================================================
+PROMPT EXPORT / DATA EXFILTRATION
+PROMPT =====================================================
+
+SELECT
+  event_timestamp,
+  dbusername,
+  action_name,
+  userhost,
+  sql_text
+FROM unified_audit_trail
+WHERE action_name IN ('EXPORT','DATAPUMP EXPORT')
+ORDER BY event_timestamp DESC;
+
+PROMPT =====================================================
+PROMPT SENSITIVE DATA ACCESS (IF AUDITED)
+PROMPT =====================================================
+
+SELECT
+  event_timestamp,
+  dbusername,
+  object_schema,
+  object_name,
+  action_name,
+  sql_text
+FROM unified_audit_trail
+WHERE action_name = 'SELECT'
+  AND object_name IN (
+    'ACCOUNT',
+    'TRANSACTION',
+    'LEDGER',
+    'CUSTOMER',
+    'BALANCE'
+  )
+ORDER BY event_timestamp DESC;
+
+PROMPT =====================================================
+PROMPT CURRENT PRIVILEGED USERS
+PROMPT =====================================================
+
+SELECT grantee, granted_role, admin_option
+FROM dba_role_privs
+WHERE granted_role IN ('DBA','SYSDBA')
+ORDER BY grantee;
+
+SELECT grantee, privilege
+FROM dba_sys_privs
+WHERE privilege IN (
+  'ALTER SYSTEM',
+  'CREATE ANY TABLE',
+  'DROP ANY TABLE',
+  'GRANT ANY PRIVILEGE'
+)
+ORDER BY grantee;
+
+PROMPT =====================================================
+PROMPT ACTIVE SESSIONS (VOLATILE - SUPPORTING EVIDENCE)
+PROMPT =====================================================
+
+SELECT
+  s.sid,
+  s.serial#,
+  s.username,
+  s.machine,
+  s.program,
+  s.logon_time,
+  q.sql_text
+FROM v$session s
+LEFT JOIN v$sql q ON s.sql_id = q.sql_id
+WHERE s.username IS NOT NULL
+ORDER BY s.logon_time;
+
+PROMPT =====================================================
+PROMPT RECENT DANGEROUS SQL (VOLATILE)
+PROMPT =====================================================
+
+SELECT
+  parsing_schema_name,
+  sql_text,
+  last_active_time
+FROM v$sql
+WHERE sql_text LIKE '%DROP%'
+   OR sql_text LIKE '%DELETE%'
+   OR sql_text LIKE '%TRUNCATE%'
+ORDER BY last_active_time DESC;
+
+SPOOL OFF
+SET MARKUP HTML OFF
+SET FEEDBACK ON
+
+-- ================= END OF FORENSIC SCRIPT =================
