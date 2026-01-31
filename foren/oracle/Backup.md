@@ -1,9 +1,4 @@
-Siap 👍
-Berikut **versi Markdown (.md)** yang rapi dan siap disimpan sebagai file dokumentasi (misalnya `oracle_19c_backup_windows.md`).
 
----
-
-```md
 # Oracle 19c – Daily Backup & Housekeeping (Windows)
 
 Dokumentasi ini berisi **paket batch file DBA** yang rapi dan production-style untuk **Oracle 19c di Windows**.  
