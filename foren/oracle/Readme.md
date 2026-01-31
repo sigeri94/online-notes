@@ -3,8 +3,6 @@
 
 Dokumentasi langkah-langkah setup **Oracle Database 19c** di Windows, pembuatan database **SAWITDB**, user, schema contoh perkebunan sawit, backup (Data Pump & RMAN), serta auditing.
 
-script rotasi log dan backup
-https://chatgpt.com/s/t_697d672d9ea48191bc0ae4e6c28da089
 ---
 
 ## 1. Environment Variable
