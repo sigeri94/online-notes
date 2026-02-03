@@ -143,7 +143,16 @@ WHERE event_timestamp >= TO_TIMESTAMP('2024-12-04 00:00:00', 'YYYY-MM-DD HH24:MI
   AND action_name IN ('LOGON', 'LOGOFF')
 ORDER BY event_timestamp ASC;
 ```
-
+```sql
+SELECT 
+TO_CHAR(event_timestamp,'YYYY-MM-DD HH24:MI:SS') event_time,
+    dbusername,
+    userhost,
+    os_username,
+    client_program_name,ACTION_NAME,sql_text
+FROM unified_audit_trail
+WHERE event_timestamp >= TO_TIMESTAMP('2025-10-01 00:00:00','YYYY-MM-DD HH24:MI:SS');
+```
 ---
 
 ## 8. Validasi Forensik
