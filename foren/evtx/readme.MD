@@ -114,6 +114,11 @@ Mendeteksi:
 * Credential misconfiguration
 * Account abuse
 
+```powershell
+LogParser.exe "SELECT a.TimeGenerated AS FailedLoginTime, b.TimeGenerated AS SuccessfulLoginTime, a.Message AS FailedLoginMessage, b.Message AS
+SuccessfulLoginMessage INTO CorrelatedLogins.csv FROM FailedLogins.evtx a JOIN SuccessfulLogins.evtx b ON a.User=b.User WHERE a.EventID=4625 AND b.EventID=4624" -i:EVT -o:CSV
+```
+
 ### Statistik berdasarkan Source IP
 
 ```powershell
