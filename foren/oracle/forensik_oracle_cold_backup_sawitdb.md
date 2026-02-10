@@ -50,7 +50,7 @@ SQLNET.AUTHENTICATION_SERVICES= (NONE)
 ```
 reset password sys pastikan remote login pass exclusive
 ```sql
-SQL> ALTER USER sys IDENTIFIED BY "PasswordKuat1#";
+SQL> ALTER USER sys IDENTIFIED BY "Password1$";
 
 SQL> show parameter remote_login_passwordfile;
 
@@ -116,8 +116,10 @@ SAWITDB =
       (SERVICE_NAME = SAWITDB)
     )
   )
-
-
+```
+Testing
+```sql
+C:\Users\batman>sqlplus sys/"Password1$"@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.0.206)(PORT=1521))(CONNECT_DATA=(SID=RTSX))) as sysdba
 ```
 ### 3.4 Set Environment Variable
 
