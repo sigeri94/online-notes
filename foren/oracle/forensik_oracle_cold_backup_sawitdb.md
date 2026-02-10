@@ -121,59 +121,24 @@ Testing
 ```sql
 C:\Users\batman>sqlplus sys/"Password1$"@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.0.206)(PORT=1521))(CONNECT_DATA=(SID=RTSX))) as sysdba
 ```
-### 3.4 Set Environment Variable
+### 4 Setup DB
 
 ```bat
 set ORACLE_SID=SAWITDB
 ```
-
-Pastikan:
-- `ORACLE_HOME` benar
-- Path `init.ora` sesuai dengan lokasi hasil copy
-
----
-
-## 4. Proses Startup Database Forensik
-
-Masuk ke SQL*Plus sebagai SYSDBA:
-
 ```sql
 sqlplus / as sysdba
-```
-
-### 4.1 Startup Nomount
-
-```sql
 startup nomount pfile='D:\ORACLEDB\admin\SAWITDB\pfile\init.ora.10112024102819';
-```
-
-### 4.2 Mount Database
-
-```sql
 alter database mount;
-```
-
-### 4.3 Open Database
-
-```sql
 alter database open;
 ```
-
-> 🔎 Jika tujuan hanya analisa metadata dan audit, **mount saja sudah cukup**.
-
----
-
-## 5. Pembuatan SPFILE (Opsional)
-
-Untuk stabilitas instance forensik:
-
+Optional
 ```sql
 create spfile from pfile='D:\ORACLEDB\admin\SAWITDB\pfile\init.ora.10112024102819';
 ```
-
 ---
 
-## 6. Setup SQL*Plus untuk Analisa Forensik
+## 5. Query Audit trail
 
 ```sql
 SET PAGES 50000
@@ -182,21 +147,7 @@ col dbusername for a15
 col userhost   for a30
 col action_name for a15
 col event_timestamp for a25
-```
 
----
-
-## 7. Analisa Audit Login (Unified Audit Trail)
-
-### 7.1 Tujuan
-
-- Mengidentifikasi **login & logoff user**
-- Menentukan **waktu, user, dan host asal**
-- Korelasi dengan insiden fraud
-
-### 7.2 Query Audit Login
-
-```sql
 SELECT 
 TO_CHAR(event_timestamp,'YYYY-MM-DD HH24:MI:SS') event_time,
     dbusername,
