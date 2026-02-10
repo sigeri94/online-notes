@@ -119,7 +119,7 @@ SAWITDB =
 ```
 Testing
 ```sql
-C:\Users\batman>sqlplus sys/"Password1$"@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.0.206)(PORT=1521))(CONNECT_DATA=(SID=RTSX))) as sysdba
+C:\Users\batman>sqlplus sys/"Password1$"@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.0.206)(PORT=1521))(CONNECT_DATA=(SID=SAWITDB))) as sysdba
 ```
 ### 4 Setup DB
 
