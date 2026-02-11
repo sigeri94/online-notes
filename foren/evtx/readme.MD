@@ -36,7 +36,20 @@ Select-Object `
     @{Name="VNC_Data";Expression={
         ($_.Properties | ForEach-Object { $_.Value }) -join " | "
     }} |
-Export-Excel -Path .\VNC_Connections.xlsx -AutoSize
+Export-Excel -Path .\koko_log_vnc.xlsx -AutoSize
+
+
+Get-WinEvent -Path "$source\Application.evtx" |
+Where-Object { $_.ProviderName -like "*tvnserver*" } |
+Select-Object `
+    TimeCreated,
+    LevelDisplayName,
+    ProviderName,
+    LogName,
+    @{Name="tvnserver";Expression={
+        ($_.Properties | ForEach-Object { $_.Value }) -join " | "
+    }} |
+Export-Excel -Path .\koko_log_tvn.xlsx -AutoSize
 
 ```
 
