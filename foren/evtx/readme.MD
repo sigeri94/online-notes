@@ -28,6 +28,10 @@ Sort-Object TimeCreated |
 Export-Csv -Path ".\System_Log_Timeline.csv" -NoTypeInformation
 ```
 
+```powershell
+$ids=@(7045,7036,7040,7031,7034); $excludeServices=@("Background Intelligent Transfer Service","Windows Modules Installer"); Get-WinEvent -Path "$source\System.evtx" | Where-Object { $ids -contains $_.Id -and !($_.Id -eq 7040 -and $excludeServices -contains $_.Properties[0].Value) } | Select TimeCreated,Id,ProviderName,@{n='ServiceName';e={$_.Properties[0].Value}},Message | Sort TimeCreated
+
+```
 ---
 
 ## 🔎 Event ID 5038 – Code Integrity Failure
