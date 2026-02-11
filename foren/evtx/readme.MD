@@ -125,13 +125,161 @@ Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=4648 } | Where
 🔴 Proses seperti `powershell.exe`, `cmd.exe`, `wscript.exe` perlu investigasi.
 
 ---
-### Analisa powershell
+# Windows Event Log Extraction Playbook
+## DFIR / Incident Response Collection Guide
+
+Dokumen ini berisi perintah PowerShell untuk mengekstrak berbagai Windows Event Log penting
+untuk kebutuhan:
+
+- Incident Response
+- Threat Hunting
+- Timeline Reconstruction
+- Lateral Movement Detection
+- Persistence Detection
+
+Semua output diurutkan berdasarkan waktu (TimeCreated) dan diekspor ke CSV
+dengan nama file yang mencerminkan isi log.
+
+---
+
+# PowerShell Operational Log
+
+## Kegunaan
+
+- Script Block Logging (Event ID 4104)
+- Module Logging (4103)
+- Command execution detail
+- Suspicious encoded command detection
+
 ```powershell
-$source="artefak\winevt\Logs"
-Get-WinEvent -Path "$source\Microsoft-Windows-Shell-Core%4Operational.evtx" | Select-Object TimeCreated, Id, Message | Sort-Object TimeCreated | Export-Csv -Path ".\shell.csv" -NoTypeInformation
+Get-WinEvent -Path "$source\Microsoft-Windows-PowerShell%4Operational.evtx" |
+Select-Object TimeCreated, Id, Message |
+Sort-Object TimeCreated |
+Export-Csv -Path ".\PowerShell_Operational_Log_Timeline.csv" -NoTypeInformation
+
+# PowerShell Classic Log
+
+## Kegunaan
+
+* Engine lifecycle
+* Basic execution logging
+* Host activity
+
+```powershell
+Get-WinEvent -Path "$source\Microsoft-Windows-PowerShell.evtx" |
+Select-Object TimeCreated, Id, Message |
+Sort-Object TimeCreated |
+Export-Csv -Path ".\PowerShell_Classic_Log_Timeline.csv" -NoTypeInformation
+```
+---
+# Shell-Core Operational Log
+
+## Kegunaan
+
+* Explorer activity
+* User interaction artifacts
+* File execution hints
+
+```powershell
+Get-WinEvent -Path "$source\Microsoft-Windows-Shell-Core%4Operational.evtx" |
+Select-Object TimeCreated, Id, Message |
+Sort-Object TimeCreated |
+Export-Csv -Path ".\Shell_Core_Operational_Timeline.csv" -NoTypeInformation
 ```
 
-## LogParser
+---
+
+# Task Scheduler Operational Log
+
+## Kegunaan
+
+* Scheduled task creation (Persistence)
+* Task modification
+* Task execution
+* Malicious scheduled task detection
+
+```powershell
+Get-WinEvent -Path "$source\Microsoft-Windows-TaskScheduler%4Operational.evtx" |
+Select-Object TimeCreated, Id, Message |
+Sort-Object TimeCreated |
+Export-Csv -Path ".\Scheduled_Task_Operational_Timeline.csv" -NoTypeInformation
+```
+
+---
+
+# Shell-Core AppDefaults Log
+
+## Kegunaan
+
+* Default application changes
+* File association changes
+* Potential hijacking detection
+
+```powershell
+Get-WinEvent -Path "$source\Microsoft-Windows-Shell-Core%4AppDefaults.evtx" |
+Select-Object TimeCreated, Id, Message |
+Sort-Object TimeCreated |
+Export-Csv -Path ".\Shell_AppDefaults_Timeline.csv" -NoTypeInformation
+```
+
+---
+
+# WMI Activity Operational Log
+
+## Kegunaan
+
+* Remote WMI execution
+* Suspicious WMI queries
+* Lateral movement detection
+* Process creation via WMI
+
+## Command
+
+```powershell
+Get-WinEvent -Path "$source\Microsoft-Windows-WMI-Activity%4Operational.evtx" |
+Select-Object TimeCreated, Id, Message |
+Sort-Object TimeCreated |
+Export-Csv -Path ".\WMI_Activity_Operational_Timeline.csv" -NoTypeInformation
+```
+
+---
+
+# WinRM Operational Log
+
+## Kegunaan
+
+* Remote PowerShell sessions
+* WinRM-based lateral movement
+* Authentication over WSMan
+
+```powershell
+Get-WinEvent -Path "$source\Microsoft-Windows-WinRM%4Operational.evtx" |
+Select-Object TimeCreated, Id, Message |
+Sort-Object TimeCreated |
+Export-Csv -Path ".\WinRM_Operational_Timeline.csv" -NoTypeInformation
+```
+
+---
+
+# Program Telemetry Log
+
+## Kegunaan
+
+* Program execution artifacts
+* Malware execution detection
+* Suspicious binary tracking
+* Timeline enrichment
+
+```powershell
+Get-WinEvent -Path "$source\Microsoft-Windows-Application-Experience%4Program-Telemetry.evtx" |
+Select-Object TimeCreated, Id, LevelDisplayName, ProviderName, Message |
+Sort-Object TimeCreated |
+Export-Csv ".\Program_Execution_Telemetry_Timeline.csv" -NoTypeInformation
+```
+
+---
+
+# LogParser
 
 ```powershell
 LogParser.exe "SELECT a.TimeGenerated AS FailedLoginTime, b.TimeGenerated AS SuccessfulLoginTime, a.Message AS FailedLoginMessage, b.Message AS
