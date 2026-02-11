@@ -297,7 +297,21 @@ Select-Object TimeCreated, Id, LevelDisplayName, ProviderName, Message |
 Sort-Object TimeCreated |
 Export-Csv ".\Program_Execution_Telemetry_Timeline.csv" -NoTypeInformation
 ```
+---
+# Antivirus
+```powershell
+Get-WinEvent -Path "$source\Kaspersky Endpoint Security.evtx" |
+Select TimeCreated, Id, LevelDisplayName, Message |
+Sort TimeCreated |
+Export-Csv ".\Kaspersky_Endpoint_Timeline.csv" -NoTypeInformation
 
+Get-WinEvent -Path "$source\Kaspersky Event Log.evtx" |
+Select TimeCreated, Id, LevelDisplayName, Message |
+Sort TimeCreated |
+Export-Csv ".\Kaspersky_EventLog_Timeline.csv" -NoTypeInformation
+```
+
+---
 ---
 
 # 7 Log Correlation with LogParser
