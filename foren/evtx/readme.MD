@@ -1,32 +1,15 @@
----
-
 # Windows DFIR Log Collection & Analysis Playbook
 
-Panduan ini digunakan untuk:
-
-* Incident Response
-* Threat Hunting
-* Timeline Reconstruction
-* Persistence Detection
-* Lateral Movement Investigation
-
-Semua output diurutkan berdasarkan `TimeCreated` dan diekspor ke CSV dengan nama yang deskriptif.
-
----
-
-# 1️⃣ Initial Preparation
+# 1 Initial Preparation
 
 ## Set Execution Policy
 
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser -Force
 ```
-
-Digunakan agar script analisa dapat berjalan tanpa hambatan policy.
-
 ---
 
-# 2️⃣ Global Variable
+# 2 Global Variable
 
 ```powershell
 $source = "artefak\winevt\Logs"
@@ -34,7 +17,7 @@ $source = "artefak\winevt\Logs"
 
 ---
 
-# 3️⃣ System Log Analysis
+# 3 System Log Analysis
 
 ## Export Full System Log Timeline
 
@@ -55,7 +38,7 @@ Mendeteksi:
 * Binary unsigned
 * Potensi kernel compromise
 
-⚠️ Event dari EDR/AV legitimate (contoh: SentinelOne) dikecualikan.
+ Event dari EDR/AV legitimate (contoh: SentinelOne) dikecualikan.
 
 ```powershell
 Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=5038 } |
@@ -67,7 +50,7 @@ Select-Object TimeCreated,
 
 ---
 
-# 4️⃣ Application Log Analysis
+# 4 Application Log Analysis
 
 ## Export Full Application Log
 
@@ -139,7 +122,7 @@ Export-Excel -Path ".\TightVNC_Application_Events.xlsx" -AutoSize
 
 ---
 
-# 5️⃣ Security Log Analysis
+# 5 Security Log Analysis
 
 ---
 
@@ -172,7 +155,7 @@ Select-Object Count, Name
 | 5          | Service                     |
 | 7          | Unlock Workstation          |
 
-📌 **Logon Type 2 & 3 dianggap sensitif pada server**
+ **Logon Type 2 & 3 dianggap sensitif pada server**
 
 ---
 
@@ -209,8 +192,7 @@ Digunakan untuk mendeteksi:
 * Automation abuse
 * Credential harvesting attempt
 
-⚠️ Event dari `svchost.exe` umumnya normal
-🔴 Fokus pada proses non-system seperti:
+ Event dari `svchost.exe` umumnya normal, Fokus pada proses non-system seperti:
 
 * powershell.exe
 * cmd.exe
@@ -226,7 +208,7 @@ Select-Object TimeCreated,
 
 ---
 
-# 6️⃣ PowerShell & Lateral Movement Logs
+# 6 PowerShell & Lateral Movement Logs
 
 ---
 
@@ -318,7 +300,7 @@ Export-Csv ".\Program_Execution_Telemetry_Timeline.csv" -NoTypeInformation
 
 ---
 
-# 7️⃣ Log Correlation with LogParser
+# 7 Log Correlation with LogParser
 
 ```powershell
 LogParser.exe "
@@ -339,9 +321,5 @@ Digunakan untuk:
 * Korelasi brute force → login sukses
 * Credential stuffing detection
 * Suspicious authentication chain
-
----
-
-# End of Playbook
 
 ---
