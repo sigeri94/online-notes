@@ -1,274 +1,313 @@
-### Copy sysvol 
-```powershell
-robocopy "K:\Windows\SYSVOL\domain\Policies" "C:\foren\sysvol" /E /COPYALL /R:0 /W:0 /XJ
-```
+---
 
-# Windows Event Log Extraction – Oracle & Shell Core
+# Windows DFIR Log Collection & Analysis Playbook
 
-### Persiapan Execution Policy
+Panduan ini digunakan untuk:
+
+* Incident Response
+* Threat Hunting
+* Timeline Reconstruction
+* Persistence Detection
+* Lateral Movement Investigation
+
+Semua output diurutkan berdasarkan `TimeCreated` dan diekspor ke CSV dengan nama yang deskriptif.
+
+---
+
+# 1️⃣ Initial Preparation
+
+## Set Execution Policy
 
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser -Force
-````
+```
+
+Digunakan agar script analisa dapat berjalan tanpa hambatan policy.
+
 ---
 
-### Analisa Log System
+# 2️⃣ Global Variable
+
 ```powershell
-$source="artefak\winevt\Logs"
-Get-WinEvent -Path "$source\System.evtx" | Select-Object TimeCreated, Id, ProviderName,Message| Sort-Object TimeCreated |Export-Csv -Path ".\system.csv" -NoTypeInformation
+$source = "artefak\winevt\Logs"
 ```
 
-## Analisa (Event ID 5038)
+---
+
+# 3️⃣ System Log Analysis
+
+## Export Full System Log Timeline
+
+```powershell
+Get-WinEvent -Path "$source\System.evtx" |
+Select-Object TimeCreated, Id, ProviderName, Message |
+Sort-Object TimeCreated |
+Export-Csv -Path ".\System_Log_Timeline.csv" -NoTypeInformation
+```
+
+---
+
+## 🔎 Event ID 5038 – Code Integrity Failure
+
 Mendeteksi:
+
 * Driver tidak sah
 * Binary unsigned
-* Potensi kernel-level compromise
-Event dari **EDR/AV legitimate (SentinelOne)** dikecualikan.
+* Potensi kernel compromise
+
+⚠️ Event dari EDR/AV legitimate (contoh: SentinelOne) dikecualikan.
 
 ```powershell
-$source="artefak\winevt\Logs"
-Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=5038 } | Where-Object {
-    $_.Properties[0].Value -notmatch "SentinelOne"
-} | Select TimeCreated, @{Name='File';Expression={$_.Properties[0].Value}}, @{Name='Process';Expression={$_.Properties[1].Value}}
+Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=5038 } |
+Where-Object { $_.Properties[0].Value -notmatch "SentinelOne" } |
+Select-Object TimeCreated,
+    @{Name='File';Expression={$_.Properties[0].Value}},
+    @{Name='Process';Expression={$_.Properties[1].Value}}
 ```
 
-### Analisa Log Aplikasi
+---
+
+# 4️⃣ Application Log Analysis
+
+## Export Full Application Log
+
 ```powershell
-$source="artefak\winevt\Logs"
-Get-WinEvent -Path "$source\Application.evtx" | Select-Object TimeCreated, Id, ProviderName,Message| Sort-Object TimeCreated |Export-Csv -Path ".\app.csv" -NoTypeInformation
-$ids = @(1033,1040,1042); Get-WinEvent -Path "$source\Application.evtx" | Where-Object { $ids -contains $_.Id } | Select TimeCreated, Id, ProviderName, Message | Sort TimeCreated
+Get-WinEvent -Path "$source\Application.evtx" |
+Select-Object TimeCreated, Id, ProviderName, Message |
+Sort-Object TimeCreated |
+Export-Csv -Path ".\Application_Log_Timeline.csv" -NoTypeInformation
 ```
 
-## Analisa Log Oracle
+---
+
+## Filter Specific Application Event IDs
+
+```powershell
+$ids = @(1033,1040,1042)
+
+Get-WinEvent -Path "$source\Application.evtx" |
+Where-Object { $ids -contains $_.Id } |
+Select-Object TimeCreated, Id, ProviderName, Message |
+Sort-Object TimeCreated
+```
+
+---
+
+## Oracle Log Analysis
+
 ```powershell
 Get-WinEvent -Path "$source\Application.evtx" |
 Where-Object { $_.ProviderName -like "Oracle*" } |
 Select-Object TimeCreated, Id, ProviderName,
     @{Name="OracleData";Expression={$_.Properties[0].Value}} |
-Export-Csv oracle_events.csv -NoTypeInformation -Encoding UTF8
+Export-Csv ".\Oracle_Application_Events.csv" -NoTypeInformation -Encoding UTF8
 ```
-## Analisa Log VNC
+
+---
+
+## VNC Log Analysis
 
 ```powershell
 Get-WinEvent -Path "$source\Application.evtx" |
 Where-Object { $_.ProviderName -like "*VNC*" } |
-Select-Object `
-    TimeCreated,
+Select-Object TimeCreated,
     LevelDisplayName,
     ProviderName,
     LogName,
     @{Name="VNC_Data";Expression={
         ($_.Properties | ForEach-Object { $_.Value }) -join " | "
     }} |
-Export-Excel -Path .\koko_log_vnc.xlsx -AutoSize
+Export-Excel -Path ".\VNC_Application_Events.xlsx" -AutoSize
 ```
-## Analisa Log TightVNC
+
+---
+
+## TightVNC Log Analysis
 
 ```powershell
 Get-WinEvent -Path "$source\Application.evtx" |
 Where-Object { $_.ProviderName -like "*tvnserver*" } |
-Select-Object `
-    TimeCreated,
+Select-Object TimeCreated,
     LevelDisplayName,
     ProviderName,
     LogName,
-    @{Name="tvnserver";Expression={
+    @{Name="TightVNC_Data";Expression={
         ($_.Properties | ForEach-Object { $_.Value }) -join " | "
     }} |
-Export-Excel -Path .\koko_log_tvn.xlsx -AutoSize
+Export-Excel -Path ".\TightVNC_Application_Events.xlsx" -AutoSize
 ```
 
-## Analisa Log Security
+---
 
-##Prosess Creation
+# 5️⃣ Security Log Analysis
+
+---
+
+## Process Creation – Event ID 4688
+
 ```powershell
- Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=4688 } | select-object TimeCreated,id, LevelDisplayName, Message | Sort-Object TimeCreated | Export-Csv .\koko_4688.csv
+Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=4688 } |
+Select-Object TimeCreated, Id, LevelDisplayName, Message |
+Sort-Object TimeCreated |
+Export-Csv ".\Security_ProcessCreation_4688_Timeline.csv" -NoTypeInformation
 ```
-### Statistik Logon
-```powershell
-Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=4624 } | Group-Object { $_.Properties[8].Value } | Select Count, Name
-````
+
+---
+
+## Logon Statistics – Event ID 4624
 
 ```powershell
-$source="artefak\winevt\Logs"
-Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=4625 } | Group-Object { $_.Properties[19].Value } | Sort Count -Descending | Select Count, Name
+Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=4624 } |
+Group-Object { $_.Properties[8].Value } |
+Select-Object Count, Name
 ```
 
-### Interpretasi Logon Type
+### Logon Type Reference
 
-| Logon Type | Arti                        |
+| Logon Type | Description                 |
 | ---------- | --------------------------- |
 | 2          | Interactive (Console / RDP) |
 | 3          | Network                     |
 | 4          | Batch (Scheduled Task)      |
 | 5          | Service                     |
-| 7          | Unlock workstation          |
+| 7          | Unlock Workstation          |
 
 📌 **Logon Type 2 & 3 dianggap sensitif pada server**
 
-```powershell
-$source="artefak\winevt\Logs"
-Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=4624 } | Where-Object { $_.Properties[8].Value -in 2,3 } | Select TimeCreated, @{Name='LogonType';Expression={$_.Properties[8].Value}}, @{Name='Account';Expression={$_.Properties[5].Value}}, @{Name='SourceIP';Expression={$_.Properties[18].Value}}
-```
-
-## Explicit Credential Usage (Event ID 4648)
-
-Mengidentifikasi penggunaan credential eksplisit (`runas`, service account,automation).
-
-⚠️ Event dari `svchost.exe` umumnya **normal**
-⚠️ Fokus pada proses non-system
-
-```powershell
-$source="artefak\winevt\Logs"
-Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=4648 } | Where-Object { $_.Properties[11].Value -notmatch "svchost.exe" } | Select TimeCreated, @{Name='TargetAccount';Expression={$_.Properties[5].Value}}, @{Name='CallingProcess';Expression={$_.Properties[11].Value}}
-```
-🔴 Proses seperti `powershell.exe`, `cmd.exe`, `wscript.exe` perlu investigasi.
-
 ---
-# Windows Event Log Extraction Playbook
-## DFIR / Incident Response Collection Guide
 
-Dokumen ini berisi perintah PowerShell untuk mengekstrak berbagai Windows Event Log penting
-untuk kebutuhan:
+## Filter Sensitive Logon (Type 2 & 3)
 
-- Incident Response
-- Threat Hunting
-- Timeline Reconstruction
-- Lateral Movement Detection
-- Persistence Detection
-
-Semua output diurutkan berdasarkan waktu (TimeCreated) dan diekspor ke CSV
-dengan nama file yang mencerminkan isi log.
+```powershell
+Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=4624 } |
+Where-Object { $_.Properties[8].Value -in 2,3 } |
+Select-Object TimeCreated,
+    @{Name='LogonType';Expression={$_.Properties[8].Value}},
+    @{Name='Account';Expression={$_.Properties[5].Value}},
+    @{Name='SourceIP';Expression={$_.Properties[18].Value}}
+```
 
 ---
 
-# PowerShell Operational Log
+## Failed Logon Statistics – Event ID 4625
 
-## Kegunaan
+```powershell
+Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=4625 } |
+Group-Object { $_.Properties[19].Value } |
+Sort-Object Count -Descending |
+Select-Object Count, Name
+```
 
-- Script Block Logging (Event ID 4104)
-- Module Logging (4103)
-- Command execution detail
-- Suspicious encoded command detection
+---
+
+## Explicit Credential Usage – Event ID 4648
+
+Digunakan untuk mendeteksi:
+
+* `runas`
+* Service account misuse
+* Automation abuse
+* Credential harvesting attempt
+
+⚠️ Event dari `svchost.exe` umumnya normal
+🔴 Fokus pada proses non-system seperti:
+
+* powershell.exe
+* cmd.exe
+* wscript.exe
+
+```powershell
+Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=4648 } |
+Where-Object { $_.Properties[11].Value -notmatch "svchost.exe" } |
+Select-Object TimeCreated,
+    @{Name='TargetAccount';Expression={$_.Properties[5].Value}},
+    @{Name='CallingProcess';Expression={$_.Properties[11].Value}}
+```
+
+---
+
+# 6️⃣ PowerShell & Lateral Movement Logs
+
+---
+
+## PowerShell Operational
 
 ```powershell
 Get-WinEvent -Path "$source\Microsoft-Windows-PowerShell%4Operational.evtx" |
 Select-Object TimeCreated, Id, Message |
 Sort-Object TimeCreated |
-Export-Csv -Path ".\PowerShell_Operational_Log_Timeline.csv" -NoTypeInformation
+Export-Csv ".\PowerShell_Operational_Timeline.csv" -NoTypeInformation
+```
 
-# PowerShell Classic Log
+---
 
-## Kegunaan
-
-* Engine lifecycle
-* Basic execution logging
-* Host activity
+## PowerShell Classic
 
 ```powershell
 Get-WinEvent -Path "$source\Microsoft-Windows-PowerShell.evtx" |
 Select-Object TimeCreated, Id, Message |
 Sort-Object TimeCreated |
-Export-Csv -Path ".\PowerShell_Classic_Log_Timeline.csv" -NoTypeInformation
-```
----
-# Shell-Core Operational Log
-
-## Kegunaan
-
-* Explorer activity
-* User interaction artifacts
-* File execution hints
-
-```powershell
-Get-WinEvent -Path "$source\Microsoft-Windows-Shell-Core%4Operational.evtx" |
-Select-Object TimeCreated, Id, Message |
-Sort-Object TimeCreated |
-Export-Csv -Path ".\Shell_Core_Operational_Timeline.csv" -NoTypeInformation
+Export-Csv ".\PowerShell_Classic_Timeline.csv" -NoTypeInformation
 ```
 
 ---
 
-# Task Scheduler Operational Log
-
-## Kegunaan
-
-* Scheduled task creation (Persistence)
-* Task modification
-* Task execution
-* Malicious scheduled task detection
-
-```powershell
-Get-WinEvent -Path "$source\Microsoft-Windows-TaskScheduler%4Operational.evtx" |
-Select-Object TimeCreated, Id, Message |
-Sort-Object TimeCreated |
-Export-Csv -Path ".\Scheduled_Task_Operational_Timeline.csv" -NoTypeInformation
-```
-
----
-
-# Shell-Core AppDefaults Log
-
-## Kegunaan
-
-* Default application changes
-* File association changes
-* Potential hijacking detection
-
-```powershell
-Get-WinEvent -Path "$source\Microsoft-Windows-Shell-Core%4AppDefaults.evtx" |
-Select-Object TimeCreated, Id, Message |
-Sort-Object TimeCreated |
-Export-Csv -Path ".\Shell_AppDefaults_Timeline.csv" -NoTypeInformation
-```
-
----
-
-# WMI Activity Operational Log
-
-## Kegunaan
-
-* Remote WMI execution
-* Suspicious WMI queries
-* Lateral movement detection
-* Process creation via WMI
-
-## Command
+## WMI Activity
 
 ```powershell
 Get-WinEvent -Path "$source\Microsoft-Windows-WMI-Activity%4Operational.evtx" |
 Select-Object TimeCreated, Id, Message |
 Sort-Object TimeCreated |
-Export-Csv -Path ".\WMI_Activity_Operational_Timeline.csv" -NoTypeInformation
+Export-Csv ".\WMI_Activity_Timeline.csv" -NoTypeInformation
 ```
 
 ---
 
-# WinRM Operational Log
-
-## Kegunaan
-
-* Remote PowerShell sessions
-* WinRM-based lateral movement
-* Authentication over WSMan
+## WinRM Activity
 
 ```powershell
 Get-WinEvent -Path "$source\Microsoft-Windows-WinRM%4Operational.evtx" |
 Select-Object TimeCreated, Id, Message |
 Sort-Object TimeCreated |
-Export-Csv -Path ".\WinRM_Operational_Timeline.csv" -NoTypeInformation
+Export-Csv ".\WinRM_Operational_Timeline.csv" -NoTypeInformation
 ```
 
 ---
 
-# Program Telemetry Log
+## Task Scheduler (Persistence)
 
-## Kegunaan
+```powershell
+Get-WinEvent -Path "$source\Microsoft-Windows-TaskScheduler%4Operational.evtx" |
+Select-Object TimeCreated, Id, Message |
+Sort-Object TimeCreated |
+Export-Csv ".\ScheduledTask_Operational_Timeline.csv" -NoTypeInformation
+```
 
-* Program execution artifacts
-* Malware execution detection
-* Suspicious binary tracking
-* Timeline enrichment
+---
+
+## Shell-Core Operational
+
+```powershell
+Get-WinEvent -Path "$source\Microsoft-Windows-Shell-Core%4Operational.evtx" |
+Select-Object TimeCreated, Id, Message |
+Sort-Object TimeCreated |
+Export-Csv ".\ShellCore_Operational_Timeline.csv" -NoTypeInformation
+```
+
+---
+
+## Shell AppDefaults
+
+```powershell
+Get-WinEvent -Path "$source\Microsoft-Windows-Shell-Core%4AppDefaults.evtx" |
+Select-Object TimeCreated, Id, Message |
+Sort-Object TimeCreated |
+Export-Csv ".\Shell_AppDefaults_Timeline.csv" -NoTypeInformation
+```
+
+---
+
+## Program Telemetry
 
 ```powershell
 Get-WinEvent -Path "$source\Microsoft-Windows-Application-Experience%4Program-Telemetry.evtx" |
@@ -279,11 +318,30 @@ Export-Csv ".\Program_Execution_Telemetry_Timeline.csv" -NoTypeInformation
 
 ---
 
-# LogParser
+# 7️⃣ Log Correlation with LogParser
 
 ```powershell
-LogParser.exe "SELECT a.TimeGenerated AS FailedLoginTime, b.TimeGenerated AS SuccessfulLoginTime, a.Message AS FailedLoginMessage, b.Message AS
-SuccessfulLoginMessage INTO CorrelatedLogins.csv FROM FailedLogins.evtx a JOIN SuccessfulLogins.evtx b ON a.User=b.User WHERE a.EventID=4625 AND b.EventID=4624" -i:EVT -o:CSV
+LogParser.exe "
+SELECT a.TimeGenerated AS FailedLoginTime,
+       b.TimeGenerated AS SuccessfulLoginTime,
+       a.Message AS FailedLoginMessage,
+       b.Message AS SuccessfulLoginMessage
+INTO Correlated_Logins.csv
+FROM FailedLogins.evtx a
+JOIN SuccessfulLogins.evtx b
+ON a.User = b.User
+WHERE a.EventID = 4625 AND b.EventID = 4624
+" -i:EVT -o:CSV
 ```
+
+Digunakan untuk:
+
+* Korelasi brute force → login sukses
+* Credential stuffing detection
+* Suspicious authentication chain
+
+---
+
+# End of Playbook
 
 ---
