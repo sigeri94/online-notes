@@ -43,26 +43,6 @@ $ids=@(7045,7036,7040,7031,7034); $excludeServices=@("Background Intelligent Tra
 ```
 ---
 
-## 🔎 Event ID 5038 – Code Integrity Failure
-
-Mendeteksi:
-
-* Driver tidak sah
-* Binary unsigned
-* Potensi kernel compromise
-
- Event dari EDR/AV legitimate (contoh: SentinelOne) dikecualikan.
-
-```powershell
-Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=5038 } |
-Where-Object { $_.Properties[0].Value -notmatch "SentinelOne" } |
-Select-Object TimeCreated,
-    @{Name='File';Expression={$_.Properties[0].Value}},
-    @{Name='Process';Expression={$_.Properties[1].Value}}
-```
-
----
-
 # 4 Application Log Analysis
 
 ## Export Full Application Log
@@ -146,6 +126,27 @@ Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=4688 } |
 Select-Object TimeCreated, Id, LevelDisplayName, Message |
 Sort-Object TimeCreated |
 Export-Csv ".\Security_ProcessCreation_4688_Timeline.csv" -NoTypeInformation
+```
+```powershell
+$ids=@(1102); Get-WinEvent -Path "$source\Security.evtx" | Where-Object { $ids -contains $_.Id } | Select TimeCreated, Id, @{n='ClearedByUser';e={$_.Properties[1].Value}}, Message | Sort TimeCreated | Format-List
+```
+---
+## 🔎 Event ID 5038 – Code Integrity Failure
+
+Mendeteksi:
+
+* Driver tidak sah
+* Binary unsigned
+* Potensi kernel compromise
+
+ Event dari EDR/AV legitimate (contoh: SentinelOne) dikecualikan.
+
+```powershell
+Get-WinEvent -FilterHashtable @{ Path="$source\Security.evtx"; Id=5038 } |
+Where-Object { $_.Properties[0].Value -notmatch "SentinelOne" } |
+Select-Object TimeCreated,
+    @{Name='File';Expression={$_.Properties[0].Value}},
+    @{Name='Process';Expression={$_.Properties[1].Value}}
 ```
 
 ---
