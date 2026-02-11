@@ -27,6 +27,15 @@ Select-Object TimeCreated, Id, ProviderName, Message |
 Sort-Object TimeCreated |
 Export-Csv -Path ".\System_Log_Timeline.csv" -NoTypeInformation
 ```
+```powershell
+$ids=@(
+7045,7036,7040,7031,7034,   # Service activity
+6005,6006,6008,41,1074,    # Boot/shutdown
+6,                         # Driver load
+7000,7009,7011,7022,7023,  # Service errors
+104                        # Log cleared
+)
+```
 
 ```powershell
 $ids=@(7045,7036,7040,7031,7034); $excludeServices=@("Background Intelligent Transfer Service","Windows Modules Installer"); Get-WinEvent -Path "$source\System.evtx" | Where-Object { $ids -contains $_.Id -and !($_.Id -eq 7040 -and $excludeServices -contains $_.Properties[0].Value) } | Select TimeCreated,Id,ProviderName,@{n='ServiceName';e={$_.Properties[0].Value}},Message | Sort TimeCreated
