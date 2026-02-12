@@ -19,6 +19,19 @@ $source = "artefak\winevt\Logs"
 
 # 3 System Log Analysis
 
+
+# 📌 System Log (System.evtx)
+
+| Event ID | Kategori    | Deskripsi                 | Nilai Forensik     |
+| -------- | ----------- | ------------------------- | ------------------ |
+| 7045     | Persistence | New service installed     | Malware service    |
+| 7036     | Service     | Service state changed     | Service start/stop |
+| 1074     | System      | Shutdown / Restart        | Forced reboot      |
+| 6005     | System      | Event log service started | Boot time marker   |
+| 6006     | System      | Event log stopped         | Shutdown marker    |
+
+---
+
 ## Export Full System Log Timeline
 
 ```powershell
@@ -119,6 +132,26 @@ Export-Excel -Path ".\TightVNC_Application_Events.xlsx" -AutoSize
 
 ---
 
+# 📌 Security Log (Security.evtx)
+
+| Event ID | Kategori       | Deskripsi                   | Nilai Forensik                   |
+| -------- | -------------- | --------------------------- | -------------------------------- |
+| 4624     | Authentication | Successful logon            | Deteksi login & lateral movement |
+| 4625     | Authentication | Failed logon                | Brute force / password spraying  |
+| 4634     | Authentication | Logoff                      | Timeline session                 |
+| 4648     | Authentication | Explicit credential use     | Pass-the-credential              |
+| 4672     | Privilege      | Special privileges assigned | Login dengan hak admin           |
+| 4688     | Process        | Process creation            | Eksekusi command                 |
+| 4697     | Persistence    | Service installed           | Persistence via service          |
+| 4698     | Persistence    | Scheduled task created      | Persistence via task             |
+| 4702     | Persistence    | Scheduled task modified     | Modifikasi task                  |
+| 4720     | Account Mgmt   | User account created        | Backdoor account                 |
+| 4726     | Account Mgmt   | User account deleted        | Anti-forensic                    |
+| 4732     | Account Mgmt   | User added to local group   | Privilege escalation             |
+| 4719     | Policy Change  | Audit policy changed        | Defense evasion                  |
+| 1102     | Anti-Forensic  | Security log cleared        | Log tampering                    |
+
+---
 ## Process Creation – Event ID 4688
 
 ```powershell
@@ -223,8 +256,65 @@ Select-Object TimeCreated,
 ---
 
 # 6 PowerShell & Lateral Movement Logs
+---
+
+# 📌 RDP Related Logs
+
+| Log Source                               | Event ID | Deskripsi          | Nilai Forensik  |
+| ---------------------------------------- | -------- | ------------------ | --------------- |
+| TerminalServices-LocalSessionManager     | 21       | RDP session logon  | Remote login    |
+| TerminalServices-RemoteConnectionManager | 1149     | RDP authentication | RDP brute force |
 
 ---
+
+# 📌 Task Scheduler
+
+| Event ID | Deskripsi       | Nilai Forensik           |
+| -------- | --------------- | ------------------------ |
+| 106      | Task registered | Persistence              |
+| 140      | Task updated    | Persistence modification |
+
+---
+
+# 📌 Windows Defender (Microsoft-Windows-Windows Defender/Operational)
+
+| Event ID | Kategori | Deskripsi            | Nilai Forensik  |
+| -------- | -------- | -------------------- | --------------- |
+| 5000     | AV       | Defender error       | AV failure      |
+| 5001     | AV       | Defender disabled    | Defense evasion |
+| 1116     | AV       | Malware detected     | IOC source      |
+| 1117     | AV       | Malware action taken | Quarantine info |
+
+---
+
+# 📌 PowerShell (Microsoft-Windows-PowerShell/Operational)
+
+| Event ID | Kategori  | Deskripsi            | Nilai Forensik            |
+| -------- | --------- | -------------------- | ------------------------- |
+| 400      | Execution | Engine started       | PowerShell usage          |
+| 403      | Execution | Engine stopped       | Timeline                  |
+| 4103     | Execution | Module logging       | Command detail            |
+| 4104     | Execution | Script block logging | Fileless attack detection |
+
+---
+
+# 📌 WMI Activity
+
+| Event ID | Deskripsi            | Nilai Forensik   |
+| -------- | -------------------- | ---------------- |
+| 5857     | WMI activity started | Lateral movement |
+| 5861     | WMI permanent event  | Persistence      |
+
+---
+
+# 📌 BITS Client
+
+| Event ID | Deskripsi        | Nilai Forensik   |
+| -------- | ---------------- | ---------------- |
+| 59       | BITS job created | Malware download |
+
+---
+
 
 ## PowerShell Operational
 
