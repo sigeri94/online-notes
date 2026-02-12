@@ -1,5 +1,19 @@
 # Windows DFIR Log Collection & Analysis Playbook
 
+# Analisa file created
+```powershell
+$start = Get-Date "12/03/2025";
+$end   = $start.AddDays(1);
+
+Get-ChildItem "F:\Users" -Recurse -File -Force -ErrorAction SilentlyContinue |
+Where-Object {
+    $_.CreationTime -ge $start -and $_.CreationTime -lt $end
+} |
+Select-Object FullName, CreationTime, LastWriteTime, Length |
+Sort-Object CreationTime |
+Export-Csv "C:\Users\batman\Desktop\analisa-03122025.csv" -NoTypeInformation -Encoding UTF8
+
+```
 # 1 Initial Preparation
 
 ## Set Execution Policy
