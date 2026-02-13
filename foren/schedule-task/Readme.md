@@ -1,4 +1,7 @@
 ```powershell
+Get-ChildItem "F:\windows\system32\tasks" -Recurse -File -Force -ErrorAction SilentlyContinue | Select-Object FullName, CreationTime, LastWriteTime, Length | Sort-Object CreationTime
+```
+```powershell
 # Folder Task Scheduler
 $taskFolder = "F:\Windows\System32\Tasks"
 
