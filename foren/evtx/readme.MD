@@ -272,13 +272,52 @@ Select-Object TimeCreated,
 # 6 PowerShell & Lateral Movement Logs
 ---
 
-# 📌 RDP Related Logs
+# 📌 RDP Related Logs 
 
-| Log Source                               | Event ID | Deskripsi          | Nilai Forensik  |
-| ---------------------------------------- | -------- | ------------------ | --------------- |
-| TerminalServices-LocalSessionManager     | 21       | RDP session logon  | Remote login    |
-| TerminalServices-RemoteConnectionManager | 1149     | RDP authentication | RDP brute force |
+TerminalServices-LocalSessionManager
 
+| ID | Arti               |
+| -- | ------------------ |
+| 21 | Session login      |
+| 22 | Shell start        |
+| 23 | Logoff             |
+| 24 | Disconnect         |
+| 25 | Reconnect          |
+| 39 | Disconnect manual  |
+| 40 | Session switch     |
+| 41 | Logoff saat switch |
+
+
+```powershell
+$source = "C:\forensic\logs"
+$log = "$source\TerminalServices-LocalSessionManager.evtx"
+
+$ids = @(21,22,23,24,25,39,40,41)
+
+Get-WinEvent -Path $log |
+Where-Object { $ids -contains $_.Id } |
+ForEach-Object {
+
+    $xml = [xml]$_.ToXml()
+
+    $user      = $xml.Event.UserData.EventXML.User
+    $sessionID = $xml.Event.UserData.EventXML.SessionID
+    $ip        = $xml.Event.UserData.EventXML.Address
+
+    # Bersihkan pesan agar satu baris
+    $desc = ($_.Message -replace "`r|`n"," ").Trim()
+
+    [PSCustomObject]@{
+        Time        = $_.TimeCreated.ToString("yyyy-MM-dd HH:mm:ss")
+        EventID     = $_.Id
+        User        = $user
+        SessionID   = $sessionID
+        SourceIP    = $ip
+        Description = $desc
+    }
+} | Sort-Object Time | Export-Csv "c:\users\batman\desktop\TS_Timeline.csv" -NoTypeInformation -Encoding UTF8
+
+```
 ---
 
 # 📌 Task Scheduler
