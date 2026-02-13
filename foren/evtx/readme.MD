@@ -318,6 +318,35 @@ ForEach-Object {
 } | Sort-Object Time | Export-Csv "c:\users\batman\desktop\TS_Timeline.csv" -NoTypeInformation -Encoding UTF8
 
 ```
+
+```powershell
+$source = "C:\forensic\logs"
+$log = "$source\TerminalServices-RemoteConnectionManager.evtx"
+
+$ids = @(1149,1146,1147,261,263)
+
+Get-WinEvent -Path $log |
+Where-Object { $ids -contains $_.Id } |
+ForEach-Object {
+
+    $xml = [xml]$_.ToXml()
+
+    $user = $xml.Event.UserData.Param1
+    $ip   = $xml.Event.UserData.Param3
+
+    $desc = ($_.Message -replace "`r|`n"," ").Trim()
+
+    [PSCustomObject]@{
+        Time        = $_.TimeCreated.ToString("yyyy-MM-dd HH:mm:ss")
+        EventID     = $_.Id
+        User        = $user
+        SourceIP    = $ip
+        Description = $desc
+    }
+} | Sort-Object Time |
+Export-Csv "$source\RDP_Connection_Timeline.csv" -NoTypeInformation -Encoding UTF8
+
+```
 ---
 
 # 📌 Task Scheduler
