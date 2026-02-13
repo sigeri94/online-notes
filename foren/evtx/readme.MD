@@ -83,11 +83,11 @@ Export-Csv -Path ".\Application_Log_Timeline.csv" -NoTypeInformation
 
 ---
 
-## Filter Specific Application Event IDs
+## Analisa instalasi
 
 ```powershell
-$ids = @(1033,1040,1042)
 
+$ids = @(1033,1034,1040,1042,11707,11724);
 Get-WinEvent -Path "$source\Application.evtx" |
 Where-Object { $ids -contains $_.Id } |
 Select-Object TimeCreated, Id, ProviderName, Message |
