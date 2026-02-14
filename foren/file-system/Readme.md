@@ -107,7 +107,12 @@ RECmd.exe -f NTUSER.DAT --kn RecentDocs --csv C:\DFIR\Case01\Output
 RECmd.exe -f NTUSER.DAT --kn OpenSavePidlMRU --csv C:\DFIR\Case01\Output
 RECmd.exe -f NTUSER.DAT --kn LastVisitedPidlMRU --csv C:\DFIR\Case01\Output
 ```
+```powershell
+volatility -f <memory_image> --profile=<profile> hivelist
 
+volatility -f <memory_image> --profile=<profile> userassist -i
+
+```
 ### Parsing Shellbags
 
 ```powershell
