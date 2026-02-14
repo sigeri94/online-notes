@@ -9,7 +9,46 @@ Dokumen ini berisi perintah PowerShell untuk:
 - Mengekspor artefak untuk analisis lanjutan
 
 ---
+```powershell
+Get-ChildItem C:\ -Recurse -Force -ErrorAction SilentlyContinue |
+Where-Object { $_.Attributes -match "Hidden|System" } |
+Select FullName, Attributes, Length |
+Export-Csv hidden_files.csv -NoTypeInformation
 
+$paths = @(
+"C:\ProgramData",
+"C:\Windows\Temp",
+"C:\Users",
+"C:\Windows\System32\Tasks",
+"c:\windows\tasks\"
+)
+
+foreach ($p in $paths) {
+    Get-ChildItem $p -Recurse -Force -ErrorAction SilentlyContinue |
+    Where-Object { $_.Attributes -match "Hidden" } |
+    Select FullName, Attributes, Length
+}
+
+Get-ChildItem C:\ -Recurse -Force -ErrorAction SilentlyContinue |
+ForEach-Object {
+    Get-Item $_.FullName -Stream * -ErrorAction SilentlyContinue
+}
+
+Get-ChildItem C:\ -Recurse -Force -File |
+Where-Object { $_.Extension -eq "" } |
+Select FullName, Length
+
+Get-ChildItem C:\ -Recurse -Force -ErrorAction SilentlyContinue |
+Where-Object {
+    $_.Name -match "svchost|explorer|lsass|chrome|winlogon"
+} |
+Select FullName
+
+Get-ChildItem C:\ -Recurse -Force -ErrorAction SilentlyContinue |
+Sort CreationTime |
+Select -Last 50 FullName, CreationTime
+
+```
 ## 🔍 Enumerasi File User Directory
 
 Menampilkan seluruh file dalam direktori user beserta timestamp penting.
