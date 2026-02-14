@@ -1,6 +1,22 @@
 # Windows DFIR Log Collection & Analysis Playbook
 
 # Analisa security application dan kaspersky
+
+Event ID 4724: "An attempt was made to reset an account's password"
+Deskripsi: Event ini tercatat saat seseorang (Subject) mencoba mereset password pengguna lain atau akun komputer, baik di Domain Controller maupun lokal.
+Relevansi Keamanan: Penting untuk memantau apakah ada administrator yang mereset password akun bernilai tinggi (seperti Domain Admin) secara tidak sah.
+
+Event ID 4738: "A user account was changed"
+Deskripsi: Event ini muncul setiap kali ada perubahan pada objek pengguna (user object), seperti perubahan grup, pengaturan "password not required", atau perubahan durasi logon.
+Relevansi Keamanan: Digunakan untuk melacak modifikasi yang mencurigakan, seperti penambahan pengguna ke grup administratif.
+
+Event ID 4798: "A user's local group membership was enumerated"
+Deskripsi: Event ini tercatat ketika suatu proses atau pengguna (misalnya melalui perintah net user) menanyakan/menghitung anggota grup lokal (local group membership) pada sebuah komputer.
+Relevansi Keamanan: Sering digunakan oleh penyerang (APT actors) dalam tahap reconnaissance atau pelacakan horizontal untuk memahami hak akses lokal yang telah dikompromi. 
+
+Ringkasan Konteks Keamanan:
+Kombinasi ketiga event ini memberikan visibilitas terhadap aktivitas admin/penyerang yang mencoba mengubah kredensial (4724), mengubah properti akun (4738), dan memetakan hak akses lokal (4798). 
+
 ```powershell
 # ---------------------------
 # Helper function to safely extract message
