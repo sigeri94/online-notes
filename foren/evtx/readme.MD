@@ -2,10 +2,14 @@
 
 # Analisa security application dan kaspersky
 
+Kombinasi ketiga event ini memberikan visibilitas terhadap aktivitas berisiko tinggi:
+
+| Event ID | Aktivitas | Risiko |
 |----------|----------|--------|
 | **4724** | Reset password akun | Account takeover & persistence |
 | **4738** | Perubahan properti akun | Privilege escalation |
 | **4798** | Enumerasi hak akses lokal | Recon & lateral movement |
+
 
 
 ```powershell
