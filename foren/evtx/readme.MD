@@ -1,17 +1,12 @@
 # Windows DFIR Log Collection & Analysis Playbook
 ```powershell
-# ---------------------------
-# Helper function to safely extract message
-# ---------------------------
 function Get-EventMessageSafe {
     param ($Event)
 
-    # 1. Use standard Message if available
     if ($Event.Message -and $Event.Message.Trim() -ne "") {
         return $Event.Message
     }
 
-    # 2. Try EventData <Data> nodes
     try {
         $xml = [xml]$Event.ToXml()
 
@@ -25,66 +20,50 @@ function Get-EventMessageSafe {
             }
         }
 
-        # 3. Fallback: raw inner text
         $raw = ($xml.Event.EventData.InnerText).Trim()
-        if ($raw -and $raw.Length -gt 0) {
+        if ($raw) {
             if ($raw.Length -gt 32000) { $raw.Substring(0,32000) } else { $raw }
         }
-        else {
-            return "[Message unavailable]"
-        }
+        else { "[Message unavailable]" }
     }
-    catch {
-        return "[Message unavailable]"
+    catch { "[Message unavailable]" }
+}
+$evtxPath = "C:\foren\asabri\winevt\Logs"
+$outFile  = "C:\foren\asabri\events_2025.csv"
+
+$start = Get-Date "2025-01-01"
+$end   = Get-Date "2026-01-01"
+
+$events = Get-ChildItem $evtxPath -Filter *.evtx -Recurse | ForEach-Object {
+
+    $logFile = $_.FullName
+    Write-Host "Processing $logFile"
+
+    Get-WinEvent -Path $logFile -ErrorAction SilentlyContinue |
+    Where-Object { $_.TimeCreated -ge $start -and $_.TimeCreated -lt $end } |
+    ForEach-Object {
+
+        $msg = Get-EventMessageSafe $_
+
+        [PSCustomObject]@{
+            TimeCreated = $_.TimeCreated
+            Computer    = $_.MachineName
+            LogName     = $_.LogName
+            Provider    = $_.ProviderName
+            EventID     = $_.Id
+            Level       = $_.LevelDisplayName
+            Message     = ($msg -replace "`r|`n"," ")
+            SourceFile  = [System.IO.Path]::GetFileName($logFile)
+        }
     }
 }
 
-# ---------------------------
-# Collect events
-# ---------------------------
-$events = @()
-
-# Security.evtx: account changes, password resets, group enumeration
-$events += Get-WinEvent -Path .\Security.evtx -FilterXPath "
-    *[System[(EventID=4724 or EventID=4738 or EventID=4798)]]
-"
-
-# Application.evtx: MSI installs (SentinelOne, Java, etc.)
-$events += Get-WinEvent -Path .\Application.evtx -FilterXPath "
-    *[System[(EventID=1040 or EventID=1033)]]
-"
-
-# Kaspersky Endpoint Security.evtx: AV events
-$events += Get-WinEvent -Path ".\Kaspersky Endpoint Security.evtx" -FilterXPath "
-    *[System[(EventID=317)]]
-"
-
-# ---------------------------
-# Sort events by time and export
-# ---------------------------
-# Remove old XLSX if exists
-Remove-Item .\unified_timeline.xlsx -ErrorAction SilentlyContinue
-
 $events |
 Sort-Object TimeCreated |
-Select @{
-    Name = 'TimeCreated'
-    Expression = { $_.TimeCreated.ToString('yyyy-MM-dd hh:mm:ss tt') }
-},
-Id,
-ProviderName,
-LogName,
-@{
-    Name = 'Message'
-    Expression = { Get-EventMessageSafe $_ }
-} |
-Export-Excel -Path .\unified_timeline.xlsx `
-             -WorksheetName Timeline `
-             -AutoSize `
-             -FreezeTopRow `
-             -BoldTopRow
+Export-Csv $outFile -NoTypeInformation -Encoding UTF8
 
-Write-Host "Unified timeline exported to unified_timeline.xlsx"
+Write-Host "Done. Output:" $outFile
+
 ```
 # Analisa security application dan kaspersky
 
