@@ -705,8 +705,47 @@ Select TimeCreated, Id, LevelDisplayName, Message |
 Sort TimeCreated |
 Export-Csv ".\Kaspersky_EventLog_Timeline.csv" -NoTypeInformation
 ```
+# SMB security.evtx
+```powershell
+$log = "$source\Microsoft-Windows-SMBServer%4Security.evtx"
 
----
+$start = Get-Date "2025-01-01"
+$end   = Get-Date "2026-01-01"
+
+Get-WinEvent -Path $log -ErrorAction SilentlyContinue |
+Where-Object {
+    $_.Id -eq 551 -and
+    $_.TimeCreated -ge $start -and
+    $_.TimeCreated -lt $end
+} |
+ForEach-Object {
+
+    $xml = [xml]$_.ToXml()
+
+    # Ambil Client IP dari XML
+    $addr = ($xml.Event.EventData.Data |
+            Where-Object {$_.Name -eq "ClientAddress"}).'#text'
+
+    # fallback jika kosong
+    if(!$addr -and $_.Message -match 'Client Address:\s+([\d\.]+)'){
+        $addr = $matches[1]
+    }
+
+    if(!$addr){ $addr = "UNKNOWN" }
+
+    [PSCustomObject]@{
+        Date = $_.TimeCreated.ToString("yyyy-MM-dd")
+        IP   = $addr
+    }
+} |
+Group-Object Date,IP |
+Select-Object `
+    @{n='Date';e={$_.Name.Split(',')[0]}},
+    @{n='SourceIP';e={$_.Name.Split(',')[1]}},
+    Count |
+Sort-Object {[datetime]$_.Date}, SourceIP
+
+```
 ---
 
 # 7 Log Correlation with LogParser
