@@ -286,71 +286,13 @@ Select-Object TimeCreated,
 ## Logon Statistics – Event ID 4624
 
 ```powershell
-$secLog   = "$source\Security.evtx"
-$rdsLog   = "$source\Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx"
-
-$results = @()
-
-############################
-# SECURITY LOG â?" EVENT 4624
-############################
-Get-WinEvent -Path $secLog -FilterXPath "*[System[(EventID=4624)]]" | ForEach-Object {
-
-    $xml = [xml]$_.ToXml()
-
-    $results += [PSCustomObject]@{
-        Date            = $_.TimeCreated.ToString("yyyy-MM-dd")
-        Event           = "Sec 4624"
-        TargetAccount   = $xml.Event.EventData.Data | ? {$_.Name -eq "TargetUserName"} | % { $_.'#text' }
-        TargetComputer  = $env:COMPUTERNAME
-        SourceComputer  = $xml.Event.EventData.Data | ? {$_.Name -eq "WorkstationName"} | % { $_.'#text' }
-        SourceIP        = $xml.Event.EventData.Data | ? {$_.Name -eq "IpAddress"} | % { $_.'#text' }
-    }
-}
-
-#########################################
-# RDS LOCAL SESSION MANAGER â?" EVENT 21
-#########################################
-Get-WinEvent -Path $rdsLog | Where-Object {$_.Id -eq 21} | ForEach-Object {
-
-    $xml=[xml]$_.ToXml()
-
-    $ip = $xml.Event.UserData.EventXML.Address
-    if(!$ip){ $ip="LOCAL" }
-
-    $results += [PSCustomObject]@{
-        Date            = $_.TimeCreated.ToString("yyyy-MM-dd")
-        Event           = "RDS-LSM 21"
-        TargetAccount   = $xml.Event.UserData.EventXML.User
-        TargetComputer  = $env:COMPUTERNAME
-        SourceComputer  = "-"
-        SourceIP        = $ip
-    }
-}
-
-############################
-# SUMMARY OUTPUT
-############################
-$results |
-Group-Object Date,Event,TargetAccount,TargetComputer,SourceComputer,SourceIP |
-Sort-Object Count -Descending |
-Select-Object `
-    @{n="Date";e={$_.Name.Split(',')[0]}},
-    @{n="Successful";e={$_.Count}},
-    @{n="Event";e={$_.Name.Split(',')[1]}},
-    @{n="Target Account";e={$_.Name.Split(',')[2]}},
-    @{n="Target Computer";e={$_.Name.Split(',')[3]}},
-    @{n="Source Computer";e={$_.Name.Split(',')[4]}},
-    @{n="Source IP Address";e={$_.Name.Split(',')[5]}} |
-PS C:\foren\asabri> .\statistic2.ps1cat s^C
-PS C:\foren\asabri> type .\statistic2.ps1
 $secLog = "$source\Security.evtx"
 $rdsLog = "$source\Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx"
 
 $results = @()
 
 ############################
-# SECURITY LOG â€“ EVENT 4624
+# SECURITY LOG – EVENT 4624
 ############################
 Get-WinEvent -Path $secLog -FilterXPath "*[System[(EventID=4624)]]" | ForEach-Object {
 
@@ -367,17 +309,24 @@ Get-WinEvent -Path $secLog -FilterXPath "*[System[(EventID=4624)]]" | ForEach-Ob
 }
 
 #########################################
-# RDS LOCAL SESSION MANAGER â€“ EVENT 21
+# RDS LOCAL SESSION MANAGER – EVENT 21
 #########################################
-Get-WinEvent -Path $rdsLog | Where-Object {$_.Id -eq 21} | ForEach-Object {
+Get-WinEvent -Path $rdsLog | Where-Object {$_.Id -in 21,25} | ForEach-Object {
 
     $xml = [xml]$_.ToXml()
     $ip  = $xml.Event.UserData.EventXML.Address
     if(!$ip){ $ip="LOCAL" }
 
+    $eventLabel = switch ($_.Id) {
+        21 { "RDS-LSM Logon (21)" }
+        25 { "RDS-LSM Reconnect (25)" }
+
+        25 { "RDS-LSM Reconnect (25)" }
+    }
+
     $results += [PSCustomObject]@{
         Date           = $_.TimeCreated.Date
-        Event          = "RDS-LSM 21"
+        Event          = $eventLabel
         TargetAccount  = $xml.Event.UserData.EventXML.User
         TargetComputer = $xml.Event.System.Computer
         SourceComputer = "-"
@@ -400,6 +349,7 @@ Select-Object `
     @{n="Source IP Address";e={$_.Name.Split(',')[5]}} |
 Sort-Object {[datetime]$_.Date}, "Target Account" |
 Format-Table -AutoSize
+
 ```
 
 ### Logon Type Reference
