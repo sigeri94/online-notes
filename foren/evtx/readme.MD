@@ -320,8 +320,6 @@ Get-WinEvent -Path $rdsLog | Where-Object {$_.Id -in 21,25} | ForEach-Object {
     $eventLabel = switch ($_.Id) {
         21 { "RDS-LSM Logon (21)" }
         25 { "RDS-LSM Reconnect (25)" }
-
-        25 { "RDS-LSM Reconnect (25)" }
     }
 
     $results += [PSCustomObject]@{
