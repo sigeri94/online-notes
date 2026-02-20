@@ -1,211 +1,109 @@
-# script parsing evtx task scheduler
 
-```powershell
-$tasksPath = "C:\Windows\System32\Tasks"
-$results = @()
-
-Get-ChildItem -Path $tasksPath -Recurse -File | ForEach-Object {
-
-    try {
-        [xml]$xml = Get-Content $_.FullName -ErrorAction Stop
-
-        # Namespace handling
-        $ns = New-Object System.Xml.XmlNamespaceManager($xml.NameTable)
-        $ns.AddNamespace("t", "http://schemas.microsoft.com/windows/2004/02/mit/task")
-
-        # Creation date
-        $created = $xml.SelectSingleNode("//t:RegistrationInfo/t:Date", $ns)
-        if (-not $created) { return }
-
-        $createdDate = [datetime]$created.InnerText
-        if ($createdDate.Year -ne 2025) { return }
-
-        # Author / User
-        $author = $xml.SelectSingleNode("//t:RegistrationInfo/t:Author", $ns)
-        if (-not $author) {
-            $author = $xml.SelectSingleNode("//t:Principals/t:Principal/t:UserId", $ns)
-        }
-
-        # Action
-        $exec = $xml.SelectSingleNode("//t:Actions/t:Exec/t:Command", $ns)
-        $args = $xml.SelectSingleNode("//t:Actions/t:Exec/t:Arguments", $ns)
-
-        $results += [PSCustomObject]@{
-            TaskName     = $_.FullName.Replace($tasksPath + "\", "")
-            CreatedDate = $createdDate
-            User        = $author.InnerText
-            Action      = $exec.InnerText
-            Arguments   = if ($args) { $args.InnerText } else { "" }
-        }
-
-    } catch {
-        # Skip unreadable or malformed XML
-    }
-}
-
-$results | Sort-Object CreatedDate | Format-Table -AutoSize
-```
-
-
-```powershell
-$tasksPath = "C:\Windows\System32\Tasks"
-$outputXlsx = "$PWD\ScheduledTasks_2025.xlsx"
-$results = @()
-
-Get-ChildItem -Path $tasksPath -Recurse -File | ForEach-Object {
-
-    try {
-        [xml]$xml = Get-Content $_.FullName -ErrorAction Stop
-
-        $ns = New-Object System.Xml.XmlNamespaceManager($xml.NameTable)
-        $ns.AddNamespace("t", "http://schemas.microsoft.com/windows/2004/02/mit/task")
-
-        # Created date
-        $createdNode = $xml.SelectSingleNode("//t:RegistrationInfo/t:Date", $ns)
-        if (-not $createdNode) { return }
-
-        $createdDate = [datetime]$createdNode.InnerText
-        if ($createdDate.Year -ne 2025) { return }
-
-        # User
-        $authorNode = $xml.SelectSingleNode("//t:RegistrationInfo/t:Author", $ns)
-        if (-not $authorNode) {
-            $authorNode = $xml.SelectSingleNode("//t:Principals/t:Principal/t:UserId", $ns)
-        }
-
-        # Action
-        $execNode = $xml.SelectSingleNode("//t:Actions/t:Exec/t:Command", $ns)
-        $argsNode = $xml.SelectSingleNode("//t:Actions/t:Exec/t:Arguments", $ns)
-
-        # Last Run
-        $lastRunNode = $xml.SelectSingleNode("//t:LastRunTime", $ns)
-        $lastRunTime = if ($lastRunNode -and $lastRunNode.InnerText) {
-            [datetime]$lastRunNode.InnerText
-        } else {
-            $null
-        }
-
-        $results += [PSCustomObject]@{
-            TaskName     = $_.FullName.Replace($tasksPath + "\", "")
-            CreatedDate = $createdDate
-            LastRunTime = $lastRunTime
-            User        = if ($authorNode) { $authorNode.InnerText } else { "Unknown" }
-            Action      = if ($execNode) { $execNode.InnerText } else { "" }
-            Arguments   = if ($argsNode) { $argsNode.InnerText } else { "" }
-        }
-
-    } catch {
-        # Skip bad XML
-    }
-}
-
-# ===== Export to Excel =====
-$excel = New-Object -ComObject Excel.Application
-$excel.Visible = $false
-$workbook = $excel.Workbooks.Add()
-$sheet = $workbook.Worksheets.Item(1)
-$sheet.Name = "ScheduledTasks_2025"
-
-# Header
-$headers = $results[0].PSObject.Properties.Name
-for ($i = 0; $i -lt $headers.Count; $i++) {
-    $sheet.Cells.Item(1, $i + 1) = $headers[$i]
-    $sheet.Cells.Item(1, $i + 1).Font.Bold = $true
-}
-
-# Data
-$row = 2
-foreach ($r in $results) {
-    $col = 1
-    foreach ($h in $headers) {
-        $sheet.Cells.Item($row, $col) = $r.$h
-        $col++
-    }
-    $row++
-}
-
-# Auto-fit columns
-$sheet.Columns.AutoFit()
-
-# Save
-$workbook.SaveAs($outputXlsx)
-$workbook.Close($true)
-$excel.Quit()
-
-[System.Runtime.InteropServices.Marshal]::ReleaseComObject($excel) | Out-Null
-
-Write-Host "Excel exported to: $outputXlsx"
-
-```
 
 # script memparsing isi folder tasks
 
 ```powershell
-Get-ChildItem "F:\windows\system32\tasks" -Recurse -File -Force -ErrorAction SilentlyContinue |
-Select-Object FullName, CreationTime, LastWriteTime, Length |
-Sort-Object CreationTime
-```
-
----
-
-```powershell
-# Folder Task Scheduler
 $taskFolder = "F:\Windows\System32\Tasks"
-
-# Ambil semua file di folder (rekursif jika ada subfolder)
+$targetYear = 2025
 $taskFiles = Get-ChildItem -Path $taskFolder -File -Recurse
-
-# Array untuk menyimpan hasil
 $results = @()
 
 foreach ($file in $taskFiles) {
     try {
-        # Load XML
-        [xml]$xml = Get-Content -Path $file.FullName -Encoding UTF8 -ErrorAction Stop
+        [xml]$xml = Get-Content $file.FullName -ErrorAction Stop
 
-        # Default values
-        $triggerTime = "N/A"
-        $actionCommand = "N/A"
-        $actionArgs = ""
+        $triggerInfo = @()
+        $eventID = ""
+        $suspiciousTrigger = $false
+        $includeTask = $false
 
-        # Cek Trigger
-        if ($xml.Task.Triggers.TimeTrigger) {
-            $triggerTime = $xml.Task.Triggers.TimeTrigger.StartBoundary
-        }
-        elseif ($xml.Task.Triggers.BootTrigger) {
-            $triggerTime = "At Boot"
-        }
-        elseif ($xml.Task.Triggers.LogonTrigger) {
-            $triggerTime = "At Logon"
-        }
-        elseif ($xml.Task.Triggers.DailyTrigger) {
-            $triggerTime = $xml.Task.Triggers.DailyTrigger.StartBoundary
+        if ($xml.Task.Triggers) {
+            foreach ($trigger in $xml.Task.Triggers.ChildNodes) {
+
+                switch ($trigger.Name) {
+
+                    "TimeTrigger" {
+                        $date = [datetime]$trigger.StartBoundary
+                        if ($date.Year -eq $targetYear) {
+                            $includeTask = $true
+                            $triggerInfo += "Time: $($trigger.StartBoundary)"
+                        }
+                    }
+
+                    "DailyTrigger" {
+                        $date = [datetime]$trigger.StartBoundary
+                        if ($date.Year -eq $targetYear) {
+                            $includeTask = $true
+                            $triggerInfo += "Daily: $($trigger.StartBoundary)"
+                        }
+                    }
+
+                    "WeeklyTrigger" {
+                        $date = [datetime]$trigger.StartBoundary
+                        if ($date.Year -eq $targetYear) {
+                            $includeTask = $true
+                            $triggerInfo += "Weekly: $($trigger.StartBoundary)"
+                        }
+                    }
+
+                    "MonthlyTrigger" {
+                        $date = [datetime]$trigger.StartBoundary
+                        if ($date.Year -eq $targetYear) {
+                            $includeTask = $true
+                            $triggerInfo += "Monthly: $($trigger.StartBoundary)"
+                        }
+                    }
+
+                    "CalendarTrigger" {
+                        $date = [datetime]$trigger.StartBoundary
+                        if ($date.Year -eq $targetYear) {
+                            $includeTask = $true
+                            $triggerInfo += "Calendar: $($trigger.StartBoundary)"
+                        }
+                    }
+
+                    "EventTrigger" {
+                        if ($trigger.Subscription -match "EventID=(\d+)") {
+                            $eventID = $matches[1]
+                        }
+                    }
+                }
+            }
         }
 
-        # Cek Action
-        if ($xml.Task.Actions.Exec) {
-            $actionCommand = $xml.Task.Actions.Exec.Command
-            $actionArgs = $xml.Task.Actions.Exec.Arguments
+        if ($includeTask) {
+
+            $command = ""
+            $arguments = ""
+            $suspiciousAction = $false
+
+            if ($xml.Task.Actions.Exec) {
+                $command = $xml.Task.Actions.Exec.Command
+                $arguments = $xml.Task.Actions.Exec.Arguments
+
+                if ($command -match "powershell|cmd.exe|wscript|cscript|mshta|rundll32|regsvr32") {
+                    $suspiciousAction = $true
+                }
+            }
+
+            $results += [PSCustomObject]@{
+                File              = $file.FullName
+                Triggers          = ($triggerInfo -join "; ")
+                EventID           = $eventID
+                Command           = $command
+                Arguments         = $arguments
+                SuspiciousAction  = $suspiciousAction
+            }
         }
 
-        # Simpan hasil
-        $results += [PSCustomObject]@{
-            File       = $file.FullName
-            Trigger    = $triggerTime
-            Command    = $actionCommand
-            Arguments  = $actionArgs
-        }
-    }
-    catch {
-        Write-Warning "Gagal membaca $($file.FullName): $_"
+    } catch {
+        Write-Warning "Gagal membaca $($file.FullName)"
     }
 }
 
-# Tampilkan hasil
 $results | Format-Table -AutoSize
+$results | Export-Csv "F:\ScheduledTask_2025_Report.csv" -NoTypeInformation -Encoding UTF8
 
-# Opsional: simpan ke CSV
-$results | Export-Csv -Path "C:\foren\tasks_summary.csv" -NoTypeInformation -Encoding UTF8
 ```
 
 ---
