@@ -158,6 +158,17 @@ Event penting:
 | 140      | Task diubah  |
 | 141      | Task dihapus |
 
+```powershell
+Get-WinEvent -Path .\Microsoft-Windows-TaskScheduler%4Operational.evtx |
+Select TimeCreated, Id, Message
+
+
+Where-Object {$_.Message -like "*TaskName*"} |
+Select TimeCreated, Id, Message
+
+
+```
+
 ---
 
 ## 2️⃣ Security Event Log (jika auditing aktif)
