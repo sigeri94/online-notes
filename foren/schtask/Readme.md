@@ -159,6 +159,7 @@ Event penting:
 | 141      | Task dihapus |
 
 ```powershell
+
 Get-WinEvent -Path .\Microsoft-Windows-TaskScheduler%4Operational.evtx |
 Select TimeCreated, Id, Message
 
@@ -167,6 +168,8 @@ Where-Object {$_.Message -like "*TaskName*"} |
 Select TimeCreated, Id, Message
 
 
+Where-Object {$_.Id -in 100,101,102,200,201} |
+Select TimeCreated, Id, Message
 ```
 
 ---
