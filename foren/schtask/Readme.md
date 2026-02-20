@@ -3,8 +3,8 @@
 # script memparsing isi folder tasks
 
 ```powershell
+
 $taskFolder = "F:\Windows\System32\Tasks"
-$targetYear = 2025
 $taskFiles = Get-ChildItem -Path $taskFolder -File -Recurse
 $results = @()
 
@@ -15,7 +15,6 @@ foreach ($file in $taskFiles) {
         $triggerInfo = @()
         $eventID = ""
         $suspiciousTrigger = $false
-        $includeTask = $false
 
         if ($xml.Task.Triggers) {
             foreach ($trigger in $xml.Task.Triggers.ChildNodes) {
@@ -23,77 +22,85 @@ foreach ($file in $taskFiles) {
                 switch ($trigger.Name) {
 
                     "TimeTrigger" {
-                        $date = [datetime]$trigger.StartBoundary
-                        if ($date.Year -eq $targetYear) {
-                            $includeTask = $true
-                            $triggerInfo += "Time: $($trigger.StartBoundary)"
-                        }
+                        $triggerInfo += "Time: $($trigger.StartBoundary)"
                     }
 
                     "DailyTrigger" {
-                        $date = [datetime]$trigger.StartBoundary
-                        if ($date.Year -eq $targetYear) {
-                            $includeTask = $true
-                            $triggerInfo += "Daily: $($trigger.StartBoundary)"
-                        }
+                        $triggerInfo += "Daily: $($trigger.StartBoundary)"
                     }
 
                     "WeeklyTrigger" {
-                        $date = [datetime]$trigger.StartBoundary
-                        if ($date.Year -eq $targetYear) {
-                            $includeTask = $true
-                            $triggerInfo += "Weekly: $($trigger.StartBoundary)"
-                        }
+                        $triggerInfo += "Weekly: $($trigger.StartBoundary)"
                     }
 
-                    "MonthlyTrigger" {
-                        $date = [datetime]$trigger.StartBoundary
-                        if ($date.Year -eq $targetYear) {
-                            $includeTask = $true
-                            $triggerInfo += "Monthly: $($trigger.StartBoundary)"
-                        }
+                    "BootTrigger" {
+                        $triggerInfo += "BootTrigger"
+                        $suspiciousTrigger = $true
                     }
 
-                    "CalendarTrigger" {
-                        $date = [datetime]$trigger.StartBoundary
-                        if ($date.Year -eq $targetYear) {
-                            $includeTask = $true
-                            $triggerInfo += "Calendar: $($trigger.StartBoundary)"
-                        }
+                    "LogonTrigger" {
+                        $triggerInfo += "LogonTrigger"
+                        $suspiciousTrigger = $true
+                    }
+
+                    "IdleTrigger" {
+                        $triggerInfo += "IdleTrigger"
+                    }
+
+                    "RegistrationTrigger" {
+                        $triggerInfo += "RegistrationTrigger"
+                        $suspiciousTrigger = $true
+                    }
+
+                    "SessionStateChangeTrigger" {
+                        $triggerInfo += "SessionStateChangeTrigger"
+                        $suspiciousTrigger = $true
                     }
 
                     "EventTrigger" {
-                        if ($trigger.Subscription -match "EventID=(\d+)") {
-                            $eventID = $matches[1]
+                        $triggerInfo += "EventTrigger"
+
+                        if ($trigger.Subscription) {
+                            $subscription = $trigger.Subscription
+
+                            # Extract EventID
+                            if ($subscription -match "EventID=(\d+)") {
+                                $eventID = $matches[1]
+                            }
+
+                            $suspiciousTrigger = $true
                         }
+                    }
+
+                    default {
+                        $triggerInfo += $trigger.Name
                     }
                 }
             }
         }
 
-        if ($includeTask) {
+        $command = ""
+        $arguments = ""
+        $suspiciousAction = $false
 
-            $command = ""
-            $arguments = ""
-            $suspiciousAction = $false
+        if ($xml.Task.Actions.Exec) {
+            $command = $xml.Task.Actions.Exec.Command
+            $arguments = $xml.Task.Actions.Exec.Arguments
 
-            if ($xml.Task.Actions.Exec) {
-                $command = $xml.Task.Actions.Exec.Command
-                $arguments = $xml.Task.Actions.Exec.Arguments
-
-                if ($command -match "powershell|cmd.exe|wscript|cscript|mshta|rundll32|regsvr32") {
-                    $suspiciousAction = $true
-                }
+            # Detect suspicious executables commonly abused
+            if ($command -match "powershell|cmd.exe|wscript|cscript|mshta|rundll32|regsvr32") {
+                $suspiciousAction = $true
             }
+        }
 
-            $results += [PSCustomObject]@{
-                File              = $file.FullName
-                Triggers          = ($triggerInfo -join "; ")
-                EventID           = $eventID
-                Command           = $command
-                Arguments         = $arguments
-                SuspiciousAction  = $suspiciousAction
-            }
+        $results += [PSCustomObject]@{
+            File                = $file.FullName
+            Triggers            = ($triggerInfo -join "; ")
+            EventID             = $eventID
+            Command             = $command
+            Arguments           = $arguments
+            SuspiciousTrigger   = $suspiciousTrigger
+            SuspiciousAction    = $suspiciousAction
         }
 
     } catch {
@@ -101,8 +108,11 @@ foreach ($file in $taskFiles) {
     }
 }
 
-$results | Format-Table -AutoSize
-$results | Export-Csv "F:\ScheduledTask_2025_Report.csv" -NoTypeInformation -Encoding UTF8
+# Tampilkan hasil
+$results | Sort-Object SuspiciousAction -Descending | Format-Table -AutoSize
+
+# Export ke CSV untuk analisis lanjutan
+$results | Export-Csv "F:\ScheduledTask_Forensic_Report.csv" -NoTypeInformation -Encoding UTF8
 
 ```
 
