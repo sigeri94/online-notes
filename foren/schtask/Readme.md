@@ -1,0 +1,177 @@
+# 🔎 Forensik Scheduled Task yang Sudah Dihapus (Registry Analysis)
+
+Jika **Scheduled Task dihapus**, artefaknya sering masih tersisa di **Registry TaskCache**. Ini sangat berguna dalam DFIR karena walaupun file XML di:
+
+```
+C:\Windows\System32\Tasks\
+```
+
+sudah hilang, metadata task masih bisa direcover dari registry.
+
+---
+
+# 📍 Lokasi Registry Task Scheduler
+
+Task disimpan di:
+
+```
+HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\
+```
+
+## Subkey penting
+
+### 📁 Tree
+
+```
+TaskCache\Tree\
+```
+
+Berisi:
+
+* Nama & path task
+* Index
+* GUID referensi
+* Hidden flag
+
+---
+
+### 📁 Tasks
+
+```
+TaskCache\Tasks\
+```
+
+Berisi:
+
+* GUID task
+* Security Descriptor
+* Trigger info
+* LastRunTime
+* Author & path
+
+👉 Jika task dihapus:
+
+* File XML hilang
+* Entry Tree bisa hilang
+* **GUID di Tasks sering masih ada**
+
+Ini artefak recovery utama.
+
+---
+
+# 🧪 Cara Menemukan Task yang Suduh Dihapus
+
+## ✅ 1. Enumerasi GUID Tasks yang masih tersisa
+
+```powershell
+$tasksPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tasks"
+
+Get-ChildItem $tasksPath | ForEach-Object {
+    $guid = $_.PSChildName
+    $props = Get-ItemProperty $_.PsPath
+    [PSCustomObject]@{
+        GUID = $guid
+        Path = $props.Path
+        LastRunTime = $props.LastRunTime
+    }
+}
+```
+
+### 🔎 Indikasi task terhapus:
+
+✔ Path kosong atau aneh
+✔ Tidak ada file XML di `System32\Tasks`
+✔ Tidak muncul di Task Scheduler GUI
+
+---
+
+## ✅ 2. Cocokkan dengan Tree entries (deteksi orphaned tasks)
+
+```powershell
+$treePath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree"
+$tasksPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tasks"
+
+$treeGUIDs = Get-ChildItem -Recurse $treePath |
+    Get-ItemProperty |
+    Select-Object -ExpandProperty Id -ErrorAction SilentlyContinue
+
+Get-ChildItem $tasksPath | ForEach-Object {
+    $guid = $_.PSChildName
+    if ($treeGUIDs -notcontains $guid) {
+        Write-Output "Orphaned (possible deleted) task GUID: $guid"
+    }
+}
+```
+
+👉 GUID tanpa pasangan di Tree = **kemungkinan task sudah dihapus**
+
+---
+
+## ✅ 3. Melihat detail task orphaned
+
+```powershell
+$guid = "PASTE-GUID-DI-SINI"
+
+Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tasks\$guid"
+```
+
+Informasi yang bisa didapat:
+
+* Path task asli
+* LastRunTime
+* Security context
+* Trigger metadata
+
+---
+
+## 🔎 Konversi LastRunTime ke format waktu normal
+
+Registry menyimpan waktu dalam format **FILETIME**.
+
+```powershell
+[DateTime]::FromFileTime(<value>)
+```
+
+Contoh:
+
+```powershell
+[DateTime]::FromFileTime(133123456789000000)
+```
+
+---
+
+# 📂 Artefak Tambahan untuk Recovery
+
+## 1️⃣ Event Log Task Scheduler
+
+Periksa:
+
+```
+Microsoft-Windows-TaskScheduler/Operational
+```
+
+Event penting:
+
+| Event ID | Arti         |
+| -------- | ------------ |
+| 106      | Task dibuat  |
+| 140      | Task diubah  |
+| 141      | Task dihapus |
+
+---
+
+## 2️⃣ Security Event Log (jika auditing aktif)
+
+| Event ID | Arti              |
+| -------- | ----------------- |
+| 4698     | Task dibuat       |
+| 4699     | Task dihapus      |
+| 4702     | Task dimodifikasi |
+
+---
+
+## 3️⃣ Volume Shadow Copy
+
+Jika XML dihapus:
+
+👉 Recover dari shadow copy.
