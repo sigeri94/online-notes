@@ -1,5 +1,4 @@
-'''powershell
-
+```powershell
 $log = "$source\Microsoft-Windows-SMBServer%4Security.evtx"
 
 $start = Get-Date "2025-01-01"
@@ -44,4 +43,5 @@ Select-Object `
     @{n='ShareName';e={$_.Name.Split(',')[2]}},
     Count |
 Sort-Object {[datetime]$_.Date}, SourceIP
-'''
+
+```
