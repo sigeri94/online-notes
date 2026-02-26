@@ -1,31 +1,29 @@
--- =========================================================
--- TARGETED FORENSIC SEARCH: DECEMBER 4, 2025
--- Excludes 'SELECT' to focus on Modification & Tampering
--- =========================================================
-SET LINES 200
-SET PAGES 5000
-COLUMN dbusername FORMAT A15
-COLUMN action_name FORMAT A20
-COLUMN object_name FORMAT A25
-COLUMN sql_text FORMAT A60
+SET SERVEROUTPUT ON SIZE UNLIMITED
 
-SELECT 
-    TO_CHAR(event_timestamp, 'YYYY-MM-DD HH24:MI:SS') AS event_time,
-    dbusername,
-    userhost,
-    action_name,
-    object_schema,
-    object_name,
-    return_code, -- 0 means success, non-zero means failed attempt
-    sql_text
-FROM unified_audit_trail
-WHERE event_timestamp >= TO_TIMESTAMP('2025-12-04 00:00:00', 'YYYY-MM-DD HH24:MI:SS')
-  AND event_timestamp  < TO_TIMESTAMP('2025-12-05 00:00:00', 'YYYY-MM-DD HH24:MI:SS')
-  AND action_name NOT IN ('SELECT', 'LOGON', 'LOGOFF') -- Focus on changes
-ORDER BY event_timestamp ASC;
+DECLARE
+    v_sql   VARCHAR2(4000);
+    v_count NUMBER;
+BEGIN
+    FOR t IN (
+        SELECT table_name, column_name
+        FROM dba_tab_columns
+        WHERE owner = 'OPER'
+    ) LOOP
 
-SELECT MIN(event_timestamp) as first_activity, dbusername, userhost
-FROM unified_audit_trail
-WHERE event_timestamp >= TO_TIMESTAMP('2025-12-04 00:00:00', 'YYYY-MM-DD HH24:MI:SS')
-  AND action_name NOT IN ('SELECT', 'LOGON', 'LOGOFF')
-GROUP BY dbusername, userhost;
+        v_sql := 'SELECT COUNT(*) FROM OPER.' || t.table_name ||
+                 ' WHERE "' || t.column_name || '" LIKE :1';
+
+        BEGIN
+            EXECUTE IMMEDIATE v_sql INTO v_count USING 'BSDROPR03';
+
+            IF v_count > 0 THEN
+                DBMS_OUTPUT.PUT_LINE('FOUND -> OPER.' || t.table_name || '.' || t.column_name);
+            END IF;
+
+        EXCEPTION
+            WHEN OTHERS THEN NULL;
+        END;
+
+    END LOOP;
+END;
+/
