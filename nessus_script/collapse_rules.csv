@@ -1,0 +1,13 @@
+keyword,finding
+MS17-010,SMBv1 / EternalBlue
+SMBv1,SMBv1 / EternalBlue
+Unsupported Windows,Unsupported Windows OS
+Apache Tomcat,Outdated Apache Tomcat
+SNMP Agent Default,SNMP Default Community
+SMB Signing not required,SMB Signing Not Required
+TLS Version 1.0,Weak TLS Protocol
+TLS Version 1.1,Weak TLS Protocol
+SSL Weak Cipher,Weak SSL Cipher Suites
+SSL Medium Strength,Weak SSL Cipher Suites
+Clickjacking,Clickjacking
+Terrapin,SSH Terrapin Vulnerability

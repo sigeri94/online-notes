@@ -1,0 +1,99 @@
+name,severity,cvss,description,impact,recommendation
+SMB Signing Not Required,Medium,5.3,SMB signing is not enforced allowing potential man-in-the-middle attacks.,Attackers may intercept or modify SMB traffic.,Enable SMB signing via Group Policy.
+SMBv1 Enabled,Critical,9.8,Legacy SMBv1 protocol is enabled and vulnerable to multiple exploits.,Remote code execution and worm propagation possible.,Disable SMBv1 and upgrade to SMBv2 or SMBv3.
+MS17-010 EternalBlue,Critical,10.0,The SMBv1 server is vulnerable to EternalBlue exploit.,Attackers can gain full remote system compromise.,Apply Microsoft patch MS17-010 and disable SMBv1.
+Unsupported Windows OS,Critical,9.0,The operating system is no longer supported by the vendor.,No security patches will be released making the system vulnerable.,Upgrade to a supported version of Windows.
+SNMP Public Community,High,7.5,SNMP service is accessible using default community string public.,Attackers can enumerate system information.,Change SNMP community strings and restrict access.
+SNMP Private Community,High,7.5,SNMP service allows write access using default community string.,Attackers may modify device configuration.,Change SNMP community strings and restrict access.
+SNMP Reflection DDoS,Medium,5.0,SNMP service may be abused for reflection amplification attacks.,System could be used in DDoS campaigns.,Restrict SNMP access via firewall rules.
+Weak TLS Protocol,Medium,5.9,Server supports deprecated TLS protocols.,Attackers may exploit cryptographic weaknesses.,Disable TLS 1.0 and TLS 1.1.
+TLS 1.0 Enabled,Medium,5.9,The server supports deprecated TLS 1.0 protocol.,Cryptographic downgrade attacks possible.,Disable TLS 1.0.
+TLS 1.1 Enabled,Medium,5.9,The server supports deprecated TLS 1.1 protocol.,Weak encryption may be exploited.,Disable TLS 1.1.
+SSLv2 Enabled,Critical,9.0,The server supports SSLv2 protocol.,Attackers may decrypt traffic using known attacks.,Disable SSLv2.
+SSLv3 Enabled,High,7.4,SSLv3 protocol is vulnerable to POODLE attack.,Encrypted sessions could be compromised.,Disable SSLv3.
+Weak SSL Cipher Suites,Medium,5.6,Server supports weak cipher suites.,Encryption may be broken by attackers.,Disable weak ciphers and enforce strong encryption.
+RC4 Cipher Supported,Medium,5.3,RC4 cipher suite is insecure.,Traffic confidentiality may be compromised.,Disable RC4 cipher suites.
+SWEET32 Vulnerability,Medium,5.0,64-bit block ciphers allow SWEET32 attack.,Attackers may recover encrypted data.,Disable 3DES cipher suites.
+SSL Self Signed Certificate,Low,3.7,Server uses self signed certificate.,Users cannot verify authenticity of server.,Use certificate from trusted CA.
+SSL Certificate Expired,High,7.5,SSL certificate has expired.,Encrypted communication cannot be trusted.,Renew SSL certificate immediately.
+SSL Certificate Wrong Hostname,Medium,4.3,Certificate hostname mismatch.,Users may be exposed to MITM attacks.,Install certificate with correct hostname.
+SSL Weak Hash Algorithm,Medium,5.0,Certificate uses weak hashing algorithm.,Collision attacks may compromise trust.,Use SHA256 certificate.
+OpenSSH Outdated Version,Medium,5.0,OpenSSH version outdated.,Known vulnerabilities may exist.,Upgrade OpenSSH.
+SSH Weak MAC Algorithms,Low,3.1,Weak MAC algorithms enabled.,Integrity protection weaker.,Disable weak MAC algorithms.
+SSH Weak Ciphers,Low,3.1,Weak encryption ciphers supported.,Data confidentiality reduced.,Disable weak SSH ciphers.
+SSH Root Login Allowed,Medium,5.3,SSH allows root login.,Brute force attacks may succeed.,Disable root login.
+SSH Password Authentication Enabled,Medium,5.3,Password authentication allowed.,Susceptible to brute force attacks.,Use key based authentication.
+Apache HTTP Server Outdated,High,7.5,Apache version outdated.,Known vulnerabilities may be exploited.,Upgrade Apache server.
+Apache Directory Listing Enabled,Medium,5.0,Directory listing enabled.,Sensitive files may be exposed.,Disable directory listing.
+Apache Default Files,Low,3.0,Default Apache files accessible.,Information disclosure possible.,Remove default files.
+Apache Tomcat Outdated,High,7.5,Tomcat version outdated.,Remote exploitation possible.,Upgrade Tomcat.
+Tomcat Manager Interface Exposed,High,7.5,Tomcat manager accessible.,Attackers may deploy malicious apps.,Restrict access.
+Tomcat Default Credentials,Critical,9.8,Default credentials active.,Full server compromise possible.,Change credentials immediately.
+Clickjacking Vulnerability,Medium,4.3,Application vulnerable to clickjacking.,Users may perform unintended actions.,Implement X-Frame-Options header.
+Cross Site Scripting Reflected,High,7.2,Application reflects unsanitized input.,Attackers can execute scripts in browser.,Implement input validation.
+Cross Site Scripting Stored,High,7.5,Stored XSS vulnerability present.,Persistent malicious scripts executed.,Sanitize user input.
+Cross Site Request Forgery,Medium,5.4,CSRF protection missing.,Attackers may perform actions as victim.,Implement CSRF tokens.
+SQL Injection,Critical,9.8,Application vulnerable to SQL injection.,Attackers may access or modify database.,Use parameterized queries.
+Blind SQL Injection,Critical,9.0,Blind SQL injection vulnerability.,Attackers may extract database data.,Use prepared statements.
+Command Injection,Critical,9.8,Application executes system commands.,Full system compromise possible.,Sanitize inputs.
+File Inclusion Local,High,7.5,Local file inclusion vulnerability.,Sensitive files may be exposed.,Validate file paths.
+File Inclusion Remote,Critical,9.8,Remote file inclusion vulnerability.,Remote code execution possible.,Disable remote includes.
+Directory Traversal,High,7.5,Application allows path traversal.,Sensitive files may be accessed.,Validate file paths.
+Insecure File Upload,High,7.5,File upload not validated.,Attackers may upload web shells.,Restrict file types.
+Information Disclosure,Low,3.0,Server exposes unnecessary information.,Attackers gain reconnaissance data.,Disable verbose errors.
+Server Version Disclosure,Low,3.0,Server banner reveals version.,Attackers identify vulnerable versions.,Hide server version.
+Default Credentials,Critical,9.8,Default credentials active.,Full system compromise possible.,Change credentials.
+Weak Password Policy,Medium,5.0,Weak password requirements.,Accounts vulnerable to brute force.,Implement strong password policy.
+Anonymous FTP Login,Medium,5.0,FTP allows anonymous login.,Unauthorized file access possible.,Disable anonymous FTP.
+FTP Cleartext Authentication,Medium,5.3,FTP transmits credentials in plaintext.,Credentials may be intercepted.,Use SFTP.
+Telnet Service Enabled,High,7.5,Telnet transmits credentials unencrypted.,Credentials easily intercepted.,Disable Telnet.
+RDP Without NLA,Medium,5.3,RDP does not enforce NLA.,Susceptible to brute force attacks.,Enable NLA.
+RDP Weak Encryption,Medium,5.0,RDP encryption level weak.,Sessions may be intercepted.,Enforce strong encryption.
+LDAP Anonymous Bind,High,7.5,LDAP allows anonymous bind.,Directory information disclosure.,Disable anonymous LDAP bind.
+DNS Zone Transfer Allowed,Medium,5.0,Unauthorized zone transfer allowed.,Attackers may map internal network.,Restrict zone transfers.
+NTP Monlist Enabled,Medium,5.0,NTP monlist enabled.,System may be used for amplification attacks.,Disable monlist.
+Redis Unauthenticated Access,Critical,9.8,Redis accessible without authentication.,Remote data manipulation possible.,Enable authentication.
+MongoDB Unauthenticated Access,Critical,9.8,MongoDB open without authentication.,Attackers may steal database.,Enable MongoDB auth.
+Elasticsearch Open Access,Critical,9.8,Elasticsearch open to internet.,Data exposure risk.,Restrict access and enable auth.
+Docker API Exposed,Critical,9.8,Docker API accessible remotely.,Attackers may control containers.,Restrict Docker API.
+Kubernetes Dashboard Exposed,High,8.0,Kubernetes dashboard publicly accessible.,Cluster compromise possible.,Restrict access.
+Weak JWT Secret,High,7.5,Weak JWT signing secret.,Tokens can be forged.,Use strong secret.
+Hardcoded Credentials,High,7.5,Credentials stored in code.,Attackers may extract credentials.,Remove hardcoded credentials.
+Sensitive Data Exposure,High,7.5,Sensitive data transmitted insecurely.,Data theft possible.,Use HTTPS encryption.
+HTTP Security Headers Missing,Low,3.0,Security headers missing.,Browser protections reduced.,Implement headers.
+Content Security Policy Missing,Low,3.0,CSP header missing.,XSS risk increased.,Implement CSP.
+HSTS Not Enabled,Low,3.0,HSTS header missing.,SSL stripping attacks possible.,Enable HSTS.
+Cookie Without Secure Flag,Low,2.6,Cookies lack secure flag.,Session interception possible.,Enable secure flag.
+Cookie Without HttpOnly Flag,Low,2.6,Cookies accessible via scripts.,XSS may steal sessions.,Enable HttpOnly.
+Weak Session ID,Medium,5.0,Session IDs predictable.,Session hijacking possible.,Use strong random IDs.
+Session Fixation,Medium,5.0,Session fixation vulnerability.,Attackers may hijack sessions.,Regenerate session IDs.
+Account Enumeration,Low,3.0,Application reveals valid users.,Attackers may target accounts.,Use generic messages.
+Brute Force Login Possible,Medium,5.0,Login lacks rate limiting.,Accounts vulnerable to brute force.,Implement rate limiting.
+Open Redirect,Low,3.0,Application allows open redirects.,Phishing attacks possible.,Validate redirect URLs.
+XML External Entity (XXE),High,7.5,XML parser vulnerable to XXE.,Sensitive data disclosure.,Disable external entities.
+Deserialization Vulnerability,High,8.0,Insecure deserialization detected.,Remote code execution possible.,Validate serialized objects.
+Insecure Direct Object Reference,Medium,5.0,Direct object reference exposure.,Unauthorized access possible.,Implement access control.
+Path Disclosure,Low,3.0,Application reveals file paths.,Information leakage.,Disable debug output.
+Backup Files Accessible,Medium,5.0,Backup files accessible.,Sensitive data exposure.,Remove backup files.
+Git Repository Exposed,Medium,5.0,.git directory accessible.,Source code exposure.,Remove .git from web root.
+Outdated PHP Version,High,7.5,PHP runtime outdated.,Known vulnerabilities exist.,Upgrade PHP.
+Outdated NodeJS Version,High,7.5,NodeJS outdated.,Security vulnerabilities exist.,Upgrade NodeJS.
+Outdated Python Version,Medium,5.0,Python runtime outdated.,Potential security issues.,Upgrade Python.
+Outdated Java Version,High,7.5,Java runtime outdated.,Known vulnerabilities exist.,Upgrade Java.
+Outdated OpenSSL Version,High,7.5,OpenSSL outdated.,Cryptographic vulnerabilities possible.,Upgrade OpenSSL.
+Firewall Disabled,High,7.5,Host firewall disabled.,System exposed to network attacks.,Enable firewall.
+Antivirus Not Installed,Medium,5.0,Endpoint protection missing.,Malware infection risk.,Install antivirus.
+Antivirus Outdated,Medium,5.0,Antivirus signatures outdated.,Malware detection reduced.,Update signatures.
+SMB Guest Access Enabled,Medium,5.0,SMB guest access allowed.,Unauthorized access possible.,Disable guest access.
+Kerberos Weak Encryption,Medium,5.0,Weak Kerberos encryption used.,Credentials may be cracked.,Use AES encryption.
+Kerberoasting Possible,Medium,5.3,Service accounts vulnerable to Kerberoasting.,Credential theft possible.,Use strong passwords.
+NTLMv1 Enabled,High,7.5,NTLMv1 authentication enabled.,Credentials vulnerable to cracking.,Disable NTLMv1.
+LLMNR Enabled,Medium,5.0,LLMNR enabled.,Credential poisoning possible.,Disable LLMNR.
+NetBIOS Enabled,Medium,5.0,NetBIOS over TCP/IP enabled.,Spoofing attacks possible.,Disable NetBIOS.
+Printer Spooler Enabled,Medium,5.0,Print spooler enabled.,May allow lateral movement.,Disable if unnecessary.
+Unquoted Service Path,High,7.5,Unquoted service path vulnerability.,Privilege escalation possible.,Quote service paths.
+AlwaysInstallElevated Enabled,Critical,9.8,AlwaysInstallElevated policy enabled.,Local privilege escalation.,Disable policy.
+Weak File Permissions,Medium,5.0,Files accessible by low privilege users.,Privilege escalation risk.,Restrict permissions.
+Weak Registry Permissions,Medium,5.0,Registry writable by low privilege users.,Privilege escalation risk.,Restrict permissions.
+Privilege Escalation Vulnerability,High,8.0,System vulnerable to privilege escalation.,Attackers gain admin access.,Apply security patches.
+Kernel Vulnerability,Critical,9.8,Kernel vulnerability present.,Full system compromise possible.,Apply kernel patches.
