@@ -149,7 +149,7 @@ def main():
     save_to_html_by_severity(vuln_table)
 
     # Save results to a CSV file
-    csv_output_file = 'vulnerabilities_output.csv'
+    csv_output_file = 'vulnerabilities_crit.csv'
     save_to_csv(vuln_table, csv_output_file)
 
 if __name__ == '__main__':
