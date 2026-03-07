@@ -1,4 +1,4 @@
-
+```bash
  (zcat access.log*.gz 2>/dev/null; cat access.log.1 access.log 2>/dev/null) | awk -F\" '
 BEGIN{
 month["Jan"]="01";month["Feb"]="02";month["Mar"]="03";month["Apr"]="04";
@@ -23,7 +23,8 @@ END{
         printf "%s\t%d\t%s\n", v[1], count[k], v[2]
     }
 }' | sort -k1,1 -k2,2nr | grep -v Mozilla > useragent.txt
-===
+```
+```bash
 (zcat access.log*.gz 2>/dev/null; cat access.log.1 access.log 2>/dev/null) | awk -F\" '
 BEGIN{
 month["Jan"]="01";month["Feb"]="02";month["Mar"]="03";month["Apr"]="04";
@@ -47,8 +48,9 @@ END{
         split(k,v,SUBSEP)
         printf "%s\t%d\t%s\n", v[1], count[k], v[2]
     }
-}' | sort -k1,1 -k2,2nr | egrep -v 'google.com|119.252.163.46|bankwoorisaudara.com' > refer.txt
-===
+}' | sort -k1,1 -k2,2nr | egrep -v 'google.com|192.168.99.86|udara.com' > refer.txt
+```
+```bash
 
 (zcat access.log*.gz 2>/dev/null; cat access.log.1 access.log 2>/dev/null) | \
 awk '
@@ -75,7 +77,8 @@ END{
     }
 }' | sort > down.txt
 
-==
+```
+```bash
 
 (zcat access.log*.gz 2>/dev/null; cat access.log.1 access.log 2>/dev/null) | \
 awk '
@@ -126,5 +129,5 @@ if(n<5){
 prev=day
 }' > down_file.txt
 
+```
 
-/download/AR%20-%20BWS-2024%20%28Full%20Book%29%20-%20Final%20040325%20%281%29.pdf/4304
