@@ -1,0 +1,65 @@
+To shorten this long command:
+
+```bash
+faketime "$(ntpdate -q 10.10.11.75 | cut -d ' ' -f 1,2)" impacket-getTGT rustykey.htb/'rr.parker':'8#t5HE8L!W3A'
+```
+
+You should define a **shell function** (not alias), so it can dynamically get the NTP time and accept arguments like the `impacket-getTGT` command.
+
+---
+
+### ✅ 1. Define a shell function (`ff`) to wrap the faketime logic
+
+```bash
+ff() {
+  faketime "$(ntpdate -q 10.10.11.75 | grep -oP '\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}')" "$@"
+}
+```
+
+> This assumes your `ntpdate` outputs the adjusted time string like `2025-07-17 14:12:56`. If it doesn’t, see fallback below.
+
+---
+
+### 🧪 Test the function:
+
+```bash
+ff impacket-getTGT rustykey.htb/'rr.parker':'8#t5HE8L!W3A'
+```
+
+---
+
+### ✅ 2. Make it permanent
+
+Add it to your `~/.bashrc` or `~/.zshrc`:
+
+```bash
+echo 'ff() {
+  faketime "$(ntpdate -q 10.10.11.75 | grep -oP '\''\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'\'')" "$@"
+}' >> ~/.bashrc
+
+source ~/.bashrc
+```
+
+---
+
+### 🔁 If your `ntpdate` **does not return full datetime**, use `date` workaround:
+
+```bash
+ff() {
+  faketime "$(date -d "@$(($(date +%s) + $(ntpdate -q 10.10.11.75 | awk '/offset/ {print int($10)}')))" '+%Y-%m-%d %H:%M:%S')" "$@"
+}
+```
+
+Or more reliably, if you install `rdate`:
+
+```bash
+sudo apt install rdate
+
+ff() {
+  faketime "$(rdate -n 10.10.11.75 | date -f - '+%Y-%m-%d %H:%M:%S')" "$@"
+}
+```
+
+---
+
+Let me know which `ntpdate` output format you get if this fails, and I’ll adapt it.
