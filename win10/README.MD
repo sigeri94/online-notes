@@ -1,6 +1,47 @@
 
 # Windows Debloat & Telemetry Reduction Script
 
+```powershell
+$apps = @(
+"Microsoft.Windows.Photos",
+"Microsoft.WindowsCamera",
+"Microsoft.WindowsSoundRecorder",
+"Microsoft.MicrosoftStickyNotes",
+"Microsoft.Copilot",
+"Microsoft.OutlookForWindows",
+"Microsoft.Windows.DevHome",
+"Microsoft.XboxIdentityProvider",
+"Microsoft.XboxGameCallableUI",
+"AppUp.IntelGraphicsExperience",
+"Microsoft.MicrosoftEdgeDevToolsClient",
+"Microsoft.Windows.SecureAssessmentBrowser",
+"Microsoft.Windows.NarratorQuickStart",
+"Microsoft.Windows.PeopleExperienceHost",
+"Microsoft.Windows.ParentalControls"
+)
+
+foreach ($app in $apps) {
+    Get-AppxPackage -Name $app -AllUsers | ForEach-Object {
+        Remove-AppxPackage -Package $_.PackageFullName -ErrorAction SilentlyContinue
+    }
+}
+
+$tasks = @(
+"\Microsoft\Windows\Application Experience\ProgramDataUpdater",
+"\Microsoft\Windows\Application Experience\StartupAppTask",
+"\Microsoft\Windows\Feedback\Siuf\DmClient",
+"\Microsoft\Windows\Feedback\Siuf\DmClientOnScenarioDownload",
+"\Microsoft\Windows\PI\Sqm-Tasks",
+"\Microsoft\Windows\Flighting\FeatureConfig\UsageDataFlushing",
+"\Microsoft\Windows\Flighting\FeatureConfig\UsageDataReporting"
+)
+
+foreach ($task in $tasks){
+    $name = $task.Split('\')[-1]
+    $path = $task.Replace($name,'')
+    Disable-ScheduledTask -TaskName $name -TaskPath $path
+}
+```
 Script PowerShell ini digunakan untuk:
 
 1. Menghapus beberapa **built-in Windows Apps (AppxPackage)** yang dianggap tidak diperlukan.
