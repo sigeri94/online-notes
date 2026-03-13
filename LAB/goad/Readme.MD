@@ -49,7 +49,17 @@ Disable atau batasi layanan yang rentan:
 
 ```powershell
 Network security: Restrict NTLM: NTLM authentication in this domain
+
+reg add HKLM\SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0 /v RestrictReceivingNTLMTraffic /t REG_DWORD /d 2 /f
+
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0" -Name RestrictReceivingNTLMTraffic -Value 2
 ```
+
+| Value | Meaning                       |
+| ----- | ----------------------------- |
+| 0     | Allow all NTLM authentication |
+| 1     | Deny NTLM for domain accounts |
+| 2     | Deny all NTLM authentication  |
 
 **Disable Print Spooler pada Domain Controller**
 
