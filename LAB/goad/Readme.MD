@@ -320,12 +320,20 @@ Batasi anonymous enumeration:
 
 ```powershell
 Network access: Do not allow anonymous enumeration of SAM accounts
+
+reg add HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v RestrictAnonymous /t REG_DWORD /d 1 /f
+
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa" -Name RestrictAnonymous -Value 1
 ```
 
 Disable null sessions:
 
 ```powershell
 Network access: Restrict anonymous access
+
+reg add HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters /v RestrictNullSessAccess /t REG_DWORD /d 1 /f
+
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" -Name RestrictNullSessAccess -Value 1
 ```
 
 Audit SMB access logs.
